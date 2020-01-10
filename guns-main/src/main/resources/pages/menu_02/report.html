@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>线上报名</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.css">
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+    <style>
+        .weui-media-box__desc {
+            padding: 5px;
+        }
+    </style>
+
+
+    <script>
+        $(document).on('click', "#tabs a", function () {
+            $("#tabs a").removeClass("weui-bar__item--on");
+            $(this).addClass("weui-bar__item--on");
+            queryList($(this).attr("query"), 'event');
+        })
+        /*$(document).on('click', "#tab2", function () {
+            queryList($(this).attr("query"), 'report');
+        })*/
+
+        queryList('1', 'event');
+        queryList('5', 'report');
+
+        function queryList(query, document) {
+            $.ajax({
+                url: "/wechat/second/eventList.do",
+                data: {query: query},
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    if (data.flag) {
+                        var html = "";
+                        if (data.data.length > 0) {
+                            $.each(data.data, function (index, obj) {
+                                html += "<a href=\"/wechat/second/eventDis.do?eventId=" + obj.eventId + "\" class=\"weui-media-box_appmsg\">" +
+                                    "<div class=\"weui-panel__bd\">\n" +
+                                    "                        <div class=\"weui-media-box weui-media-box_text\">\n" +
+                                    "                            <h4 class=\"weui-media-box__title\">" + obj.eventName + "</h4>\n" +
+                                    "                            <p class=\"weui-media-box__desc\">活动时间：" + obj.eventStart + "</p>\n" +
+                                    "                            <p class=\"weui-media-box__desc\">活动分类：" + obj.eventType + "</p>\n" +
+                                    "                        </div>\n" +
+                                    "                    </div></a>";
+                            })
+                        } else {
+                            html += "<div class=\"weui-loadmore weui-loadmore_line\">\n" +
+                                "                <span class=\"weui-loadmore__tips\">暂无活动</span>\n" +
+                                "            </div>";
+                        }
+                        $("#" + document).html(html);
+                    } else {
+                        $.toast(data.msg, "forbidden");
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<div class="weui-tab">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            活动列表
+        </a>
+        <a class="weui-navbar__item" href="#tab2">
+            已报名
+        </a>
+    </div>
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <div class="weui-tab">
+                <div id="tabs" class="weui-navbar" style="margin-top: 10px;line-height: 15px;">
+                    <a query="1" class="weui-navbar__item weui-bar__item--on">
+                        全部
+                    </a>
+                    <a query="2" class="weui-navbar__item">
+                        进行中
+                    </a>
+                    <a query="3" class="weui-navbar__item">
+                        已结束
+                    </a>
+                    <a query="4" class="weui-navbar__item">
+                        已报满
+                    </a>
+                </div>
+                <div id="event" class="weui-tab__bd">
+                    <!--<div class="weui-panel__bd">
+                        <div class="weui-media-box weui-media-box_text">
+                            <h4 class="weui-media-box__title">标题一</h4>
+                            <p class="weui-media-box__desc">由各种物质组成的巨型球状天体，</p>
+                            <ul class="weui-media-box__info">
+                                <li class="weui-media-box__info__meta">文字来源</li>
+                                <li class="weui-media-box__info__meta">时间</li>
+                                <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</li>
+                            </ul>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        <div id="tab2" query="5" class="weui-tab__bd-item">
+            <div id="report" class="weui-tab__bd">
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

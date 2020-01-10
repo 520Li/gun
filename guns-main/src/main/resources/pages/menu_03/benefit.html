@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>公益积分</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>-->
+    <link rel="stylesheet" href="/css/weui.min.css">
+    <link rel="stylesheet" href="/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery-weui.min.js"></script>
+    <style>
+        .weui-media-box_appmsg .weui-media-box__hd {
+            width: 100px;
+        }
+
+        .weui-media-box__title {
+            color: #0087EA;
+        }
+    </style>
+    <script>
+        var flag = false;
+        //兑换积分
+        function exchange() {
+            if(flag){
+                return;
+            }
+            flag = true;
+
+            @if(session.login_user == null){
+                $.toast("该页面已失效,请重新登录！", "forbidden");
+                return;
+            @}
+
+            var num = 0;
+            var sum = 0;
+            for (var index in roots) {
+                num += roots[index].num;
+                sum += roots[index].sum;
+            }
+            if (roots.length === 0 || num === 0) {
+                $.toptip('请选择需要兑换的物品', 'warning');
+                flag = false;
+                return;
+            }
+            if (sum > ${session.login_user.userCore!0}) {
+                $.toptip('积分不足', 'warning');
+                flag = false;
+                return;
+            }
+
+            $.ajax({
+                url: "/wechat/third/exchange.do",
+                data: {gift:JSON.stringify(roots)},
+                dataType: "json",
+                type: "post",
+                success: function (data) {
+                    if (data.flag) {
+                        $.toast(data.msg);
+                        location.reload();
+                    } else {
+                        $.toast(data.msg, "forbidden");
+                    }
+                    flag = false;
+                }
+            })
+        }
+    </script>
+    <script>
+        var roots = [];
+        @ for (g in gifts) {
+            var root = {id: '${g.giftId}', core: ${g.giftCore}, num: 0, sum: 0};
+            roots.push(root);
+        @}
+    </script>
+
+</head>
+<body>
+<div class="weui-tab">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            我的积分
+        </a>
+        <a class="weui-navbar__item" href="#tab2">
+            我的公益
+        </a>
+    </div>
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <div class="weui-form-preview">
+                <div class="weui-form-preview__hd">
+                    <label class="weui-form-preview__label">我的积分</label>
+                    <em class="weui-form-preview__value">${session.login_user.userCore!0}</em>
+                </div>
+            </div>
+            @ for(g in gifts){
+            <div class="weui-panel weui-panel_access">
+                <div class="weui-panel__bd">
+                    <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                        <div class="weui-media-box__hd">
+                            <img class="weui-media-box__thumb" src="${g.giftPath!}">
+                        </div>
+                        <div class="weui-media-box__bd">
+                            <h4 class="weui-media-box__title">${g.giftName!}<span
+                                    style="position: fixed;right: 0.5em;font-weight: bolder">${g.giftCore}积分</span></h4>
+                            <p class="weui-media-box__desc">${g.giftText}</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <p index="${gLP.dataIndex}" style="color: grey">0</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                        <div class="weui-count">
+                            <a index="${gLP.dataIndex}" class="weui-count__btn weui-count__decrease"></a>
+                            <input class="weui-count__number" type="number" value="0" disabled="disabled">
+                            <a index="${gLP.dataIndex}" class="weui-count__btn weui-count__increase"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @}
+
+            <!--<div class="weui-panel weui-panel_access">
+                <div class="weui-panel__bd">
+                    <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                        <div class="weui-media-box__hd">
+                            <img class="weui-media-box__thumb" src="/images/2.jpg">
+                        </div>
+                        <div class="weui-media-box__bd">
+                            <h4 class="weui-media-box__title">卷纸<span
+                                    style="position: fixed;right: 0.5em;font-weight: bolder">50积分</span></h4>
+                            <p class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <p index="1" style="color: grey">0</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                        <div class="weui-count">
+                            <a index="1" class="weui-count__btn weui-count__decrease"></a>
+                            <input class="weui-count__number" type="number" value="0" disabled="disabled">
+                            <a index="1" class="weui-count__btn weui-count__increase"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+
+
+            <div class="weui-btn-area weui-footer_fixed-bottom">
+                <a id="sign"
+                   class="weui-btn weui-btn_primary" href="javascript:" onclick="exchange()">兑换积分</a>
+            </div>
+        </div>
+
+
+        <div id="tab2" class="weui-tab__bd-item">
+
+
+        </div>
+    </div>
+</div>
+<script>
+    var MAX = 99, MIN = 0;
+    $('.weui-count__decrease').click(function (e) {
+        var $input = $(e.currentTarget).parent().find('.weui-count__number');
+        var number = parseInt($input.val() || "0") - 1;
+        if (number < MIN) {
+            number = MIN;
+        } else {
+            var index = $(this).attr("index");
+            var r = roots[index];
+            r.num--;
+            r.sum = r.num * r.core;
+            $("p[index=" + index + "]").text(r.sum);
+        }
+        $input.val(number);
+    })
+    $('.weui-count__increase').click(function (e) {
+        var $input = $(e.currentTarget).parent().find('.weui-count__number');
+        var number = parseInt($input.val() || "0") + 1;
+        if (number > MAX) {
+            number = MAX;
+        } else {
+            var index = $(this).attr("index");
+            var r = roots[index];
+            r.num++;
+            r.sum = r.num * r.core;
+            $("p[index=" + index + "]").text(r.sum);
+        }
+        $input.val(number);
+    })
+</script>
+</body>
+</html>

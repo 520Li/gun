@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一刻钟生活圈</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>-->
+    <link rel="stylesheet" href="/css/weui.min.css">
+    <link rel="stylesheet" href="/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery-weui.min.js"></script>
+
+
+    <style>
+        .weui-navbar__item {
+            position: initial !important;
+        }
+
+        .demos-header {
+            padding: 35px 0;
+        }
+
+        .demos-title {
+            text-align: center;
+            font-size: 25px;
+            color: #fff;
+            font-weight: 400;
+            margin: 0 15%;
+        }
+
+        .demos-header {
+            padding: 15px 0;
+            background-color: #46A532;
+        }
+    </style>
+
+    <script>
+        init();
+        function init() {
+            $.ajax({
+                url: "/wechat/third/home.do",
+                dataType: "json",
+                type: "post",
+                success: function (data) {
+                    if (data.flag) {
+                        var tab1 = "";
+                        var tab2 = "";
+                        var tab3 = "";
+                        var tab4 = "";
+                        var tab5 = "";
+                        var tab6 = "";
+                        var tab7 = "";
+                        var tab8 = "";
+                        var tab9 = "";
+                        $.each(data.data, function (index, obj) {
+                            var template = getTemplate('block', obj);
+                            /*if (obj.arIspath === '02') {//文章带图片
+                                template = getTemplate('block', obj);
+                            } else {
+                                template = getTemplate('none', obj);
+                            }*/
+                            tab1 += template;
+                            if (obj.homeType === 'CY') {
+                                tab2 += template;
+                            } else if (obj.homeType === 'WY') {
+                                tab3 += template;
+                            } else if (obj.homeType === 'XX') {
+                                tab4 += template;
+                            } else if (obj.homeType === 'SH') {
+                                tab5 += template;
+                            } else if (obj.homeType === 'YL') {
+                                tab6 += template;
+                            } else if (obj.homeType === 'JR') {
+                                tab7 += template;
+                            } else if (obj.homeType === 'JY') {
+                                tab8 += template;
+                            } else if (obj.homeType === 'ZW') {
+                                tab9 += template;
+                            }
+                        });
+                        fetchHtml(tab1, 'tab1', '暂无信息');
+                        fetchHtml(tab2, 'tab2', '暂无餐饮信息');
+                        fetchHtml(tab3, 'tab3', '暂无物业信息');
+                        fetchHtml(tab4, 'tab4', '暂无休闲信息');
+                        fetchHtml(tab5, 'tab5', '暂无生活信息');
+                        fetchHtml(tab6, 'tab6', '暂无医疗信息');
+                        fetchHtml(tab7, 'tab7', '暂无金融信息');
+                        fetchHtml(tab8, 'tab8', '暂无教育信息');
+                        fetchHtml(tab9, 'tab9', '暂无政务信息');
+                    } else {
+                        $.toast(data.msg, "forbidden");
+                    }
+                }
+            })
+        }
+
+
+        function getTemplate(style, obj) {
+            return "<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                "                <div style=\"display:" + style + "\" class=\"weui-media-box__hd\">\n" +
+                "                    <img style='width: 80px' class=\"weui-media-box__thumb\" src=\"" + obj.homePath + "\">\n" +
+                "                </div>\n" +
+                "                <div class=\"weui-media-box weui-media-box_text\">\n" +
+                "                    <h4 class=\"weui-media-box__title\">" + obj.homeName + "</h4>\n" +
+                "                            <p class=\"weui-media-box__desc\">地址：" + obj.homeLocal + "</p>\n" +
+                "                            <p class=\"weui-media-box__desc\">主营：" + obj.homeDetail + "</p>\n" +
+                "                            <p class=\"weui-media-box__desc\">电话：" + obj.homeTel + "</p>\n" +
+                /* "                    <ul class=\"weui-media-box__info\">\n" +
+                 "                        <li class=\"weui-media-box__info__meta\">" + obj.homeTime + "</li>\n" +
+                 "                        <li class=\"weui-media-box__info__meta\" style=\"position: fixed;right: 10px;\">" + obj.arOrg + "</li>\n" +
+                 "                    </ul>\n" +*/
+                "                </div>\n" +
+                "            </a>";
+        }
+
+        function fetchHtml(tab, id, text) {
+            if (tab !== '') {
+                $("#" + id).html(tab);
+            } else {
+                $("#" + id).html("<div class=\"weui-loadmore weui-loadmore_line\">\n" +
+                    "                <span class=\"weui-loadmore__tips\">" + text + "</span>\n" +
+                    "            </div>");
+            }
+        }
+
+
+    </script>
+</head>
+<body>
+<header class="demos-header">
+    <h1 class="demos-title">便利生活一点通</h1>
+</header>
+<div class="weui-tab">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            全部
+        </a>
+        <a class="weui-navbar__item" href="#tab2">
+            餐饮
+        </a>
+        <a class="weui-navbar__item" href="#tab3">
+            物业
+        </a>
+        <a class="weui-navbar__item" href="#tab4">
+            休闲
+        </a>
+        <a class="weui-navbar__item" href="#tab5">
+            生活
+        </a>
+        <a class="weui-navbar__item" href="#tab6">
+            医疗
+        </a>
+        <a class="weui-navbar__item" href="#tab7">
+            金融
+        </a>
+        <a class="weui-navbar__item" href="#tab8">
+            教育
+        </a>
+        <a class="weui-navbar__item" href="#tab9">
+            政务
+        </a>
+    </div>
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+        </div>
+        <div id="tab2" class="weui-tab__bd-item">
+        </div>
+        <div id="tab3" class="weui-tab__bd-item">
+        </div>
+        <div id="tab4" class="weui-tab__bd-item">
+        </div>
+        <div id="tab5" class="weui-tab__bd-item">
+        </div>
+        <div id="tab6" class="weui-tab__bd-item">
+        </div>
+        <div id="tab7" class="weui-tab__bd-item">
+        </div>
+        <div id="tab8" class="weui-tab__bd-item">
+        </div>
+        <div id="tab9" class="weui-tab__bd-item">
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

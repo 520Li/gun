@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.css">
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+
+    <style>
+        .weui-media-box_appmsg .weui-media-box__hd {
+            width: 80px;
+        }
+
+        .weui-media-box {
+            padding: 10px;
+        }
+    </style>
+
+    <script>
+        init();
+
+        function init() {
+            $.ajax({
+                url: "/wechat/first/article.do",
+                data: {type: "menu_01"},
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    if (data.flag) {
+                        var tab1 = "";
+                        var tab2 = "";
+                        var tab3 = "";
+                        $.each(data.data, function (index, obj) {
+                            var template;
+                            if (obj.arIspath === '02') {//文章带图片
+                                template = getTemplate('block', obj);
+                            } else {
+                                template = getTemplate('none', obj);
+                            }
+                            if (obj.arType === 'TZTG') {
+                                tab1 += template;
+                            } else if (obj.arType === 'SQJS') {
+                                tab2 += template;
+                            } else if (obj.arType === 'SQFC') {
+                                tab3 += template;
+                            }
+                        })
+                        fetchHtml(tab1, 'tab1', '暂无公告');
+                        fetchHtml(tab2, 'tab2', '暂无介绍');
+                        fetchHtml(tab3, 'tab3', '暂无文章');
+                    } else {
+                        $.toast(data.msg, "forbidden");
+                    }
+                }
+            })
+        }
+
+        function getTemplate(style, obj) {
+            return "<a href=\"/wechat/first/detail.do?arId="+ obj.arId +"\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                "                <div style=\"display:" + style + "\" class=\"weui-media-box__hd\">\n" +
+                "                    <img class=\"weui-media-box__thumb\" src=\""+ obj.arFirstpath +"\">\n" +
+                "                </div>\n" +
+                "                <div class=\"weui-media-box weui-media-box_text\">\n" +
+                "                    <h4 class=\"weui-media-box__title\">" + obj.arTitle + "</h4>\n" +
+                "                    <ul class=\"weui-media-box__info\">\n" +
+                "                        <li class=\"weui-media-box__info__meta\">" + obj.createTime + "</li>\n" +
+                "                        <li class=\"weui-media-box__info__meta\" style=\"position: fixed;right: 10px;\">" + obj.arOrg + "</li>\n" +
+                "                    </ul>\n" +
+                "                </div>\n" +
+                "            </a>";
+        }
+
+        function fetchHtml(tab, id, text) {
+            if (tab !== '') {
+                $("#" + id).html(tab);
+            } else {
+                $("#" + id).html("<div class=\"weui-loadmore weui-loadmore_line\">\n" +
+                    "                <span class=\"weui-loadmore__tips\">" + text + "</span>\n" +
+                    "            </div>");
+            }
+        }
+
+    </script>
+</head>
+<body>
+<div class="weui-tab">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            通知通告
+        </a>
+        <a class="weui-navbar__item" href="#tab2">
+            社区介绍
+        </a>
+        <a class="weui-navbar__item" href="#tab3">
+            社区风采
+        </a>
+    </div>
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+        </div>
+        <div id="tab2" class="weui-tab__bd-item">
+        </div>
+        <div id="tab3" class="weui-tab__bd-item">
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+</script>
+</html>

@@ -164,7 +164,7 @@ On to what's new…
 
 New languages:
 
-- Handlebars templates by [Robin Ward][]
+- Handlebars pages by [Robin Ward][]
 - Oracle Rules Language by [Jason Jacobson][]
 - F# by [Joans Follesø][]
 - AsciiDoc and Haml by [Dan Allen][]
@@ -723,7 +723,7 @@ Many thanks to you all!
 
 ## Version 3.1
 
-Three new languages are available: Django templates, SQL and Axapta. The latter
+Three new languages are available: Django pages, SQL and Axapta. The latter
 two are sent by [Dmitri Roudakov][1]. However I've almost entirely rewrote an
 SQL definition but I'd never started it be it from the ground up :-)
 

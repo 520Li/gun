@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lac.wechat.dao.VolunteerMapper">
+
+
+
+    <select id="selectByVoId" resultType="cn.lac.wechat.domain.Volunteer">
+        select
+          vo_id,
+          vo_name,
+          vo_tel,
+          vo_time,
+          vo_local,
+          vo_state,
+          vo_duration,
+          vo_path,
+          create_time,
+          update_time,
+          (case when EXISTS (select * from zly_volunteer_user where user_id = #{userId,jdbcType=VARCHAR} and volunteer_id = a.vo_id) then '01'
+          else '02' end) is_join
+        from zly_volunteer a
+    </select>
+</mapper>

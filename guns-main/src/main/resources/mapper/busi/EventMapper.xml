@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lac.wechat.dao.EventMapper">
+
+
+    <select id="getEventByQuery"  resultType="cn.lac.wechat.domain.Event">
+        select
+        event_id as eventId,
+        event_name as eventName,
+        event_type as eventType,
+        event_start as eventStart,
+        event_end as eventEnd,
+        event_local as eventLocal,
+        event_limit as eventLimit,
+        event_real as eventReal,
+        event_restart as eventRestart,
+        event_reend as eventReend,
+        event_text as eventText,
+        (case when event_end &gt; now() then '进行中'
+        when event_end &lt; now() then '已结束' else '已结束' end ) eventStatus,
+        event_state as eventState,
+        create_time as createTime,
+        update_time as updateTime
+        from zly_event a where 1=1
+        <if test="query == 2 ">
+            and event_end &gt; now()
+        </if>
+        <if test="query == 3 ">
+            and event_end &lt; now()
+        </if>
+        <if test="query == 4 ">
+            and event_limit = event_real
+        </if>
+        <if test="query == 5 ">
+            and EXISTS (select * from zly_event_user b where a.event_id = b.event_id and b.user_id = #{userId,jdbcType=VARCHAR})
+        </if>
+        order by event_start asc
+    </select>
+    <select id="selectByEventId" resultType="cn.lac.wechat.domain.Event">
+        select
+        event_id as eventId,
+        event_name as eventName,
+        event_type as eventType,
+        event_start as eventStart,
+        event_end as eventEnd,
+        event_local as eventLocal,
+        event_limit as eventLimit,
+        event_real as eventReal,
+        event_restart as eventRestart,
+        event_reend as eventReend,
+        event_text as eventText,
+        (case when event_end &gt; now() then '进行中'
+        when event_end &lt; now() then '已结束' else '已结束' end ) eventStatus,
+        (case when event_end &lt;= now() then '活动已结束'
+        when exists (select * from zly_event_user b where b.event_id = a.event_id and  user_id = #{userId,jdbcType=VARCHAR}) then '已报名'
+        when event_reend &lt;= now() then '报名已截止'
+        when event_reend &gt; now() and event_limit = event_real then '名额已满'
+         when event_reend &gt; now() then '线上报名'
+         end
+         ) eventState,
+        create_time as createTime,
+        update_time as updateTime
+        from zly_event a
+        where event_id = #{eventId,jdbcType=VARCHAR}
+    </select>
+    <!--
+    线上报名   报名已截止  活动已结束   名额已满
+        event_reend > now  线上报名
+        event_reend > now  && event_limit = event_real 名额已满
+        event_reend < now  报名已截止
+        event_end < now  活动已结束
+    -->
+</mapper>

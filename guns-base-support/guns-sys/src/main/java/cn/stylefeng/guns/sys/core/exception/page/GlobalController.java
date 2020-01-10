@@ -34,10 +34,10 @@ public class GlobalController {
      *
      * @author fengshuonan
      */
-    @RequestMapping(path = "/error")
+    /*@RequestMapping(path = "/error")
     public String errorPage() {
         return "/404.html";
-    }
+    }*/
 
     /**
      * 跳转到session超时页面

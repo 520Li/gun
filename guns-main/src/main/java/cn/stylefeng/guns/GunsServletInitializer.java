@@ -15,6 +15,7 @@
  */
 package cn.stylefeng.guns;
 
+import cn.GunsApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 

@@ -79,6 +79,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 登录接口放开过滤
                 .antMatchers("/login").permitAll()
 
+                //公众号接口过滤
+                .antMatchers("/wechat/**").permitAll()
+
                 // session登录失效之后的跳转
                 .antMatchers("/global/sessionError").permitAll()
 
@@ -123,7 +126,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         HttpMethod.GET,
                         "/assets/**",
                         "/favicon.ico",
-                        "/activiti-editor/**"
+                        "/activiti-editor/**",
+                        "/css/**",
+                        "/images/**",
+                        "/js/**"
                 );
 
     }

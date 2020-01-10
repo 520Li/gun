@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>活动详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.css">
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+
+    <style>
+        .demos-header {
+            padding: 25px 0;
+        }
+
+        .demos-title {
+            text-align: center;
+            font-size: 25px;
+            color: #3cc51f;
+            font-weight: 400;
+            margin: 0 15%;
+        }
+
+        .weui-form-preview__label {
+            font-weight: bolder;
+        }
+
+        .weui-form-preview__bd {
+            font-size: 1.1em;
+        }
+
+        .weui-media-box__desc {
+            font-size: 20px;
+        }
+    </style>
+    <script>
+        var flag = false;
+
+        $(document).on('click', '#report', function () {
+            if(flag){
+                return;
+            }
+            flag = true;
+
+            @if(session.login_user == null){
+                $.toast("请先登录！", "forbidden");
+                return;
+            @}
+
+            $.ajax({
+                url: "/wechat/second/report.do",
+                data: {eventId: '${event.eventId!}'},
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    if (data.flag) {
+                        $.toast(data.msg);
+                        window.location.href = "/wechat/second/eventDis.do?eventId=${event.eventId!}";
+                    } else {
+                        $.toast(data.msg, "forbidden");
+                    }
+                    flag = false;
+                }
+            })
+        })
+    </script>
+</head>
+
+<body>
+
+<header class="demos-header">
+    <h1 class="demos-title">${event.eventName!}</h1>
+</header>
+
+<div class="weui-form-preview">
+    <div class="weui-form-preview__bd">
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">活动时间</label>
+            <span class="weui-form-preview__value">${event.eventStart!,dateFormat="yyyy年MM月dd HH:mm"} </br>至  ${event.eventEnd!,dateFormat="yyyy年MM月dd HH:mm"}</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">活动地点</label>
+            <span class="weui-form-preview__value">${event.eventLocal!}</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">活动名额</label>
+            <span class="weui-form-preview__value">${event.eventLimit!}</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">已报名人数</label>
+            <span class="weui-form-preview__value">${event.eventReal!}</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">报名截止</label>
+            <span class="weui-form-preview__value">${event.eventReend!,dateFormat="yyyy年MM月dd HH:mm"}</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">活动详细</label>
+        </div>
+        <div class="weui-media-box__bd">
+            <p style="display: block;padding:10px" class="weui-media-box__desc">
+                ${event.eventText!}
+            </p>
+        </div>
+    </div>
+    <!--
+    线上报名   报名已截止  活动已结束   名额已满
+        event_reend > now  线上报名
+        event_reend > now  && event_limit = event_real 名额已满
+        event_reend < now  报名已截止
+        event_end < now  活动已结束
+    -->
+    <div class="weui-btn-area">
+        @ if(event.eventState! == '线上报名'){
+        <a id="report" class="weui-btn weui-btn_primary" href="javascript:void(0)">${event.eventState!}</a>
+        @ }else{
+        <a class="weui-btn weui-btn_primary" style="background-color: grey" href="javascript:void(0)">${event.eventState!}</a>
+        @}
+    </div>
+</div>
+
+
+</body>
+
+</html>

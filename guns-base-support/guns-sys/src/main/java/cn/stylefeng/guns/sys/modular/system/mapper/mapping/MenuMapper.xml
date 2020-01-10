@@ -275,7 +275,7 @@
         </foreach>
         )
         ) m3 ON m1.menu_id = m3.menu_id
-        where m1.menu_flag = 'Y'
+        where m1.menu_flag = 'Y' and m1.status = 'ENABLE'
         order by levels,m1.sort asc
     </select>
 

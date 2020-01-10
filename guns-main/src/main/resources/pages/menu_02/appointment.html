@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的预约</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.css">
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+
+    <script>
+        initAppoint();
+
+        //新增新预约
+        function appointment() {
+            @if(session.login_user == null){
+                $.toast("请先登录！", "forbidden");
+                return;
+            @}
+
+            var flag = true;
+            $("form").find("input,select,textarea").each(function () {
+                if ($(this).val().trim() === '') {
+                    var cnName = $(this).attr('cnName');
+                    $.alert(cnName + '不能为空');
+                    flag = false;
+                    return;
+                }
+            })
+
+            if (!flag) {
+                return;
+            }
+            $.ajax({
+                url: "/wechat/second/newAppoint.do",
+                data: $("form").serialize(),
+                dataType: "JSON",
+                type: "POST",
+                success: function (data) {
+                    if (data.flag) {
+                        $.toast(data.msg);
+                        $("form").get(0).reset();
+                        initAppoint();
+                    } else {
+                        $.toast(data.msg, "forbidden");
+                    }
+                }
+            })
+        }
+
+        function display(id) {
+            $.alert(id);
+        }
+
+        //更新预约列表
+        function initAppoint() {
+            $.ajax({
+                url: "/wechat/second/initAppoint.do",
+                dataType: "json",
+                type: "post",
+                success: function (data) {
+                    if (data.flag) {
+                        if (data.data.length > 0) {
+                            var html = "";
+                            $.each(data.data, function (index, obj) {
+                                var color = "";
+                                if (obj.applyStatus === '未确认') {
+                                    color = 'blue';
+                                } else if (obj.applyStatus === '已受理') {
+                                    color = 'green';
+                                } else if (obj.applyStatus === '已驳回') {
+                                    color = 'red';
+                                }
+                                html += "<div onclick='display('" + obj.appointId + "')' class=\"weui-panel\">\n" +
+                                    "                <div class=\"weui-panel__bd\">\n" +
+                                    "                    <div class=\"weui-media-box weui-media-box_text\">\n" +
+                                    "                        <h4 class=\"weui-media-box__title\">" + obj.appointTitle + "</h4>\n" +
+                                    "                        <p class=\"weui-media-box__desc\">" + obj.appointText + "</p>\n" +
+                                    "                        <ul class=\"weui-media-box__info\">\n" +
+                                    "                            <li class=\"weui-media-box__info__meta\">" + obj.createTime + "</li>\n" +
+                                    "                            <li class=\"weui-media-box__info__meta\" style='color:cornflowerblue;'>" + obj.serviceType + "</li>\n" +
+                                    "                            <li class=\"weui-media-box__info__meta weui-media-box__info__meta_extra\" style='color:" + color + ";'>" + obj.applyStatus + "</li>\n" +
+                                    "                        </ul>\n" +
+                                    "                    </div>\n" +
+                                    "                </div>\n" +
+                                    "            </div>";
+                            })
+                            $("#tab2").html(html);
+                        }
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<div class="weui-tab">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            新的预约
+        </a>
+        <a class="weui-navbar__item" href="#tab2">
+            历史预约
+        </a>
+    </div>
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <form>
+                <div class="weui-cells weui-cells_form">
+                    <div class="weui-cell weui-cell_select weui-cell_select-after">
+                        <div class="weui-cell__hd">
+                            <label for="" class="weui-label">服务类型：</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <select class="weui-select" cnName="服务类型" name="serviceType">
+                                <option value="1">民政服务</option>
+                                <option value="2">残联服务</option>
+                                <option value="3">计生服务</option>
+                                <option value="4">社保服务</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--<div class="weui-cell">
+                        <div class="weui-cell__hd"><label for="" class="weui-label">预约时间：</label></div>
+                        <div class="weui-cell__bd">
+                            <input cnName="预约时间" name="appointTime" class="weui-input" type="datetime-local"
+                                   value="" placeholder="请选择日期">
+                        </div>
+                    </div>-->
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label for="" class="weui-label">预约时间：</label></div>
+                        <div class="weui-cell__bd">
+                            <input cnName="预约时间" name="appointTime"
+                                   class="weui-input" id="years-monthes" type="text" value="" readonly="">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">预约电话：</label></div>
+                        <div class="weui-cell__bd">
+                            <input cnName="预约电话" name="appointIphone" class="weui-input" type="number"
+                                   pattern="[0-9]*" placeholder="请输入手机号">
+                        </div>
+                    </div>
+                    <div class="weui-cells__title">标题</div>
+                    <div class="weui-cells">
+                        <div class="weui-cell">
+                            <div class="weui-cell__bd">
+                                <input cnName="标题" name="appointTitle" class="weui-input" type="text"
+                                       placeholder="请输入标题">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="weui-cells__title">详细信息</div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            <textarea cnName="详细信息" name="appointText" class="weui-textarea" placeholder="请输入详细信息"
+                                      rows="5" maxlength="200"></textarea>
+                            <!--<div class="weui-textarea-counter"><span>0</span>/200</div>-->
+                        </div>
+                    </div>
+                    <div class="weui-btn-area">
+                        <a id="sign" class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="appointment()">发起预约</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+
+        <div id="tab2" class="weui-tab__bd-item">
+            <div class="weui-loadmore weui-loadmore_line">
+                <span class="weui-loadmore__tips">暂无数据</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#years-monthes").datetimePicker();
+</script>
+</body>
+</html>

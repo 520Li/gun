@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lac.wechat.dao.AppointMapper">
+
+    <select id="findAppointByUser" parameterType="java.lang.String" resultType="cn.lac.wechat.domain.Appoint">
+        select 
+             appoint_id as appointId,
+             (case service_type when '1' then '民政服务'
+             when '2' then '残联服务'
+             when '3' then '计生服务'
+             when '4' then '社保服务'
+             else '' end) serviceType,
+             appoint_time as appointTime,
+             appoint_iphone as appointIphone,
+             appoint_title as appointTitle,
+             appoint_text as appointText,
+             create_time as createTime,
+             update_time as updateTime,
+             (select user_name from zly_user b where b.user_id = a.appoint_user) appointUser,
+             (case apply_status when '01' then '未确认'
+             when '02' then '已受理'
+             when '03' then '已驳回'
+             else '' end) applyStatus,
+             apply_user as applyUser,
+             apply_text as applyText,
+             apply_time as applyTime,
+             apply_iphone as applyIphone
+         from zly_appoint a where appoint_user=#{userId}
+         order by create_time desc
+    </select>
+</mapper>

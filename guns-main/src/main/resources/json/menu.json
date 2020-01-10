@@ -1,0 +1,59 @@
+{
+  "button": [
+    {
+      "type": "view",
+      "name": "咱.社区",
+      "url": "%1$s/wechat/first/index.do"
+    },
+    {
+      "name": "办事指南",
+      "sub_button": [
+        {
+          "type": "view",
+          "name": "办事指南",
+          "url": "%1$s/wechat/second/guide.do"
+        },
+        {
+          "type": "view",
+          "name": "线上服务预约",
+          "url": "%1$s/wechat/second/appointment.do"
+        },
+        {
+          "type": "view",
+          "name": "线上活动报名",
+          "url": "%1$s/wechat/second/report.do"
+        }
+      ]
+    },
+    {
+      "name": "智慧生活",
+      "sub_button": [
+        {
+          "type": "view",
+          "name": "社区接诉即办",
+          "url": "%1$s/wechat/third/appeal.do"
+        },
+        {
+          "type": "view",
+          "name": "电子阅览",
+          "url": "%1$s/wechat/third/read.do"
+        },
+        {
+          "type": "view",
+          "name": "公益积分",
+          "url": "%1$s/wechat/third/benefit.do"
+        },
+        {
+          "type": "view",
+          "name": "一刻钟生活圈",
+          "url": "%1$s/wechat/third/home.do"
+        },
+        {
+          "type": "view",
+          "name": "志愿者招募",
+          "url": "%1$s/wechat/third/volunteer.do"
+        }
+      ]
+    }
+  ]
+}

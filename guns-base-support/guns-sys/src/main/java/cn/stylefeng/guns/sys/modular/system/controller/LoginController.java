@@ -21,6 +21,8 @@ import cn.stylefeng.guns.base.consts.ConstantsContext;
 import cn.stylefeng.guns.sys.core.auth.cache.SessionManager;
 import cn.stylefeng.guns.sys.core.exception.InvalidKaptchaException;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
+import cn.stylefeng.guns.sys.modular.vo.EncryptUtil;
+import cn.stylefeng.guns.sys.modular.vo.GetParam;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.core.reqres.response.SuccessResponseData;
@@ -28,15 +30,21 @@ import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
 import com.google.code.kaptcha.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 登录控制器
@@ -56,14 +64,25 @@ public class LoginController extends BaseController {
     @Autowired
     private SessionManager sessionManager;
 
+    @Value("${token}")
+    private String token;
+
     /**
      * 跳转到主页
      *
      * @author fengshuonan
      * @Date 2018/12/23 5:41 PM
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model) {
+    @GetMapping("/")
+    public String index(Model model, GetParam param, HttpServletResponse response) throws IOException {
+
+        //校验微信服务器
+        boolean flag = checkParam(param);
+        if (flag) {
+            response.getWriter().println(param.getEchostr());
+            return null;
+        }
+
 
         //判断用户是否登录
         if (LoginContextHolder.getContext().hasLogin()) {
@@ -89,7 +108,7 @@ public class LoginController extends BaseController {
      * @author fengshuonan
      * @Date 2018/12/23 5:41 PM
      */
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @GetMapping("/login")
     public String login() {
         if (LoginContextHolder.getContext().hasLogin()) {
             return REDIRECT + "/";
@@ -141,6 +160,19 @@ public class LoginController extends BaseController {
     public ResponseData logOut() {
         authService.logout();
         return new SuccessResponseData();
+    }
+
+
+    private boolean checkParam(GetParam param) {
+        try {
+            List<String> list = Arrays.asList(param.getTimestamp(), param.getNonce(), token);
+            list.sort(String::compareTo);
+            String result = list.stream().collect(Collectors.joining(""));
+            result = EncryptUtil.getSha1(result);
+            return result.equals(param.getSignature());
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }

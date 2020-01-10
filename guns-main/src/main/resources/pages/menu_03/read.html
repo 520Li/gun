@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>电子阅览</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.css">
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+
+    <style>
+        .weui-media-box_appmsg .weui-media-box__thumb {
+            height: 100%;
+        }
+
+        .weui-media-box_appmsg .weui-media-box__hd {
+            width: 80px;
+        }
+
+        .weui-media-box__title {
+            font-weight: bolder;
+            color: #7070CC;
+        }
+
+        .weui-media-box__info__meta {
+            font-weight: bolder;
+        }
+        .demos-header {
+            padding: 35px 0;
+        }
+        .demos-title {
+            text-align: center;
+            font-size: 34px;
+            color: #fff;
+            font-weight: 400;
+            margin: 0 15%;
+        }
+    </style>
+
+    <script>
+        init();
+
+        function init() {
+            $.ajax({
+                url: "/wechat/first/article.do",
+                data: {type: "menu_03"},
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    if (data.flag) {
+                        var tab1 = "";
+                        $.each(data.data, function (index, obj) {
+                            var  template = getTemplate(obj);
+                            if (obj.arType === 'DZYL') {
+                                tab1 += template;
+                            }
+                        })
+                        fetchHtml(tab1, 'tab1', '暂无图书');
+                    } else {
+                        $.toast(data.msg, "forbidden");
+                    }
+                }
+            })
+        }
+
+        function getTemplate(obj) {
+            return " <a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                "            <div class=\"weui-media-box__hd\">\n" +
+                "                <img class=\"weui-media-box__thumb\" src=\""+ obj.arFirstpath +"\">\n" +
+                "            </div>\n" +
+                "            <div class=\"weui-media-box__bd\">\n" +
+                "                <h4 class=\"weui-media-box__title\">" + obj.arLowType + "</h4>\n" +
+                "                <p class=\"weui-media-box__desc\">"+ obj.arText +"</p>\n" +
+                "                <ul class=\"weui-media-box__info\">\n" +
+                "                    <li class=\"weui-media-box__info__meta\" style=\"color: #E2705D;\">"+ obj.arMajorType +"</li>\n" +
+                "                    <li class=\"weui-media-box__info__meta weui-media-box__info__meta_extra\">"+ obj.createTime +"</li>\n" +
+                "                </ul>\n" +
+                "            </div>\n" +
+                "        </a>";
+        }
+
+        function fetchHtml(tab, id, text) {
+            if (tab !== '') {
+                $("#" + id).html(tab);
+            } else {
+                $("#" + id).html("<div class=\"weui-loadmore weui-loadmore_line\">\n" +
+                    "                <span class=\"weui-loadmore__tips\">" + text + "</span>\n" +
+                    "            </div>");
+            }
+        }
+    </script>
+</head>
+<body>
+<header class="demos-header" style="background-image: url(/images/book.png)">
+    <h1 class="demos-title" >电子图书</h1>
+</header>
+<div class="weui-panel weui-panel_access">
+    <div id="tab1" class="weui-panel__bd">
+    </div>
+</div>
+
+</body>
+</html>

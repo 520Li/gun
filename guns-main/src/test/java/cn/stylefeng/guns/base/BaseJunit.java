@@ -1,6 +1,6 @@
 package cn.stylefeng.guns.base;
 
-import cn.stylefeng.guns.GunsApplication;
+import cn.GunsApplication;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

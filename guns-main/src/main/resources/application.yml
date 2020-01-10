@@ -1,29 +1,94 @@
 server:
-  port: 80
+  port: 3000
   max-http-header-size: 10240
-
-beetl:
-  resource-auto-check: true         #热加载beetl模板，开发时候用
-
+  connection-timeout: 180000
+# Mysql数据库
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
+    username: root
+    password: root
+    filters: wall,mergeStat
+
+    #文件上传
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0
+      location:
+      max-file-size: 10MB
+      max-request-size: 100MB
+      resolve-lazily: false
   profiles:
     active: @spring.active@
   mvc:
     view:
       prefix: /pages
-  servlet:
-    multipart:
-      max-request-size: 100MB
-      max-file-size: 100MB
   jta:
     atomikos:
       properties:
         max-actives: -1
 
-mybatis-plus:
-  typeAliasesPackage: cn.stylefeng.guns.modular.system.model
-  mapper-locations:
-    - classpath*:cn/stylefeng/guns/**/mapping/*.xml
+
+
+
+beetl:
+  resource-auto-check: true         #热加载beetl模板，开发时候用
+  suffix: html                      #beetl渲染html页面
+
+
 
 log:
   path: _app_logs
+
+
+
+#--------------------        mybatis-plus  start    ---------------------------#
+#mybatis-plus配置
+mybatis-plus:
+#  typeAliasesPackage: cn.lac.wechat.domain
+  mapper-locations:
+      - classpath:mapper/**/*Mapper.xml
+      - classpath*:cn/stylefeng/guns/**/mapping/*.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl       # 将执行的sql打印出来
+
+#mybatis-plus.global-config.db-config.id-type=uuid
+#驼峰下划线转换
+#mybatis-plus.global-config.db-config.column-like=true
+#mybatis-plus.global-config.db-config.table-underline=true
+#mybatis-plus.configuration.map-underscore-to-camel-case=true
+#--------------------        mybatis-plus    end  ---------------------------#
+
+
+
+
+
+
+
+#------------------------    微信配置  start  ----------------------------#
+token: lac
+appID: wx43c8ba348fe9fff8
+#appID=wxa08c26a370f7408e
+appsecret: 20505ca2f38bf4e74a592b52adf8967d
+#appsecret=17c0da400993f77a8daea281b672d05c
+prefix: https://api.weixin.qq.com/cgi-bin/
+## 获取access_token
+access_token_url: ${prefix}token?grant_type=client_credential&appid=${appID}&secret=${appsecret}
+## 获取jsapi_ticket
+jsapi_ticket_url: ${prefix}ticket/getticket?access_token=%s&type=jsapi
+## 创建菜单
+getMenu: ${prefix}menu/create?access_token=%s
+## 删除菜单
+delMenu: ${prefix}menu/delete?access_token=%s
+## 域名
+url: http://57c834fe.ngrok.io
+## 静默授权，获取code
+getCode: https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appID}&redirect_uri=${url}/wechat/login&response_type=code&scope=snsapi_base&state=%s
+## 网页授权 获取用户openid
+getOpenId: https://api.weixin.qq.com/sns/oauth2/access_token?appid=${appID}&secret=${appsecret}&code=%s&grant_type=authorization_code
+
+
+#------------------------    微信配置  end  ----------------------------#
+

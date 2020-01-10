@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>社区接诉即办</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.css">
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+    <style>
+        .weui-media-box__info__meta {
+            padding-right: 1em;
+            font-weight: bold;
+        }
+
+        .weui-media-box__info__meta_extra {
+            padding-left: 1em;
+        }
+    </style>
+    <script>
+        var paths = [];
+        initMyAppeal();
+
+        //图片上传
+        function sh() {
+            /*$.showLoading("文件上传中");*/
+
+            var file = $("#upload").get(0).files[0];
+            if (!file) {
+                return;
+            }
+            console.log(file.size);
+            if (file.size > 1024 * 1024) {
+                $.toast("图片大小不能超过1M", "forbidden");
+                return;
+            }
+            var formdata = new FormData();
+            formdata.append('file', file);
+
+            $.ajax({
+                url: "/wechat/file.do?path=appeal",
+                type: 'POST',
+                data: formdata,
+                dataType: 'JSON',
+                processData: false,
+                contentType: false,
+                async: false,
+                success: function (data) {
+                    /*$.hideLoading();*/
+                    if (data.flag) {
+                        var html = "<li onclick=\"imgBtn(this)\" content='" + data.data + "' class=\"weui-uploader__file\" style=\"background-image:url(" + data.data + ")\"></li>";
+                        $("#uploaderFiles").append(html);
+                        paths.push(data.data);
+                        $("input[name=appealPath]").val(paths.join(","));
+                        $.toast(data.msg);
+                    } else {
+                        $.toast(data.msg, "forbidden");
+                    }
+
+                }
+            })
+        };
+
+        //操作图片
+        function imgBtn(li) {
+            var $li = $(li);
+            $.actions({
+                actions: [{
+                    text: "放大",
+                    className: "color-primary",
+                    onClick: function () {
+                        $("#more span").css("background-image", "url(" + $li.attr("content") + ")");
+                        $("#more").show();
+                    }
+                }, {
+                    text: "删除",
+                    className: "color-primary",
+                    onClick: function () {
+                        $li.remove();
+                        paths.splice($li.index(), 1);
+                        $("input[name=appealPath]").val(paths.join(","));
+                    }
+                }]
+            });
+        }
+
+        //提交举报信息
+        function appeal() {
+            @if (session.login_user == null) {
+                $.toast("请先登录！", "forbidden");
+                return;
+            @}
+
+            var flag = true;
+            $("form").find("input,select,textarea").each(function () {
+                if ($(this).val().trim() === '') {
+                    var cnName = $(this).attr('cnName');
+                    $.alert(cnName + '不能为空');
+                    flag = false;
+                    return;
+                }
+            })
+
+            if (!flag) {
+                return;
+            }
+
+            $.ajax({
+                url: "/wechat/third/appeal.do",
+                data: $("form").serialize(),
+                dataType: "json",
+                type: "post",
+                success: function (data) {
+                    if (data.flag) {
+                        $("form").get(0).reset();
+                        initMyAppeal();
+                        paths = [];
+                        $("#uploaderFiles").html("");
+                        $.toast(data.msg);
+                    } else {
+                        $.toast(data.msg, "forbidden");
+                    }
+                }
+            })
+        }
+
+        function initMyAppeal() {
+
+            $.ajax({
+                url: "/wechat/third/appealList.do",
+                dataType: "json",
+                type: "post",
+                success: function (data) {
+                    if (data.flag) {
+                        var html = "";
+                        if (data.data.length > 0) {
+
+                            $.each(data.data, function (index, obj) {
+                                var acceptor = "无";
+                                if(obj.acceptorUser){
+                                    acceptor = obj.acceptorUser;
+                                }
+                                html += "<div class=\"weui-panel__bd\">\n" +
+                                    "                <div class=\"weui-media-box weui-media-box_text\">\n" +
+                                    "                    <h4 class=\"weui-media-box__title\">" + obj.appealType + "</h4>\n" +
+                                    "                    <p class=\"weui-media-box__desc\">" + obj.appealText + "</p>\n" +
+                                    "                    <ul class=\"weui-media-box__info\">\n" +
+                                    "                        <li class=\"weui-media-box__info__meta\">" + obj.appealDegree + "</li>\n" +
+                                    "                        <li class=\"weui-media-box__info__meta weui-media-box__info__meta_extra\">" + obj.createTime + "</li>\n" +
+                                    "                    </ul>\n" +
+                                    "                    <ul class=\"weui-media-box__info\">\n" +
+                                    "                         <li class=\"weui-media-box__info__meta\">受理人:" + acceptor + "</li>\n" +
+                                    "                        <li class=\"weui-media-box__info__meta weui-media-box__info__meta_extra\"  onclick=\"display('" + obj.appealId + "')\">查看受理情况</li>\n" +
+                                    "                    </ul>\n" +
+                                    "                </div>\n" +
+                                    "            </div>";
+                            })
+
+                        } else {
+                            html += " <div class=\"weui-loadmore weui-loadmore_line\">\n" +
+                                "                <span class=\"weui-loadmore__tips\">暂无信息</span>\n" +
+                                "            </div>";
+                        }
+                        $("#tab2").html(html);
+                    } else {
+                        $.toast(data.msg, "forbidden");
+                    }
+                }
+            })
+        }
+
+        //查看举报受理情况
+        function display(appealId) {
+            $.alert("待开发。。");
+        }
+    </script>
+</head>
+<body>
+<div class="weui-tab">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            事件举报
+        </a>
+        <a class="weui-navbar__item" href="#tab2">
+            我的举报
+        </a>
+    </div>
+
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <form>
+                <div class="weui-cells weui-cells_form">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">举报人：</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" cnName="举报人" type="text"
+                                   value="${session.login_user.userName!'张建国'}"
+                                   disabled="disabled">
+                        </div>
+                    </div>
+                    <div class="weui-cell weui-cell_select weui-cell_select-after">
+                        <div class="weui-cell__hd">
+                            <label for="" class="weui-label">事件大类：</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <select class="weui-select" cnName="事件大类" name="appealType">
+                                <option value="消防隐患">消防隐患</option>
+                                <option value="消防隐患">消防隐患</option>
+                                <option value="消防隐患">消防隐患</option>
+                                <option value="消防隐患">消防隐患</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">事件地址：</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" cnName="事件地址" type="text" name="appealLocal" placeholder="请输入地址">
+                        </div>
+                    </div>
+                    <!-- <div class="weui-cell">
+                         <div class="weui-cell__hd"><label for="" class="weui-label">举报时间：</label></div>
+                         <div class="weui-cell__bd">
+                             <input cnName="预约时间" name="appointTime" class="weui-input" type="datetime-local"
+                                    value="" placeholder="请选择日期">
+                         </div>
+                     </div>-->
+                    <div class="weui-cell weui-cell_select weui-cell_select-after">
+                        <div class="weui-cell__hd">
+                            <label for="" class="weui-label">紧急程度：</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <select class="weui-select" cnName="紧急程度" name="appealDegree">
+                                <option value="非常紧急">非常紧急</option>
+                                <option value="非常紧急">非常紧急</option>
+                                <option value="非常紧急">非常紧急</option>
+                                <option value="非常紧急">非常紧急</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="weui-cells__title" style="font-weight: bold">事件详细描述：</div>
+                    <div class="weui-cells">
+                        <div class="weui-cell">
+                            <div class="weui-cell__bd">
+                            <textarea cnName="描述" name="appealText" class="weui-textarea" placeholder="请输入描述"
+                                      rows="5" maxlength="200"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="weui-cells__title" style="font-weight: bold">拍照取证</div>
+                    <div class="weui-cells weui-cells_form">
+                        <div class="weui-cell">
+                            <div class="weui-cell__bd">
+                                <div class="weui-uploader">
+                                    <!-- <div class="weui-uploader__hd">
+                                         <p class="weui-uploader__title">图片上传</p>
+                                         <div class="weui-uploader__info">0/2</div>
+                                     </div>-->
+                                    <div class="weui-uploader__bd">
+                                        <ul class="weui-uploader__files" id="uploaderFiles">
+                                            <!--<li class="weui-uploader__file"
+                                                style="background-image:url(./images/pic_160.png)"></li>
+                                            <li class="weui-uploader__file"
+                                                style="background-image:url(./images/pic_160.png)"></li>
+                                            <li class="weui-uploader__file"
+                                                style="background-image:url(./images/pic_160.png)"></li>
+                                            <li class="weui-uploader__file weui-uploader__file_status"
+                                                style="background-image:url(./images/pic_160.png)">
+                                                <div class="weui-uploader__file-content">
+                                                    <i class="weui-icon-warn"></i>
+                                                </div>
+                                            </li>
+                                            <li class="weui-uploader__file weui-uploader__file_status"
+                                                style="background-image:url(./images/pic_160.png)">
+                                                <div class="weui-uploader__file-content">50%</div>
+                                            </li>-->
+                                        </ul>
+                                        <input cnName="拍照取证" type="text" style="display: none" name="appealPath">
+                                        <div class="weui-uploader__input-box">
+                                            <input onchange="sh()" id="upload" class="weui-uploader__input" type="file"
+                                                   accept="image/*" multiple="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="weui-btn-area">
+                        <a id="appeal"
+                           class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="appeal()">举报</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div id="tab2" class="weui-tab__bd-item">
+            <!--<div class="weui-loadmore weui-loadmore_line">
+                <span class="weui-loadmore__tips">暂无数据</span>
+            </div>-->
+            <!--<div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text">
+                    <h4 class="weui-media-box__title"></h4>
+                    <p class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
+                    <ul class="weui-media-box__info">
+                        <li class="weui-media-box__info__meta">非常紧急</li>
+                        <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">2019-10-10</li>
+                    </ul>
+                    <ul class="weui-media-box__info">
+                         <li class="weui-media-box__info__meta">受理人：张建国</li>
+                        <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">查看受理情况</li>
+                    </ul>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</div>
+
+<div onclick="$(this).hide()" id="more" class="weui-gallery" style="display: none">
+    <span class="weui-gallery__img" style=""></span>
+    <!--<div class="weui-gallery__opr">
+        <a href="javascript:" class="weui-gallery__del">
+            <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+        </a>
+    </div>-->
+</div>
+</body>
+</html>
