@@ -1,7 +1,7 @@
 package cn.lac.wechat.service;
 
 import cn.lac.wechat.domain.Volunteer;
-import cn.lac.wechat.vo.Result;
+import cn.lac.wechat.wx.Result;
 
 import java.util.List;
 

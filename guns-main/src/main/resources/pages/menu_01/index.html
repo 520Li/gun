@@ -31,7 +31,7 @@
                 dataType: "json",
                 type: "POST",
                 success: function (data) {
-                    if (data.flag) {
+                    if (data.code === 0) {
                         var tab1 = "";
                         var tab2 = "";
                         var tab3 = "";
@@ -61,9 +61,9 @@
         }
 
         function getTemplate(style, obj) {
-            return "<a href=\"/wechat/first/detail.do?arId="+ obj.arId +"\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+            return "<a href=\"/wechat/first/detail.do?arId=" + obj.arId + "\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
                 "                <div style=\"display:" + style + "\" class=\"weui-media-box__hd\">\n" +
-                "                    <img class=\"weui-media-box__thumb\" src=\""+ obj.arFirstpath +"\">\n" +
+                "                    <img class=\"weui-media-box__thumb\" src=\"" + obj.arFirstpath + "\">\n" +
                 "                </div>\n" +
                 "                <div class=\"weui-media-box weui-media-box_text\">\n" +
                 "                    <h4 class=\"weui-media-box__title\">" + obj.arTitle + "</h4>\n" +

@@ -81,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 //公众号接口过滤
                 .antMatchers("/wechat/**").permitAll()
-
+                .antMatchers("/images/**").permitAll()
                 // session登录失效之后的跳转
                 .antMatchers("/global/sessionError").permitAll()
 
@@ -127,9 +127,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/assets/**",
                         "/favicon.ico",
                         "/activiti-editor/**",
-                        "/css/**",
-                        "/images/**",
-                        "/js/**"
+                        "/static/css/**",
+                        "/static/images/**",
+                        "/static/js/**"
                 );
 
     }

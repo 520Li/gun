@@ -4,8 +4,8 @@ import cn.lac.wechat.service.ApiService;
 import cn.lac.wechat.utils.EncryptUtil;
 import cn.lac.wechat.utils.FastJsonUtil;
 import cn.lac.wechat.utils.HttpClientUtil;
-import cn.lac.wechat.vo.AccessToken;
-import cn.lac.wechat.vo.JsapiTicket;
+import cn.lac.wechat.wx.AccessToken;
+import cn.lac.wechat.wx.JsapiTicket;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

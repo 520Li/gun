@@ -4,7 +4,7 @@ import cn.lac.wechat.domain.Appeal;
 import cn.lac.wechat.domain.Appoint;
 import cn.lac.wechat.domain.Event;
 import cn.lac.wechat.domain.User;
-import cn.lac.wechat.vo.Result;
+import cn.lac.wechat.wx.Result;
 
 import java.util.List;
 

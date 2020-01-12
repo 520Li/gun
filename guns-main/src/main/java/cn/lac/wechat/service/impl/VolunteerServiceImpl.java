@@ -7,7 +7,7 @@ import cn.lac.wechat.domain.User;
 import cn.lac.wechat.domain.Volunteer;
 import cn.lac.wechat.domain.VolunteerUser;
 import cn.lac.wechat.service.VolunteerService;
-import cn.lac.wechat.vo.Result;
+import cn.lac.wechat.wx.Result;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

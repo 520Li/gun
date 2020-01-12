@@ -1,7 +1,7 @@
 package cn.lac.wechat.service;
 
-import cn.lac.wechat.vo.AccessToken;
-import cn.lac.wechat.vo.JsapiTicket;
+import cn.lac.wechat.wx.AccessToken;
+import cn.lac.wechat.wx.JsapiTicket;
 
 import java.util.Map;
 

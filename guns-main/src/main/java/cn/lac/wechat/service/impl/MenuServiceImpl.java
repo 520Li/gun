@@ -4,15 +4,12 @@ package cn.lac.wechat.service.impl;
 import cn.lac.wechat.service.ApiService;
 import cn.lac.wechat.service.MenuService;
 import cn.lac.wechat.utils.HttpClientUtil;
-import cn.lac.wechat.vo.AccessToken;
+import cn.lac.wechat.wx.AccessToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;

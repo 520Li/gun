@@ -68,8 +68,8 @@ public class MvcConfigurer implements WebMvcConfigurer {
     //配置静态资源映射
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        //registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
-        //registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
+        registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
+        registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
     }
 
     //跨域访问配置

@@ -2,11 +2,14 @@ package cn.lac.wechat.controller;
 
 import cn.lac.wechat.domain.Appeal;
 import cn.lac.wechat.domain.Appoint;
+import cn.lac.wechat.domain.Article;
 import cn.lac.wechat.domain.User;
 import cn.lac.wechat.service.*;
 import cn.lac.wechat.utils.SendMessageUtil;
-import cn.lac.wechat.vo.Message;
-import cn.lac.wechat.vo.Result;
+import cn.lac.wechat.vo.PageResult;
+import cn.lac.wechat.vo.QueryVo;
+import cn.lac.wechat.wx.Message;
+import cn.lac.wechat.wx.Result;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
@@ -51,7 +54,7 @@ public class WechatController {
 
 
     /**
-     * 实名注册页面
+     * 跳转实名注册页面
      *
      * @return
      */
@@ -177,7 +180,7 @@ public class WechatController {
     }
 
     /**
-     * 预约界面
+     * 跳转预约界面
      *
      * @param request
      * @return
@@ -237,13 +240,13 @@ public class WechatController {
     /**
      * 获取文章列表
      *
-     * @param type
+     * @param
      * @return
      */
     @PostMapping("/first/article.do")
     @ResponseBody
-    public Result article(String type) {
-        return new Result(true, "查询成功！", articleService.getList(type));
+    public PageResult<Article> article(QueryVo vo) {
+        return articleService.getList(vo);
     }
 
 
@@ -424,7 +427,7 @@ public class WechatController {
      */
     @GetMapping("/third/detail.do")
     public String detail(String voId, ModelMap map) {
-        map.put("vo", volunteerService.details(voId));
+        map.put("wx", volunteerService.details(voId));
         return "/menu_03/volunteer_detail.html";
     }
 

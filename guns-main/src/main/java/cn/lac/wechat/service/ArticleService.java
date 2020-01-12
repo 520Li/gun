@@ -1,6 +1,8 @@
 package cn.lac.wechat.service;
 
 import cn.lac.wechat.domain.Article;
+import cn.lac.wechat.vo.PageResult;
+import cn.lac.wechat.vo.QueryVo;
 
 import java.util.List;
 
@@ -14,12 +16,12 @@ import java.util.List;
 public interface ArticleService {
 
     /**
-     * 根据菜单类别获取文章
-     *
-     * @param menu
-     * @return
+     * 获取文章列表
      */
-    List<Article> getList(String menu);
+    PageResult<Article> getList(QueryVo vo);
 
+    /**
+     * 文章详细
+     */
     Article getById(String arId);
 }

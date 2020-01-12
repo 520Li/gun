@@ -3,7 +3,7 @@ package cn.lac.wechat.service.impl;
 import cn.lac.wechat.dao.*;
 import cn.lac.wechat.domain.*;
 import cn.lac.wechat.service.UserService;
-import cn.lac.wechat.vo.Result;
+import cn.lac.wechat.wx.Result;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

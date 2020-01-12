@@ -7,7 +7,7 @@ import cn.lac.wechat.domain.Gift;
 import cn.lac.wechat.domain.GiftLog;
 import cn.lac.wechat.domain.User;
 import cn.lac.wechat.service.GiftService;
-import cn.lac.wechat.vo.Result;
+import cn.lac.wechat.wx.Result;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

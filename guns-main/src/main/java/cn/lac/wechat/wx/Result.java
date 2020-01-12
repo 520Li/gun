@@ -1,4 +1,4 @@
-package cn.lac.wechat.vo;
+package cn.lac.wechat.wx;
 
 /**
  * @author
