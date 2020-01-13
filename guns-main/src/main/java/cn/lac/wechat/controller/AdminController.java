@@ -2,11 +2,14 @@ package cn.lac.wechat.controller;
 
 import cn.lac.wechat.domain.Article;
 import cn.lac.wechat.service.ArticleService;
+import cn.lac.wechat.vo.LayerVo;
 import cn.lac.wechat.vo.PageResult;
 import cn.lac.wechat.vo.QueryVo;
+import cn.lac.wechat.wx.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +43,7 @@ public class AdminController {
      */
     @GetMapping("/index/list")
     @ResponseBody
-    public PageResult<Article> list(QueryVo vo) {
+    public LayerVo list(QueryVo vo) {
         return articleService.getList(vo);
     }
 
@@ -56,7 +59,8 @@ public class AdminController {
      * 跳转文章编辑
      */
     @GetMapping("/index/index_edit")
-    public String index_edit() {
+    public String index_edit(String arId, ModelMap map) {
+        map.put("article", articleService.getById(arId));
         return "/admin/index/index_edit.html";
     }
 
@@ -66,15 +70,18 @@ public class AdminController {
      */
     @PostMapping("/index/add")
     @ResponseBody
-    public Object indexAdd() {
-        return null;
+    public Result indexAdd(Article article) {
+        articleService.insert(article);
+        return new Result(true,"发布成功！");
     }
+
     /**
      * 删除文章
      */
-    @PostMapping("/index/remove")
+    @PostMapping("/index/delete")
     @ResponseBody
-    public Object indexRemove() {
-        return null;
+    public Object indexRemove(String arId) {
+        articleService.deleteById(arId);
+        return new Result(true, "删除成功！");
     }
 }

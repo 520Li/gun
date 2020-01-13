@@ -18,8 +18,8 @@ public class QueryVo {
     /**
      * @version 1.0
      */
-    private long page = 1;
-    private long limit = 10;
+    private Integer page = 1;
+    private Integer limit = 10;
     private String clazz;
     private Map<String, Object> map = new HashMap<>();
 
@@ -27,9 +27,17 @@ public class QueryVo {
     /**
      * wechat
      */
+    private String type;//菜单分类
     private String arType; //文章板块分类
     private String arTitle;//文章标题
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getArType() {
         return arType;
@@ -47,19 +55,19 @@ public class QueryVo {
         this.arTitle = arTitle;
     }
 
-    public long getPage() {
+    public Integer getPage() {
         return page;
     }
 
-    public void setPage(long page) {
+    public void setPage(Integer page) {
         this.page = page;
     }
 
-    public long getLimit() {
+    public Integer getLimit() {
         return limit;
     }
 
-    public void setLimit(long limit) {
+    public void setLimit(Integer limit) {
         this.limit = limit;
     }
 

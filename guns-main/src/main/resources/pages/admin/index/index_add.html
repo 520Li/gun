@@ -1,10 +1,169 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+@layout("/common/_form.html",{js:["/js/admin/index/index_add.js"]}){
+<div style="width: 58%;float: left">
+    <form class="layui-form" id="roleForm" lay-filter="roleForm">
+        <div class="layui-fluid" style="padding-bottom: 75px;">
+            <div class="layui-card" style="height: 750px;">
+                <div class="layui-card-header">基本信息</div>
+                <div class="layui-card-body">
+                    <div class="layui-form-item layui-row">
+                        <input name="roleId" type="hidden"/>
+                        <div class="layui-inline layui-col-md12">
+                            <label class="layui-form-label">文章标题<span style="color: red;">*</span></label>
+                            <div class="layui-input-block">
+                                <input id="arTitle" oninput="ct(this)" name="arTitle" placeholder="请输入文章标题" type="text" class="layui-input"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-col-md12">
+                            <label class="layui-form-label">文章板块<span style="color: red;">*</span></label>
+                            <div class="layui-input-block">
+                                <select id="arType" name="arType" type="text" class="layui-input"
+                                        lay-verify="required" required autocomplete="off">
+                                    <option value="TZTG">通知通告</option>
+                                    <option value="SQJS">社区介绍</option>
+                                    <option value="SQFC">社区风采</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="editor">
+                            <p>请输入文章内容</p>
+                        </div>
+                        <textarea id="arText" name="arText" style="display: none;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group-bottom text-center" style="z-index: 10100">
+            <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+            <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+        </div>
+    </form>
+</div>
+<div class="device-col">
+    <div class="device" style="" id="gridInDevice">
+        <div class="status-bar"></div>
+        <div class="window" id="window">
+            <div class="weui-form-preview">
+                <div class="weui-panel__bd">
+                    <div class="weui-media-box weui-media-box_text">
+                        <h4 id="title2" class="weui-media-box__title">请输入标题</h4>
+                        <ul class="weui-media-box__info">
+                            <li class="weui-media-box__info__meta">2020年01月01 00:00</li>
+                            <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">紫萝园社区</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="text1" class="weui-form-preview__bd" style="text-align: left">
 
-</body>
-</html>
+                </div>
+            </div>
+
+        </div>
+        <div id="qrcode-btn"></div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+<script type="text/javascript" src="/js/wangEditor.min.js"></script>
+<script type="text/javascript">
+    function ct(that){
+        var $this = $(that);
+        var text = $this.val();
+        var $text = $("#title2");
+        if (text === '') $text.text("请输入标题");
+        else $text.text(text);
+    }
+
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+    editor.customConfig.onchange = function (html) {
+        $('#text1').html(html);
+        $("#arText").val(html);
+    };
+    editor.create();
+    $(".w-e-text-container").css('height','495px');
+    $('#text1').html(editor.txt.html());
+
+
+</script>
+<style>
+
+    .layui-input-block {
+        z-index: 99999;
+    }
+
+    .weui-form-preview__bd {
+        font-size: 0.8em;
+    }
+
+    .device-col {
+        float: right;
+        width: 440px;
+    }
+
+    .device-fixed, .menu-fixed {
+        position: fixed;
+    }
+
+    .device {
+        background-image: url(http://www.jqweui.cn/assets/img/device-sprite.png);
+        background-repeat: no-repeat;
+        width: 395px;
+        height: 813px;
+        background-position: -395px 0;
+        background-size: 300%;
+        margin-left: 20px;
+        position: relative;
+    }
+
+    .status-bar {
+        height: 20px;
+        width: 320px;
+        background: url(http://www.jqweui.cn/assets/img/status-bar.png);
+        background-repeat: no-repeat;
+        background-size: 100%;
+        top: 117px;
+        position: absolute;
+        z-index: 99;
+        left: 37px;
+    }
+
+    .window {
+        position: absolute;
+        top: 137px;
+        left: 37px;
+        width: 321px;
+        height: 549px;
+        overflow: hidden;
+        font-size: .85rem;
+        line-height: 1.05rem;
+        background: #fbfbfb;
+        overflow-y: auto;
+    }
+
+    #qrcode-btn {
+        width: 67px;
+        height: 68px;
+        bottom: 39px;
+        position: absolute;
+        left: 50%;
+        margin-left: -33.5px;
+        cursor: pointer;
+        background-image: url(http://www.jqweui.cn/assets/img/home-btn.png);
+        background-size: 100%;
+        background-repeat: no-repeat;
+        animation: spin 4s linear infinite;
+        transform-origin: 50% 50%;
+    }
+
+    .w-e-toolbar .w-e-menu {
+        position: relative;
+        text-align: center;
+        padding: 5px 5px;
+        cursor: pointer;
+    }
+</style>
+@}

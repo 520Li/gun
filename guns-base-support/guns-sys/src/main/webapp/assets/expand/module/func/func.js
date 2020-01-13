@@ -57,9 +57,9 @@ layui.define(['jquery', 'layer', 'admin', 'table', 'ax', 'form'], function (expo
         open: function (param) {
 
             //宽度计算
-            var width = '1000px';
+            var width = '1100px';
             if (param.width) {
-                width = param.width;
+                width = param.width +'px';
             }
 
             //计算高度

@@ -34,104 +34,19 @@
 </div>
 
 
-<!--<div class="device-col">
-    <div class="device" style="" id="gridInDevice">
-        <div class="status-bar"></div>
-        <div class="window" id="window">
-            <div class="weui-form-preview">
-                <div class="weui-panel__bd">
-                    <div class="weui-media-box weui-media-box_text">
-                        <h4 class="weui-media-box__title">标题</h4>
-                        <ul class="weui-media-box__info">
-                            <li class="weui-media-box__info__meta">2020年01月01 00:00</li>
-                            <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">紫萝园社区</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="weui-form-preview__bd">
-                    内容
-                </div>
-            </div>
 
-        </div>
-        <div id="qrcode-btn"></div>
-    </div>
-</div>-->
 
 <script type="text/html" id="tableBar">
     @if(shiro.hasPermission("/index/edit")){
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">编辑</a>
     @}
-    @if(shiro.hasPermission("/index/remove")){
+    @if(shiro.hasPermission("/index/delete")){
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
     @}
 </script>
 
 
-<style>
-    .weui-form-preview__bd {
-        font-size: 1.1em;
-    }
-    .device-col {
-        float: right;
-        width: 440px;
-    }
 
-    .device-fixed, .menu-fixed {
-        position: fixed;
-    }
-
-    .device {
-        background-image: url(http://www.jqweui.cn/assets/img/device-sprite.png);
-        background-repeat: no-repeat;
-        width: 395px;
-        height: 813px;
-        background-position: -395px 0;
-        background-size: 300%;
-        margin-left: 20px;
-        position: relative;
-    }
-
-    .status-bar {
-        height: 20px;
-        width: 320px;
-        background: url(http://www.jqweui.cn/assets/img/status-bar.png);
-        background-repeat: no-repeat;
-        background-size: 100%;
-        top: 117px;
-        position: absolute;
-        z-index: 99;
-        left: 37px;
-    }
-
-    .window {
-        position: absolute;
-        top: 137px;
-        left: 37px;
-        width: 321px;
-        height: 549px;
-        overflow: hidden;
-        font-size: .85rem;
-        line-height: 1.05rem;
-        background: #fbfbfb;
-        overflow-y: auto;
-    }
-
-    #qrcode-btn {
-        width: 67px;
-        height: 68px;
-        bottom: 39px;
-        position: absolute;
-        left: 50%;
-        margin-left: -33.5px;
-        cursor: pointer;
-        background-image: url(http://www.jqweui.cn/assets/img/home-btn.png);
-        background-size: 100%;
-        background-repeat: no-repeat;
-        animation: spin 4s linear infinite;
-        transform-origin: 50% 50%;
-    }
-</style>
 @}
 
 

@@ -2,4 +2,65 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.lac.wechat.dao.ArticleMapper">
 
+    <select id="selectListByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="cn.lac.wechat.domain.Article">
+          select
+               ar_id,
+               ar_title,
+               ar_text,
+               (case ar_type when 'TZTG' then '通知通告'
+                 when 'SQJS' then '社区介绍'
+                 when 'SQFC' then '社区风采'
+                 when 'YLYX' then '一老一小'
+                 when 'LNR' then '老年人'
+                 when 'JS' then '计生'
+                 when 'JZZ' then '居住证'
+                 when 'CJR' then '残疾人'
+                 when 'DZYL' then '电子阅览图书' else '其他' end) ar_type,
+               ar_path,
+               (case ar_ispath when '01' then '文章'
+                 when '02' then '图文'else '其他' end) ar_ispath,
+               ar_firstpath,
+               (select name from sys_user a where a.user_id = b.ar_user) ar_user,
+               ar_org,
+               create_time,
+               update_time,
+               ar_major_type,
+               ar_low_type
+        from zly_article b where 1=1
+        <if test="type == 'menu_01' "> /* 咱。社区*/
+           and ar_type in ('TZTG','SQJS','SQFC')
+        </if>
+        <if test="type == 'menu_02' ">  /* 办事指南 */
+           and ar_type in ('YLYX','LNR','JS','JZZ','CJR')
+        </if>
+        <if test="type == 'menu_03' "> /* 电子阅览 */
+          and ar_type in ('DZYL')
+        </if>
+        <if test="arTitle != null and arTitle != '' ">
+            and ar_title like concat('%',#{arTitle,jdbcType=VARCHAR},'%')
+        </if>
+        order by create_time desc
+        <if test="page != null and limit != null ">
+            limit #{page,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+
+    </select>
+    <select id="countListByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="java.lang.Integer">
+          select
+               count(1)
+        from zly_article b where 1=1
+        <if test="type == 'menu_01' ">
+           and ar_type in ('TZTG','SQJS','SQFC')
+        </if>
+        <if test="type == 'menu_02' ">
+           and ar_type in ('YLYX','LNR','JS','JZZ','CJR')
+        </if>
+        <if test="type == 'menu_03' ">
+          and ar_type in ('DZYL')
+        </if>
+        <if test="arTitle != null and arTitle != '' ">
+            and ar_title like concat('%',#{arTitle,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
 </mapper>

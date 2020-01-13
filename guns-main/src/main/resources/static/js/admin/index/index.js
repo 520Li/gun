@@ -49,8 +49,8 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      */
     Index.openAddArticle = function () {
         func.open({
-            height: 470,
-            title: '添加文章',
+            height: 600,
+            title: '发布文章',
             content: Feng.ctxPath + '/admin/index/index_add',
             tableId: Index.tableId
         });
@@ -63,9 +63,9 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      */
     Index.onEditArticle = function (data) {
         func.open({
-            height: 470,
-            title: '修改文章',
-            content: Feng.ctxPath + "'/admin/index/index_edit'?roleId=" + data.arId,
+            height: 600,
+            title: '编辑文章',
+            content: Feng.ctxPath + "/admin/index/index_edit?arId=" + data.arId,
             tableId: Index.tableId
         });
     };
@@ -89,7 +89,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      */
     Index.onDeleteArticle = function (data) {
         var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/admin/index/remove", function () {
+            var ajax = new $ax(Feng.ctxPath + "/admin/index/delete", function () {
                 Feng.success("删除成功!");
                 table.reload(Index.tableId);
             }, function (data) {
@@ -132,8 +132,9 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
             Index.onEditArticle(data);
         } else if (layEvent === 'delete') {
             Index.onDeleteArticle(data);
-        }/* else if (layEvent === 'roleAssign') {
-            Index.roleAssign(data);
-        }*/
+        }
+        /* else if (layEvent === 'roleAssign') {
+                    Index.roleAssign(data);
+                }*/
     });
 });

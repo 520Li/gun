@@ -6,6 +6,7 @@ import cn.lac.wechat.domain.Article;
 import cn.lac.wechat.domain.User;
 import cn.lac.wechat.service.*;
 import cn.lac.wechat.utils.SendMessageUtil;
+import cn.lac.wechat.vo.LayerVo;
 import cn.lac.wechat.vo.PageResult;
 import cn.lac.wechat.vo.QueryVo;
 import cn.lac.wechat.wx.Message;
@@ -245,7 +246,7 @@ public class WechatController {
      */
     @PostMapping("/first/article.do")
     @ResponseBody
-    public PageResult<Article> article(QueryVo vo) {
+    public LayerVo article(QueryVo vo) {
         return articleService.getList(vo);
     }
 
