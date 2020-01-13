@@ -36,4 +36,6 @@ public class Article {
     private String arMajorType;
     private String arLowType;
 
+    private String arTextJson;
+
 }

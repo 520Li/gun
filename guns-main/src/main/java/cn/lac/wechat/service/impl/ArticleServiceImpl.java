@@ -10,6 +10,8 @@ import cn.lac.wechat.vo.PageResult;
 import cn.lac.wechat.vo.QueryVo;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.model.LoginUser;
+import cn.stylefeng.guns.sys.modular.system.entity.Dept;
+import cn.stylefeng.guns.sys.modular.system.mapper.DeptMapper;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -35,7 +37,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleMapper articleMapper;
-
+    @Autowired
+    private DeptMapper deptMapper;
 
     /**
      * 获取文章列表
@@ -70,7 +73,12 @@ public class ArticleServiceImpl implements ArticleService {
     public void insert(Article article) {
         LoginUser user = LoginContextHolder.getContext().getUser();
         Long deptId = user.getDeptId();
-
+        Dept dept = deptMapper.selectById(deptId);
+        if (null != dept) {
+            String name = dept.getSimpleName();
+            article.setArOrg(name);
+        }
+        article.setCreateTime(new Date());
         articleMapper.insert(article);
     }
 
