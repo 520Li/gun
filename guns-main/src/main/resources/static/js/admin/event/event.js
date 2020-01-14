@@ -11,7 +11,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      * 系统管理--角色管理
      */
     var Index = {
-        tableId: "indexTable",   //表格id
+        tableId: "eventTable"   //表格id
     };
 
     /**
@@ -20,13 +20,12 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     Index.initColumn = function () {
         return [[
             {type: 'checkbox'},
-            {field: 'arTitle', sort: true, title: '标题'},
-            {field: 'arType', align: "center", sort: true, title: '文章分类'},
-            {field: 'arIspath', align: "center", sort: true, title: '文章类型'},
-            {field: 'arUser', align: "center", sort: true, title: '发布者'},
-            {field: 'arOrg', align: "center", sort: true, title: '机构'},
-            {field: 'createTime', align: "center", sort: true, title: '创建时间'},
-            {align: 'center', toolbar: '#tableBarIndex', title: '操作', minWidth: 200}
+            {field: 'eventName', sort: true, title: '活动名称'},
+            {field: 'eventType', align: "center", sort: true, title: '活动分类'},
+            {field: 'eventStart', align: "center", sort: true, title: '活动开始时间'},
+            {field: 'eventCode', align: "center", sort: true, title: '活动积分'},
+            {field: 'eventStatus', align: "center", sort: true, title: '当前状态'},
+            {align: 'center', toolbar: '#tableBarEvent', title: '操作', minWidth: 200}
         ]];
     };
 
@@ -35,7 +34,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      */
     Index.search = function () {
         var queryData = {};
-        queryData['arTitle'] = $("#arTitle").val().trim();
+        queryData['eventName'] = $("#eventName").val().trim();
         table.reload(Index.tableId, {
             where: queryData, page: {curr: 1}
         });
@@ -44,11 +43,11 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     /**
      * 弹出添加角色
      */
-    Index.openAddArticle = function () {
+    Index.openAddEvent = function () {
         func.open({
             height: 600,
-            title: '发布文章',
-            content: Feng.ctxPath + '/admin/index/index_add',
+            title: '发布活动',
+            content: Feng.ctxPath + '/admin/event/event_add',
             tableId: Index.tableId
         });
     };
@@ -58,11 +57,24 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      *
      * @param data 点击按钮时候的行数据
      */
-    Index.onEditArticle = function (data) {
+    Index.onEditEvent = function (data) {
         func.open({
             height: 600,
-            title: '编辑文章',
-            content: Feng.ctxPath + "/admin/index/index_edit?arId=" + data.arId,
+            title: '编辑活动',
+            content: Feng.ctxPath + "/admin/event/event_edit?eventId=" + data.eventId,
+            tableId: Index.tableId
+        });
+    };
+
+    /**
+     * 活动人员名单
+     * @param data
+     */
+    Index.onJoinEvent = function (data) {
+        func.open({
+            height: 600,
+            title: '活动人员名单',
+            content: Feng.ctxPath + "/admin/event/event_join?eventId=" + data.eventId,
             tableId: Index.tableId
         });
     };
@@ -84,25 +96,25 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      *
      * @param data 点击按钮时候的行数据
      */
-    Index.onDeleteArticle = function (data) {
-        var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/admin/index/delete", function () {
-                Feng.success("删除成功!");
-                table.reload(Index.tableId);
-            }, function (data) {
-                Feng.error("删除失败!" + data.responseJSON.message + "!");
-            });
-            ajax.set("arId", data.arId);
-            ajax.start();
-        };
-        Feng.confirm("是否删除文章 " + data.arTitle + "?", operation);
-    };
+    /* Index.onDeleteArticle = function (data) {
+         var operation = function () {
+             var ajax = new $ax(Feng.ctxPath + "/admin/event/delete", function () {
+                 Feng.success("删除成功!");
+                 table.reload(Index.tableId);
+             }, function (data) {
+                 Feng.error("删除失败!" + data.responseJSON.message + "!");
+             });
+             ajax.set("arId", data.arId);
+             ajax.start();
+         };
+         Feng.confirm("是否删除文章 " + data.arTitle + "?", operation);
+     };*/
 
 
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + Index.tableId,
-        url: Feng.ctxPath + '/admin/index/list?type=menu_01',
+        url: Feng.ctxPath + '/admin/event/list',
         page: true,
         height: "full-98",
         cellMinWidth: 100,
@@ -116,7 +128,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
 
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
-        Index.openAddArticle();
+        Index.openAddEvent();
     });
 
 
@@ -126,12 +138,9 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
         var layEvent = obj.event;
 
         if (layEvent === 'edit') {
-            Index.onEditArticle(data);
-        } else if (layEvent === 'delete') {
-            Index.onDeleteArticle(data);
+            Index.onEditEvent(data);
+        } else if (layEvent === 'join') {
+            Index.onJoinEvent(data);
         }
-        /* else if (layEvent === 'roleAssign') {
-                    Index.roleAssign(data);
-                }*/
     });
 });

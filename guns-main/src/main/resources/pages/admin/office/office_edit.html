@@ -1,4 +1,4 @@
-@layout("/common/_form.html",{js:["/js/admin/index/index_add.js"]}){
+@layout("/common/_form.html",{js:["/js/admin/office/office_edit.js"]}){
 <div style="width: 58%;float: left">
     <form class="layui-form" id="roleForm" lay-filter="roleForm">
         <div class="layui-fluid" style="padding-bottom: 75px;">
@@ -10,7 +10,8 @@
                         <div class="layui-inline layui-col-md12">
                             <label class="layui-form-label">文章标题<span style="color: red;">*</span></label>
                             <div class="layui-input-block">
-                                <input id="arTitle" oninput="ct(this)" name="arTitle" placeholder="请输入文章标题" type="text" class="layui-input"
+                                <input id="arTitle" oninput="ct(this)" name="arTitle" value="${article.arTitle!}"
+                                       placeholder="请输入文章标题" type="text" class="layui-input" maxlength="30"
                                        lay-verify="required" required/>
                             </div>
                         </div>
@@ -19,17 +20,24 @@
                             <div class="layui-input-block">
                                 <select id="arType" name="arType" type="text" class="layui-input"
                                         lay-verify="required" required autocomplete="off">
-                                    <option value="TZTG">通知通告</option>
-                                    <option value="SQJS">社区介绍</option>
-                                    <option value="SQFC">社区风采</option>
+                                    <option value="YLYX">一老一小</option>
+                                    <option value="LNR">老年人</option>
+                                    <option value="JS">计生</option>
+                                    <option value="JZZ">居住证</option>
+                                    <option value="CJR">残疾人</option>
                                 </select>
                             </div>
                         </div>
                         <div id="editor">
-                            <p>请输入文章内容</p>
+
                         </div>
-                        <textarea id="arText" name="arText" style="display: none;"></textarea>
-                        <textarea id="arTextJson" name="arTextJson" style="display: none;"></textarea>
+                        <input type="text" id="arId" name="arId" style="display: none" value="${article.arId!}"/>
+                        <textarea id="arText" name="arText" style="display: none;">
+                            ${article.arText!}
+                        </textarea>
+                        <textarea id="arTextJson" name="arTextJson" style="display: none;">
+                            ${article.arTextJson!}
+                        </textarea>
                     </div>
                 </div>
             </div>
@@ -70,13 +78,16 @@
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
 <script type="text/javascript" src="/js/wangEditor.min.js"></script>
 <script type="text/javascript">
-    function ct(that){
+    $("#arType").val('${article.arType!}');
+    function ct(that) {
         var $this = $(that);
         var text = $this.val();
         var $text = $("#title2");
         if (text === '') $text.text("请输入标题");
         else $text.text(text);
     }
+
+    ct($("#arTitle").get(0));
 
     var E = window.wangEditor;
     var editor = new E('#editor');
@@ -88,9 +99,9 @@
         $("#arTextJson").val(jsonStr);
     };
     editor.create();
-    $(".w-e-text-container").css('height','495px');
+    editor.txt.html('${article.arText!}');
+    $(".w-e-text-container").css('height', '495px');
     $('#text1').html(editor.txt.html());
-
 
 </script>
 <style>

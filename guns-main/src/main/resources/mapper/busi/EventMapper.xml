@@ -70,4 +70,42 @@
         event_reend < now  报名已截止
         event_end < now  活动已结束
     -->
+    <select id="selectByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="cn.lac.wechat.domain.Event">
+        select
+        event_id as eventId,
+        event_name as eventName,
+        event_type as eventType,
+        event_start as eventStart,
+        event_end as eventEnd,
+        event_local as eventLocal,
+        event_limit as eventLimit,
+        event_real as eventReal,
+        event_restart as eventRestart,
+        event_reend as eventReend,
+        event_text as eventText,
+        event_code as eventCode,
+        (case when event_end &gt; now() then '进行中'
+        when event_end &lt; now() then '已结束' else '已结束' end ) eventStatus,
+        create_time as createTime,
+        update_time as updateTime
+        from zly_event a
+        where 1=1
+        <if test="eventName != null and eventName != '' ">
+          and event_name like concat('%',#{eventName,jdbcType=VARCHAR},'%')
+        </if>
+        ORDER BY event_start desc
+        <if test="page!=null and limit != null">
+            limit #{page,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="countByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="java.lang.Integer">
+        select
+        count(1)
+        from zly_event a
+        where 1=1
+        <if test="eventName != null and eventName != '' ">
+          and event_name like concat('%',#{eventName,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
 </mapper>

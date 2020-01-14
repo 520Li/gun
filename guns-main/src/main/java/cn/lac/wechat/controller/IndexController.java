@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 公众号后台 <br/>
+ * 咱。社区 <br/>
  *
  * @author lac
  * @version 1.0
  * @date 2020/1/11 0011 - 12:39
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/index")
 @Slf4j
-public class AdminController {
+public class IndexController {
 
     @Autowired
     private ArticleService articleService;
@@ -33,7 +33,7 @@ public class AdminController {
     /**
      * 跳转文章管理页面
      */
-    @GetMapping("/index")
+    @GetMapping("")
     public String admin() {
         return "/admin/index/index.html";
     }
@@ -41,7 +41,7 @@ public class AdminController {
     /**
      * 获取文章列表
      */
-    @GetMapping("/index/list")
+    @GetMapping("/list")
     @ResponseBody
     public LayerVo list(QueryVo vo) {
         return articleService.getList(vo);
@@ -50,7 +50,7 @@ public class AdminController {
     /**
      * 跳转文章新增
      */
-    @GetMapping("/index/index_add")
+    @GetMapping("/index_add")
     public String index_add() {
         return "/admin/index/index_add.html";
     }
@@ -58,7 +58,7 @@ public class AdminController {
     /**
      * 跳转文章编辑
      */
-    @GetMapping("/index/index_edit")
+    @GetMapping("/index_edit")
     public String index_edit(String arId, ModelMap map) {
         map.put("article", articleService.getById(arId));
         return "/admin/index/index_edit.html";
@@ -68,17 +68,27 @@ public class AdminController {
     /**
      * 新增文章
      */
-    @PostMapping("/index/add")
+    @PostMapping("/add")
     @ResponseBody
     public Result indexAdd(Article article) {
         articleService.insert(article);
-        return new Result(true,"发布成功！");
+        return new Result(true, "发布成功！");
+    }
+
+    /**
+     * 编辑文章
+     */
+    @PostMapping("/edit")
+    @ResponseBody
+    public Result indexEdit(Article article) {
+        articleService.edit(article);
+        return new Result(true, "修改成功！");
     }
 
     /**
      * 删除文章
      */
-    @PostMapping("/index/delete")
+    @PostMapping("/delete")
     @ResponseBody
     public Object indexRemove(String arId) {
         articleService.deleteById(arId);

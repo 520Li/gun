@@ -1,0 +1,92 @@
+@layout("/common/_form.html",{js:["/js/admin/appoint/appoint_dis.js"]}){
+
+<form class="layui-form" id="roleForm" lay-filter="roleForm">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <div class="layui-card">
+            <div class="layui-card-header">基本信息</div>
+            <div class="layui-card-body">
+                <div class="layui-form-item layui-row">
+                    <input name="roleId" type="hidden"/>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">预约人</label>
+                        <div class="layui-input-block">
+                            <input  type="text" class="layui-input" disabled value="${appoint.appointUser!}"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">预约服务类型</label>
+                        <div class="layui-input-block">
+                            <input id="appointId" name="appointId" type="hidden" value="${appoint.appointId!}">
+                            <input  type="text" class="layui-input" disabled value="${appoint.serviceType!}"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">预约时间</label>
+                        <div class="layui-input-block">
+                            <input  type="text" class="layui-input" disabled value="${appoint.appointTime!,dateFormat='yyyy年MM月dd HH:mm'}"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">预约标题</label>
+                        <div class="layui-input-block">
+                            <input  type="text" class="layui-input" disabled value="${appoint.appointTitle!}"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">详细说明</label>
+                        <div class="layui-input-block">
+                            <textarea  type="text" class="layui-textarea" disabled >
+                                ${appoint.appointText!}
+                            </textarea>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">处理人<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="applyUser" name="applyUser"   type="text" class="layui-input" lay-verify="required" required value="${appoint.applyUser!}"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">联系方式<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="applyIphone" name="applyIphone"  type="tel" class="layui-input" lay-verify="required" required value="${appoint.applyIphone!}"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">处理原因<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <textarea id="applyText"  name="applyText" type="text" class="layui-textarea" lay-verify="required" required >${appoint.applyText!}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group-bottom text-center">
+        @if(appoint.applyStatus == '未确认'){
+        <button  type="button" class="layui-btn" lay-filter="btnSubmit1" lay-submit>&emsp;受理&emsp;</button>
+        <button  type="button" class="layui-btn layui-btn-danger layui-btn-primary" lay-filter="btnSubmit2" lay-submit>&emsp;驳回&emsp;</button>
+        @}else if(appoint.applyStatus == '已受理'){
+        <button  type="button" class="layui-btn" >&emsp;已受理&emsp;</button>
+        @}else if(appoint.applyStatus == '已驳回'){
+        <button  type="button" class="layui-btn" >&emsp;已驳回&emsp;</button>
+        @}
+    </div>
+
+</form>
+<style>
+    .layui-input {
+        text-align: center;
+    }
+    .layui-input-block {
+        margin-left: 150px;
+    }
+    .layui-form-label {
+        width: 100px;
+    }
+</style>
+
+
+@}

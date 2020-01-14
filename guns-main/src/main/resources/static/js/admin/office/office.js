@@ -8,10 +8,10 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     var func = layui.func;
 
     /**
-     * 系统管理--角色管理
+     *
      */
     var Index = {
-        tableId: "indexTable",   //表格id
+        tableId: "officeTable"  //表格id
     };
 
     /**
@@ -26,7 +26,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
             {field: 'arUser', align: "center", sort: true, title: '发布者'},
             {field: 'arOrg', align: "center", sort: true, title: '机构'},
             {field: 'createTime', align: "center", sort: true, title: '创建时间'},
-            {align: 'center', toolbar: '#tableBarIndex', title: '操作', minWidth: 200}
+            {align: 'center', toolbar: '#tableBarOffice', title: '操作', minWidth: 200}
         ]];
     };
 
@@ -35,7 +35,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      */
     Index.search = function () {
         var queryData = {};
-        queryData['arTitle'] = $("#arTitle").val().trim();
+        queryData['arTitle'] = $("#arTitle2").val().trim();
         table.reload(Index.tableId, {
             where: queryData, page: {curr: 1}
         });
@@ -48,7 +48,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
         func.open({
             height: 600,
             title: '发布文章',
-            content: Feng.ctxPath + '/admin/index/index_add',
+            content: Feng.ctxPath + '/admin/office/office_add',
             tableId: Index.tableId
         });
     };
@@ -62,7 +62,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
         func.open({
             height: 600,
             title: '编辑文章',
-            content: Feng.ctxPath + "/admin/index/index_edit?arId=" + data.arId,
+            content: Feng.ctxPath + "/admin/office/office_edit?arId=" + data.arId,
             tableId: Index.tableId
         });
     };
@@ -86,7 +86,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      */
     Index.onDeleteArticle = function (data) {
         var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/admin/index/delete", function () {
+            var ajax = new $ax(Feng.ctxPath + "/admin/office/delete", function () {
                 Feng.success("删除成功!");
                 table.reload(Index.tableId);
             }, function (data) {
@@ -102,7 +102,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + Index.tableId,
-        url: Feng.ctxPath + '/admin/index/list?type=menu_01',
+        url: Feng.ctxPath + '/admin/office/list?type=menu_02',
         page: true,
         height: "full-98",
         cellMinWidth: 100,

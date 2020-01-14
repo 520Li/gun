@@ -1,6 +1,7 @@
 package cn.lac.wechat.dao;
 
 import cn.lac.wechat.domain.Appoint;
+import cn.lac.wechat.vo.QueryVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
@@ -14,4 +15,10 @@ import java.util.List;
  */
 public interface AppointMapper extends BaseMapper<Appoint> {
     List<Appoint> findAppointByUser(String userId);
+
+    List<Appoint> selectByVo(QueryVo vo);
+
+    int countByVo(QueryVo vo);
+
+    Appoint findById(String appointId);
 }

@@ -4,6 +4,8 @@ import cn.lac.wechat.domain.Appeal;
 import cn.lac.wechat.domain.Appoint;
 import cn.lac.wechat.domain.Event;
 import cn.lac.wechat.domain.User;
+import cn.lac.wechat.vo.LayerVo;
+import cn.lac.wechat.vo.QueryVo;
 import cn.lac.wechat.wx.Result;
 
 import java.util.List;
@@ -53,7 +55,7 @@ public interface UserService {
     /**
      * 审批新预约
      */
-    void applyAppoint();
+    void applyAppoint(Appoint appoint);
 
     /**
      * 查询活动
@@ -86,4 +88,13 @@ public interface UserService {
     Result packVo(String state);
 
 
+    /**
+     * 获取所有 预约
+     */
+    LayerVo findAppoint(QueryVo vo);
+
+    /**
+     * 查看详细
+     */
+    Appoint selectAppoint(String appointId);
 }

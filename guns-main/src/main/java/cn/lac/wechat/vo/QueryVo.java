@@ -25,11 +25,47 @@ public class QueryVo {
 
 
     /**
-     * wechat
+     * index / office
      */
     private String type;//菜单分类
     private String arType; //文章板块分类
     private String arTitle;//文章标题
+
+    /**
+     * appoint
+     */
+    private String appointUser;//预约人
+    private String serviceType;//预约业务
+
+    /**
+     * event
+     */
+    private String eventName; //活动名称
+
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public String getAppointUser() {
+        return appointUser;
+    }
+
+    public void setAppointUser(String appointUser) {
+        this.appointUser = appointUser;
+    }
+
+    public String getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
 
     public String getType() {
         return type;

@@ -1,6 +1,7 @@
 package cn.lac.wechat.dao;
 
 import cn.lac.wechat.domain.Event;
+import cn.lac.wechat.vo.QueryVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,4 +19,8 @@ public interface EventMapper extends BaseMapper<Event> {
     public List<Event> getEventByQuery(@Param("query") String query, @Param("userId") String userId);
 
     Event selectByEventId(@Param("eventId") String eventId, @Param("userId") String userId);
+
+    List<Event> selectByVo(QueryVo vo);
+
+    int countByVo(QueryVo vo);
 }

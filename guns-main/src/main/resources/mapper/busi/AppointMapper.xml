@@ -28,4 +28,82 @@
          from zly_appoint a where appoint_user=#{userId}
          order by create_time desc
     </select>
+
+
+     <select id="selectByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="cn.lac.wechat.domain.Appoint">
+          select
+          appoint_id as appointId,
+          (case service_type when '1' then '民政服务'
+          when '2' then '残联服务'
+          when '3' then '计生服务'
+          when '4' then '社保服务'
+          else '' end) serviceType,
+          appoint_time as appointTime,
+          appoint_iphone as appointIphone,
+          appoint_title as appointTitle,
+          appoint_text as appointText,
+          b.user_name appointUser,
+          (case apply_status when '01' then '未确认'
+          when '02' then '已受理'
+          when '03' then '已驳回'
+          else '' end) applyStatus,
+          apply_user as applyUser,
+          apply_text as applyText,
+          apply_time as applyTime,
+          apply_iphone as applyIphone
+          from zly_appoint a
+          left join zly_user b on a.appoint_user = b.user_id
+          where 1=1
+          <if test="appointUser !=null and appointUser != '' ">
+            and b.user_name like concat('%',#{appointUser,jdbcType=VARCHAR},'%')
+          </if>
+          <if test="serviceType !=null and serviceType != '' ">
+            and a.service_type = #{serviceType,jdbcType=VARCHAR}
+          </if>
+          order by appointTime desc
+          <if test="page!=null and limit != null">
+               limit #{page,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+          </if>
+     </select>
+     <select id="countByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="java.lang.Integer">
+          select
+          count(1)
+          from zly_appoint a
+          left join zly_user b on a.appoint_user = b.user_id
+          where 1=1
+          <if test="appointUser !=null and appointUser != '' ">
+            and b.user_name like concat('%',#{appointUser,jdbcType=VARCHAR},'%')
+          </if>
+          <if test="serviceType !=null and serviceType != '' ">
+            and a.service_type = #{serviceType,jdbcType=VARCHAR}
+          </if>
+     </select>
+
+
+
+    <select id="findById" parameterType="java.lang.String" resultType="cn.lac.wechat.domain.Appoint">
+        select
+        appoint_id as appointId,
+        (case service_type when '1' then '民政服务'
+        when '2' then '残联服务'
+        when '3' then '计生服务'
+        when '4' then '社保服务'
+        else '' end) serviceType,
+        appoint_time as appointTime,
+        appoint_iphone as appointIphone,
+        appoint_title as appointTitle,
+        appoint_text as appointText,
+        create_time as createTime,
+        update_time as updateTime,
+        (select user_name from zly_user b where b.user_id = a.appoint_user) appointUser,
+        (case apply_status when '01' then '未确认'
+        when '02' then '已受理'
+        when '03' then '已驳回'
+        else '' end) applyStatus,
+        apply_user as applyUser,
+        apply_text as applyText,
+        apply_time as applyTime,
+        apply_iphone as applyIphone
+        from zly_appoint a where appoint_id=#{appointId,jdbcType=VARCHAR}
+    </select>
 </mapper>

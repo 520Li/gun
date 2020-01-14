@@ -1,18 +1,19 @@
 /**
- * 发布文章对话框
+ * 发布活动对话框
  */
 
-layui.use(['layer', 'form', 'admin', 'ax'], function () {
+layui.use(['layer', 'form', 'admin', 'ax','laydate'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
     var layer = layui.layer;
+    var laydate = layui.laydate;
 
 
     // 表单提交事件
     form.on('submit(btnSubmit)', function (data) {
-        var ajax = new $ax(Feng.ctxPath + "/admin/index/add", function (data) {
+        var ajax = new $ax(Feng.ctxPath + "/admin/event/add", function (data) {
             Feng.success("添加成功！");
 
             //传给上个页面，刷新table用

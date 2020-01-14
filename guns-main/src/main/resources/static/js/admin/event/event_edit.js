@@ -1,5 +1,5 @@
 /**
- * 发布文章对话框
+ * 编辑活动对话框
  */
 
 layui.use(['layer', 'form', 'admin', 'ax'], function () {
@@ -8,12 +8,13 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
     var form = layui.form;
     var admin = layui.admin;
     var layer = layui.layer;
+    form.render();
 
 
     // 表单提交事件
     form.on('submit(btnSubmit)', function (data) {
-        var ajax = new $ax(Feng.ctxPath + "/admin/index/add", function (data) {
-            Feng.success("添加成功！");
+        var ajax = new $ax(Feng.ctxPath + "/admin/event/edit", function (data) {
+            Feng.success("修改成功!");
 
             //传给上个页面，刷新table用
             admin.putTempData('formOk', true);
@@ -22,7 +23,7 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
             admin.closeThisDialog();
 
         }, function (data) {
-            Feng.error("添加失败！" + data.responseJSON.message)
+            Feng.error("修改失败!" + data.responseJSON.message + "!");
         });
         ajax.set(data.field);
         ajax.start();

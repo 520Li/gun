@@ -36,6 +36,7 @@ public class Event {
     private String eventText;
     private String eventStatus;
     private String eventState;
+    private Integer eventCode;
     private Date createTime;
     private Date updateTime;
 }

@@ -1,4 +1,4 @@
-@layout("/common/_form.html",{js:["/js/admin/index/index_add.js"]}){
+@layout("/common/_form.html",{js:["/js/admin/office/office_add.js"]}){
 <div style="width: 58%;float: left">
     <form class="layui-form" id="roleForm" lay-filter="roleForm">
         <div class="layui-fluid" style="padding-bottom: 75px;">
@@ -19,9 +19,11 @@
                             <div class="layui-input-block">
                                 <select id="arType" name="arType" type="text" class="layui-input"
                                         lay-verify="required" required autocomplete="off">
-                                    <option value="TZTG">通知通告</option>
-                                    <option value="SQJS">社区介绍</option>
-                                    <option value="SQFC">社区风采</option>
+                                    <option value="YLYX">一老一小</option>
+                                    <option value="LNR">老年人</option>
+                                    <option value="JS">计生</option>
+                                    <option value="JZZ">居住证</option>
+                                    <option value="CJR">残疾人</option>
                                 </select>
                             </div>
                         </div>

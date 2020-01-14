@@ -1,7 +1,7 @@
-@layout("/common/_container.html",{js:["/js/admin/index/index.js"]}){
+@layout("/common/_container.html",{js:["/js/admin/event/event.js"]}){
 
 <div class="layui-body-header">
-    <span class="layui-body-header-title">咱。社区</span>
+    <span class="layui-body-header-title">线上活动报名</span>
 </div>
 
 <div class="layui-fluid">
@@ -12,21 +12,21 @@
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <input id="arTitle" class="layui-input" type="text" placeholder="标题"/>
+                                <input id="eventName" class="layui-input" type="text" placeholder="活动名称"/>
                             </div>
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
                                 </button>
-                                @if(shiro.hasPermission("/index/add")){
+                                @if(shiro.hasPermission("/event/add")){
                                 <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加
                                 </button>
                                 @}
-                               <!-- <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出
-                                </button>-->
+                                <!-- <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出
+                                 </button>-->
                             </div>
                         </div>
                     </div>
-                    <table class="layui-table" id="indexTable" lay-filter="indexTable"></table>
+                    <table class="layui-table" id="eventTable" lay-filter="eventTable"></table>
                 </div>
             </div>
         </div>
@@ -36,12 +36,12 @@
 
 
 
-<script type="text/html" id="tableBarIndex">
-    @if(shiro.hasPermission("/index/edit")){
+<script type="text/html" id="tableBarEvent">
+    @if(shiro.hasPermission("/event/edit")){
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">编辑</a>
     @}
-    @if(shiro.hasPermission("/index/delete")){
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+    @if(shiro.hasPermission("/event/join")){
+    <a class="layui-btn layui-btn-xs" lay-event="join">查看人员名单</a>
     @}
 </script>
 

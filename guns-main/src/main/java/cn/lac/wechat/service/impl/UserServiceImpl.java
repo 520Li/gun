@@ -3,7 +3,10 @@ package cn.lac.wechat.service.impl;
 import cn.lac.wechat.dao.*;
 import cn.lac.wechat.domain.*;
 import cn.lac.wechat.service.UserService;
+import cn.lac.wechat.vo.LayerVo;
+import cn.lac.wechat.vo.QueryVo;
 import cn.lac.wechat.wx.Result;
+import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -94,9 +97,17 @@ public class UserServiceImpl implements UserService {
         return appointMapper.findAppointByUser(user.getUserId());
     }
 
-    @Override
-    public void applyAppoint() {
 
+    /**
+     * 审批预约
+     *
+     * @param appoint
+     */
+    @Override
+    public void applyAppoint(Appoint appoint) {
+        appoint.setUpdateTime(new Date());
+        appoint.setApplyTime(new Date());
+        appointMapper.updateById(appoint);
     }
 
     /**
@@ -222,6 +233,34 @@ public class UserServiceImpl implements UserService {
         wxUserMapper.updateById(pojo);
         return new Result(true, detail);
 
+    }
+
+
+    /**
+     * 查询所有预约（后台）
+     *
+     * @param vo
+     * @return
+     */
+    @Override
+    public LayerVo findAppoint(QueryVo vo) {
+        if (!ToolUtil.isAllEmpty(vo.getPage(), vo.getLimit())) {
+            vo.setPage((vo.getPage() - 1) * vo.getLimit());
+        }
+        List<Appoint> list = appointMapper.selectByVo(vo);
+        int count = appointMapper.countByVo(vo);
+        return new LayerVo(count, list);
+    }
+
+    /**
+     * 查看预约详细
+     *
+     * @param appointId
+     * @return
+     */
+    @Override
+    public Appoint selectAppoint(String appointId) {
+        return appointMapper.findById(appointId);
     }
 
 
