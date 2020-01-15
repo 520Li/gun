@@ -25,7 +25,7 @@
                create_time,
                update_time,
                ar_major_type,
-               ar_low_type
+               pdf_type
         from zly_article b where 1=1
         <if test="type == 'menu_01' "> /* 咱。社区*/
            and ar_type in ('TZTG','SQJS','SQFC')

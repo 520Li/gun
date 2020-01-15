@@ -34,7 +34,7 @@ public class Article {
     private Date updateTime;
 
     private String arMajorType;
-    private String arLowType;
+    private String pdfType;
 
     private String arTextJson;
 
