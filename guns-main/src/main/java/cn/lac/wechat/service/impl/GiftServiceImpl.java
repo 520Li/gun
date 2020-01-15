@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -21,6 +22,7 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class GiftServiceImpl implements GiftService {
 
     @Autowired

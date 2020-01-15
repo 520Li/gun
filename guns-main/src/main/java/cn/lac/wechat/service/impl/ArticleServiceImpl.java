@@ -18,11 +18,23 @@ import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerFontProvider;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 import static java.awt.SystemColor.menu;
@@ -35,6 +47,8 @@ import static java.awt.SystemColor.menu;
  * @date 2020/1/4 0004 - 17:01
  */
 @Service
+@Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
@@ -98,6 +112,91 @@ public class ArticleServiceImpl implements ArticleService {
         articleMapper.updateById(article);
     }
 
+
+    /**
+     * 新增电子书
+     */
+    @Override
+    public void insertPdf(Article article) {
+        LoginUser user = LoginContextHolder.getContext().getUser();
+        Long deptId = user.getDeptId();
+        Dept dept = deptMapper.selectById(deptId);
+        if (null != dept) {
+            String name = dept.getSimpleName();
+            article.setArOrg(name);
+        }
+        article.setCreateTime(new Date());
+        article.setArUser(user.getId() + "");
+        article.setArType("DZYL");
+        if (article.getPdfType().equals("01")) {
+            createPdf(article);
+        } else {
+            article.setArText("");
+        }
+        articleMapper.insert(article);
+    }
+
+    @Override
+    public void editPdf(Article article) {
+        article.setUpdateTime(new Date());
+        article.setArText(article.getArText().trim());
+        if (article.getPdfType().equals("01")) {
+            createPdf(article);
+        } else {
+            article.setArText("");
+        }
+        articleMapper.updateById(article);
+    }
+
+    /**
+     * html 生成 pdf
+     */
+    public void createPdf(Article article) {
+        String arText = article.getArText();
+        arText = arText.replaceAll("<br>", "").replaceAll("(<img((?!>).)*>)", "$1</img>");
+        //pdf路径
+
+        String arPath = article.getArPath();
+
+        if (StringUtils.isBlank(arPath)) {
+            arPath = "/images/pdf/" + UUID.randomUUID().toString().replace("-", "").toLowerCase() + ".pdf";
+        }
+
+        String filePath = this.getClass().getClassLoader().getResource("").toString().replace("file:/", "") + "/static" + arPath;
+
+
+        Document document = new Document();
+
+        try {
+
+
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+
+            PdfWriter writer = PdfWriter.getInstance(document, new BufferedOutputStream(new FileOutputStream(file)));
+            document.open();
+            String content = "<html><body style=\"font-family: 宋体, SimHei;\">" + arText + "</body></html>";
+            byte b[] = content.getBytes("utf-8");
+            ByteArrayInputStream bais = new ByteArrayInputStream(b);
+
+
+            XMLWorkerHelper.getInstance().parseXHtml(writer, document, bais, Charset.forName("UTF-8"));
+            bais.close();
+
+
+            article.setArPath(arPath);
+
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            if (document.isOpen()) {
+                document.close();
+            }
+        }
+    }
 
     /**
      * 判断文章是否是图文 & 获取第一张图片路径

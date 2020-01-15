@@ -1,0 +1,174 @@
+@layout("/common/_form.html",{js:["/js/admin/read/read_edit.js"]}){
+<div >
+    <form class="layui-form" id="roleForm" lay-filter="roleForm">
+        <div class="layui-fluid" style="padding-bottom: 75px;">
+            <div class="layui-card">
+                <div class="layui-card-header">基本信息</div>
+                <div class="layui-card-body">
+                    <div class="layui-form-item layui-row">
+                        <input name="roleId" type="hidden"/>
+                        <div class="layui-inline layui-col-md12">
+                            <label class="layui-form-label">书名<span style="color: red;">*</span></label>
+                            <div class="layui-input-block">
+                                <input id="arTitle"  name="arTitle" placeholder="请输入书名" type="text" class="layui-input"
+                                       lay-verify="required" required  value="${article.arTitle}"/>
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-col-md12">
+                            <label class="layui-form-label">图书类别<span style="color: red;">*</span></label>
+                            <div class="layui-input-block">
+                                <select id="arMajorType" name="arMajorType" type="text" class="layui-input"
+                                        lay-verify="required" required autocomplete="off">
+                                    <option value="计生知识">计生知识</option>
+                                    <option value="环保知识">环保知识</option>
+                                    <option value="消防知识">消防知识</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-col-md12">
+                            <label class="layui-form-label">方式</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="pdfType" lay-filter="typee" value="01" title="自制pdf">
+                                <input type="radio" name="pdfType" lay-filter="typee" value="02" title="上传pdf">
+                            </div>
+                        </div>
+                        <div id="editor" style="margin-left: 30px;">
+
+                        </div>
+                        <textarea id="arText" name="arText" style="display: none;"></textarea>
+                        <div class="layui-upload-drag" id="upload" style="margin-left: 30px;display: none">
+                            <div id="up">
+                                <i class="layui-icon"></i>
+                                <p>
+                                    点击上传，或将文件拖拽到此处<br/>
+                                    文件大小限制 20MB<br/>
+                                    文件类型限制 pdf
+                                </p>
+                            </div>
+                            <div class="layui-hide" id="uploadDemoView">
+                                <hr>
+                                <img src="" alt="" style="max-width: 196px">
+                            </div>
+                            <input type="text" style="display: none" id="arPath" name="arPath"/>
+                            <input type="text" style="display: none" id="arId" name="arId" value="${article.arId!}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group-bottom text-center" style="z-index: 10100">
+            <button class="layui-btn" lay-filter="btnSubmitR" lay-submit>&emsp;提交&emsp;</button>
+            <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+        </div>
+    </form>
+</div>
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+<script type="text/javascript" src="/js/wangEditor.min.js"></script>
+<script type="text/javascript">
+    $("#arMajorType").val('${article.arMajorType!}');
+    $("input[name=pdfType][value='${article.pdfType!}']").attr("checked",true);
+    @if(article.pdfType == '01'){
+        $("#editor").show();
+        $("#upload").hide();
+    @}else if(article.pdfType == '02'){
+        $("#editor").hide();
+        $("#upload").show();
+        $('#uploadDemoView').removeClass('layui-hide').find('img').attr('src','${article.arPath!}');
+        $('#arPath').val('${article.arPath!}');
+        $('#up').hide();
+    @}
+
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+    editor.customConfig.onchange = function (html) {
+        $("#arText").val(html);
+    };
+    editor.create();
+    @if(article.arText != null && article.arText != ''){
+        editor.txt.html('${article.arText!}');
+        $("#arText").val(editor.txt.html());
+    @}
+
+    $(".w-e-text-container").css('height','400');
+
+
+</script>
+<style>
+
+
+    .weui-form-preview__bd {
+        font-size: 0.8em;
+    }
+
+    .device-col {
+        float: right;
+        width: 440px;
+    }
+
+    .device-fixed, .menu-fixed {
+        position: fixed;
+    }
+
+    .device {
+        background-image: url(http://www.jqweui.cn/assets/img/device-sprite.png);
+        background-repeat: no-repeat;
+        width: 395px;
+        height: 813px;
+        background-position: -395px 0;
+        background-size: 300%;
+        margin-left: 20px;
+        position: relative;
+    }
+
+    .status-bar {
+        height: 20px;
+        width: 320px;
+        background: url(http://www.jqweui.cn/assets/img/status-bar.png);
+        background-repeat: no-repeat;
+        background-size: 100%;
+        top: 117px;
+        position: absolute;
+        z-index: 99;
+        left: 37px;
+    }
+
+    .window {
+        position: absolute;
+        top: 137px;
+        left: 37px;
+        width: 321px;
+        height: 549px;
+        overflow: hidden;
+        font-size: .85rem;
+        line-height: 1.05rem;
+        background: #fbfbfb;
+        overflow-y: auto;
+    }
+
+    #qrcode-btn {
+        width: 67px;
+        height: 68px;
+        bottom: 39px;
+        position: absolute;
+        left: 50%;
+        margin-left: -33.5px;
+        cursor: pointer;
+        background-image: url(http://www.jqweui.cn/assets/img/home-btn.png);
+        background-size: 100%;
+        background-repeat: no-repeat;
+        animation: spin 4s linear infinite;
+        transform-origin: 50% 50%;
+    }
+
+    .w-e-toolbar .w-e-menu {
+        position: relative;
+        text-align: center;
+        padding: 5px 15px;
+        cursor: pointer;
+    }
+</style>
+@}

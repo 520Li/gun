@@ -41,4 +41,15 @@ public interface ArticleService {
      */
     void edit(Article article);
 
+    /**
+     * 新增电子书
+     */
+    void insertPdf(Article article);
+
+    /**
+     * 编辑电子书
+     */
+    void editPdf(Article article);
+
+
 }

@@ -25,7 +25,7 @@ public class QueryVo {
 
 
     /**
-     * index / office
+     * index / office / read
      */
     private String type;//菜单分类
     private String arType; //文章板块分类
