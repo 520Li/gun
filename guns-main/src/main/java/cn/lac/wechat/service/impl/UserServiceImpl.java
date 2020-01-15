@@ -191,6 +191,7 @@ public class UserServiceImpl implements UserService {
         User user = (User) session.getAttribute("login_user");
         appeal.setCreateTime(new Date());
         appeal.setAppealUser(user.getUserId());
+        appeal.setAppealTel(user.getUserIphone());
         appealMapper.insert(appeal);
     }
 

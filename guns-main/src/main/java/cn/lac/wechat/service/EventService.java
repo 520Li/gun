@@ -13,4 +13,6 @@ public interface EventService {
     void insert(Event event);
 
     void edit(Event event);
+
+    LayerVo findPersonByEvent(String eventId, QueryVo vo);
 }

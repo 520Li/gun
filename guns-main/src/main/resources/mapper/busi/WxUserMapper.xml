@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lac.wechat.dao.WxUserMapper">
+
+    <select id="selectByEvent" resultType="cn.lac.wechat.domain.User">
+        SELECT
+            b.`user_name` userName,
+            b.`user_iphone` userIphone,
+            (CASE a.`sign` WHEN '01' THEN '未签到'
+            WHEN '02' THEN '已签到' ELSE '' END) userPath,
+            a.`time` createTime
+         FROM zly_event_user a
+        LEFT JOIN zly_user b ON a.`user_id` = b.`user_id`
+        WHERE
+        a.`event_id` = #{eventId,jdbcType=VARCHAR}
+        <if test="vo.person != null and vo.person !='' ">
+           and b.user_name like concat('%',#{vo.person,jdbcType=VARCHAR},'%')
+        </if>
+        order by a.time desc
+        <if test="vo.page != null and vo.limit != null">
+            limit #{vo.page,jdbcType=INTEGER},#{vo.limit,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="countByEvent" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM zly_event_user a
+        LEFT JOIN zly_user b ON a.`user_id` = b.`user_id`
+        WHERE
+        a.`event_id` = #{eventId,jdbcType=VARCHAR}
+        <if test="vo.person != null and vo.person !='' ">
+            and b.user_name like concat('%',#{vo.person,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+</mapper>

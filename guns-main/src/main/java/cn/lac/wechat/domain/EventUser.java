@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * 活动 -- 用户关联 类 <br/>
  *
@@ -28,5 +30,6 @@ public class EventUser {
     private String userId;
     private String sign;
     private Integer signNum;
+    private Date time;
 
 }

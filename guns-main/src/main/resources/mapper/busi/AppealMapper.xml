@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lac.wechat.dao.AppealMapper">
+
+    <select id="selectByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="cn.lac.wechat.domain.Appeal">
+        select
+        a.appeal_id appealId,
+        a.appeal_type appealType,
+        b.user_name appealUser,
+        a.appeal_tel appealTel,
+        a.appeal_local appealLocal,
+        a.appeal_degree appealDegree,
+        a.appeal_text appealText,
+        a.appeal_path appealPath,
+        a.create_time createTime,
+        a.update_time updateTime,
+        (case a.appeal_status
+        when '01' then '未受理'
+        when '02' then '待核实'
+        when '03' then '待结案'
+        when '04' then '已结案'
+        else '' end) appealStatus,
+        a.acceptor_user acceptorUser
+        from zly_appeal a
+        left join zly_user b on a.appeal_user = b.user_id
+        where 1=1
+        <if test="appealUser !=null and appealUser != '' ">
+            and b.user_name like concat('%',#{appealUser,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="appealType !=null and appealType != '' ">
+            and a.appeal_type = #{appealType,jdbcType=VARCHAR}
+        </if>
+        <if test="appealStatus !=null and appealStatus != '' ">
+            and a.appeal_status = #{appealStatus,jdbcType=VARCHAR}
+        </if>
+        order by a.create_time desc
+        <if test="page!=null and limit != null">
+            limit #{page,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="countByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="java.lang.Integer">
+        select
+        count(1)
+        from zly_appeal a
+        left join zly_user b on a.appeal_user = b.user_id
+        where 1=1
+        <if test="appealUser !=null and appealUser != '' ">
+            and b.user_name like concat('%',#{appealUser,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="appealType !=null and appealType != '' ">
+            and a.appeal_type = #{appealType,jdbcType=VARCHAR}
+        </if>
+        <if test="appealStatus !=null and appealStatus != '' ">
+            and a.appeal_status = #{appealStatus,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <select id="findById" parameterType="java.lang.String" resultType="cn.lac.wechat.domain.Appeal">
+        select
+        a.appeal_id appealId,
+        a.appeal_type appealType,
+        b.user_name appealUser,
+        a.appeal_tel appealTel,
+        a.appeal_local appealLocal,
+        a.appeal_degree appealDegree,
+        a.appeal_text appealText,
+        a.appeal_path appealPath,
+        a.create_time createTime,
+        a.update_time updateTime,
+         (case a.appeal_status
+        when '01' then '未受理'
+        when '02' then '待核实'
+        when '03' then '待结案'
+        when '04' then '已结案'
+        else '' end) appealStatus,
+        a.acceptor_user acceptorUser
+        from zly_appeal a
+        left join zly_user b on a.appeal_user = b.user_id
+        where a.appeal_id = #{appealId,jdbcType=VARCHAR}
+    </select>
+</mapper>

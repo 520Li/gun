@@ -88,5 +88,14 @@ public class EventController {
         return new Result(true, "编辑成功！");
     }
 
+    /**
+     * 人员名单页面
+     */
+    @GetMapping("/person_list")
+    @ResponseBody
+    public LayerVo personList(String eventId, QueryVo vo) {
+        return eventService.findPersonByEvent(eventId, vo);
+    }
+
 
 }

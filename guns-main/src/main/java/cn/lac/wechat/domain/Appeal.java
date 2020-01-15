@@ -19,6 +19,7 @@ public class Appeal {
     private String appealId;
     private String appealType;
     private String appealUser;
+    private String appealTel;
     private String appealLocal;
     private String appealDegree;
     private String appealText;

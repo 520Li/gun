@@ -1,0 +1,75 @@
+@layout("/common/_container.html",{js:["/js/admin/appeal/appeal.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">事件举报</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input id="appealUser" class="layui-input" type="text" placeholder="举报人"/>
+                            </div>
+                            <div class="layui-inline">
+                                <select id="appealType" >
+                                    <option value="">选择类型</option>
+                                    <option value="消防隐患">消防隐患</option>
+                                    <option value="环境卫生隐患">环境卫生隐患</option>
+                                    <option value="治安隐患">治安隐患</option>
+                                </select>
+                            </div>
+                            <div class="layui-inline">
+                                <select id="appealStatus" >
+                                    <option value="">选择状态</option>
+                                    <option value="01">未受理</option>
+                                    <option value="02">待核实</option>
+                                    <option value="03">待结案</option>
+                                </select>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table" id="appealTable" lay-filter="appealTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/html" id="tableBarAppeal">
+    @if(shiro.hasPermission("/appeal/dis")){
+    <a class="layui-btn layui-btn-xs" lay-event="dis">详细</a>
+    @}
+    @if(shiro.hasPermission("/appeal/accept")){
+    {{#  if(d.appealStatus == '未受理'){ }}
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="accept">受理</a>
+    {{#  } }}
+    @}
+    @if(shiro.hasPermission("/appeal/verify")){
+    {{#  if(d.appealStatus == '待核实'){ }}
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="verify">核实</a>
+    {{#  } }}
+    @}
+    @if(shiro.hasPermission("/appeal/final")){
+    {{#  if(d.appealStatus == '待结案'){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="final">结案</a>
+    {{#  } }}
+    @}
+
+</script>
+
+
+
+@}
+
+

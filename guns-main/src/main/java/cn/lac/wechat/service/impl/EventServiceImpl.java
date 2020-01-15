@@ -1,7 +1,9 @@
 package cn.lac.wechat.service.impl;
 
 import cn.lac.wechat.dao.EventMapper;
+import cn.lac.wechat.dao.WxUserMapper;
 import cn.lac.wechat.domain.Event;
+import cn.lac.wechat.domain.User;
 import cn.lac.wechat.service.EventService;
 import cn.lac.wechat.vo.LayerVo;
 import cn.lac.wechat.vo.QueryVo;
@@ -19,6 +21,8 @@ public class EventServiceImpl implements EventService {
 
     @Autowired
     private EventMapper eventMapper;
+    @Autowired
+    private WxUserMapper wxUserMapper;
 
 
     /**
@@ -66,5 +70,18 @@ public class EventServiceImpl implements EventService {
         event.setUpdateTime(new Date());
         event.setEventText(event.getEventText().trim());
         eventMapper.updateById(event);
+    }
+
+    /**
+     * 获取活动报名人员
+     */
+    @Override
+    public LayerVo findPersonByEvent(String eventId, QueryVo vo) {
+        if (!ToolUtil.isAllEmpty(vo.getPage(), vo.getLimit())) {
+            vo.setPage((vo.getPage() - 1) * vo.getLimit());
+        }
+        List<User> list = wxUserMapper.selectByEvent(eventId, vo);
+        int count = wxUserMapper.countByEvent(eventId, vo);
+        return new LayerVo(count, list);
     }
 }

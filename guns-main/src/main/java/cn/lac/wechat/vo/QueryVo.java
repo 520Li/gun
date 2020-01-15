@@ -41,7 +41,47 @@ public class QueryVo {
      * event
      */
     private String eventName; //活动名称
+    private String person;//报名人员姓名
 
+    /**
+     * appeal
+     */
+    private String appealUser;//事件举报人
+    private String appealType;//事件举报类型
+    private String appealStatus;//事件举报状态
+
+
+    public String getAppealUser() {
+        return appealUser;
+    }
+
+    public void setAppealUser(String appealUser) {
+        this.appealUser = appealUser;
+    }
+
+    public String getAppealType() {
+        return appealType;
+    }
+
+    public void setAppealType(String appealType) {
+        this.appealType = appealType;
+    }
+
+    public String getAppealStatus() {
+        return appealStatus;
+    }
+
+    public void setAppealStatus(String appealStatus) {
+        this.appealStatus = appealStatus;
+    }
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
+    }
 
     public String getEventName() {
         return eventName;
