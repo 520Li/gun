@@ -1,0 +1,66 @@
+@layout("/common/_form.html",{js:["/js/common/map.js"]}){
+<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css"/>
+<script type="text/javascript"
+        src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+
+<!-- 地图模块  -->
+<div id="map">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <div class="mapInput">
+            <div class="layui-form-item">
+                <div class="layui-inline" >
+                    <div class="layui-input-inline">
+                        <input id="searchplace" style="width: 190px;" class="layui-input" placeholder="输入搜索关键字"
+                               value="${local!}"/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div>
+                        <input type="button" class="layui-btn" id="s_p_search_btn" style="width: 80px;"
+                               iconcls="icon-search" value="搜索"/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">描述地址：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="address" name="address" style="width: 200px"
+                               readonly="readonly" value=""/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">经度：</label>
+                    <div class="layui-input-inline" style="width: 99px;">
+                        <input type="text" class="layui-input" id="lng" name="lng" style="width: 100px"
+                               readonly="readonly" value=""/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">纬度：</label>
+                    <div class="layui-input-inline" style="width: 99px;">
+                        <input type="text" class="layui-input" id="lat" name="lat" style="width: 100px"
+                               readonly="readonly" value=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="searchlist"
+             style="width: 350px; height: 560px; margin-right:10px; margin-left: 10px; float:left;"></div>
+        <div style="width:650px;height:560px;border:none; float:left;" id="allmap"></div>
+        <div style="clear:both;"></div>
+    </div>
+    <div class="form-group-bottom text-center" style="z-index: 10100">
+        <button type="button" class="layui-btn" id="onlog">&emsp;确认&emsp;</button>
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+    </div>
+</div>
+
+
+<style>
+    #allmap {
+        height: 500px;
+        width: 100%;
+        overflow: hidden;
+    }
+</style>
+@}

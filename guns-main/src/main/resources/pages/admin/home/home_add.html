@@ -1,0 +1,89 @@
+@layout("/common/_form.html",{js:["/js/admin/home/home_add.js","/js/wangEditor.min.js"]}){
+<div>
+    <form class="layui-form" id="homeForm" lay-filter="homeForm">
+        <div class="layui-fluid" style="padding-bottom: 75px;">
+            <div class="layui-card" style="height: 850px;">
+                <div class="layui-card-header">基本信息</div>
+                <div class="layui-card-body">
+                    <div class="layui-form-item layui-row">
+                        <input name="roleId" type="hidden"/>
+                        <div class="layui-inline layui-col-md12">
+                            <label class="layui-form-label">资源名称<span style="color: red;">*</span></label>
+                            <div class="layui-input-block">
+                                <input id="homeName" name="homeName" placeholder="请输入资源名称" type="text"
+                                       class="layui-input"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-col-md12">
+                            <label class="layui-form-label">资源类别<span style="color: red;">*</span></label>
+                            <div class="layui-input-block">
+                                <select id="homeType" name="homeType" type="text" class="layui-input"
+                                        lay-verify="required" required autocomplete="off">
+                                    <option value="CY">餐饮</option>
+                                    <option value="WY">物业</option>
+                                    <option value="XX">休闲</option>
+                                    <option value="SH">生活</option>
+                                    <option value="YL">医疗</option>
+                                    <option value="JR">金融</option>
+                                    <option value="JY">教育</option>
+                                    <option value="ZW">政务</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-col-md12">
+                            <label class="layui-form-label">资源地址<span style="color: red;">*</span></label>
+                            <div class="layui-input-block">
+                                <label id="showMap" style="cursor: pointer">
+                                <input id="homeLocal" name="homeLocal" placeholder="请选择资源地址" type="text"
+                                       class="layui-input"
+                                       lay-verify="required" required disabled/>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-col-md12">
+                            <label class="layui-form-label">主营范围<span style="color: red;">*</span></label>
+                            <div class="layui-input-block">
+                                <input id="homeDetail" name="homeDetail" placeholder="请输入主营范围" type="text"
+                                       class="layui-input"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-col-md12">
+                            <label class="layui-form-label">电话号码<span style="color: red;">*</span></label>
+                            <div class="layui-input-block">
+                                <input id="homeTel" name="homeTel" placeholder="请输入电话号码" type="tel" class="layui-input"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-col-md12">
+                            <label class="layui-form-label">资源图片<span style="color: red;">*</span></label>
+                            <div class="layui-input-block">
+                                <input id="homePath" name="homePath" type="text" class="layui-input"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div id="editor" style="margin-left: 30px;margin-top:60px">
+                            <p>请输入资源详细介绍</p>
+                        </div>
+                        <textarea id="homeText" name="homeText" style="display: none;"></textarea>
+                        <input type="text" name="homeLng" style="display: none;" >
+                        <input type="text" name="homeLat" style="display: none;" >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group-bottom text-center" style="z-index: 10100">
+            <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+            <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+        </div>
+    </form>
+</div>
+
+
+<style>
+    .layui-input{
+        text-align: center;
+    }
+</style>
+@}
