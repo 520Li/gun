@@ -50,6 +50,19 @@ public class QueryVo {
     private String appealType;//事件举报类型
     private String appealStatus;//事件举报状态
 
+    /**
+     * home
+     */
+    private String homeName; //资源名称
+
+
+    public String getHomeName() {
+        return homeName;
+    }
+
+    public void setHomeName(String homeName) {
+        this.homeName = homeName;
+    }
 
     public String getAppealUser() {
         return appealUser;

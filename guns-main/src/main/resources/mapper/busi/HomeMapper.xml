@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lac.wechat.dao.HomeMapper">
+
+    <select id="selectByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="cn.lac.wechat.domain.Home">
+        select
+          home_id,
+          home_name,
+        home_local,
+        (case home_type when 'CY' then '餐饮'
+        when 'WY' then '物业'
+        when 'XX' then '休闲'
+        when 'SH' then '生活'
+        when 'YL' then '医疗'
+        when 'JR' then '金融'
+        when 'JY' then '教育'
+        when 'ZW' then '政务'
+        else '' end
+        ) home_type,
+        home_tel,
+        home_detail,
+        home_text,
+        home_path,
+        home_time,
+        home_state,
+        home_lat,
+        home_lng,
+        create_time,
+        update_time
+        from zly_home a
+        where 1=1
+        <if test="homeName !=null and homeName != '' ">
+            and home_name like concat('%',#{homeName,jdbcType=VARCHAR},'%')
+        </if>
+        order by create_time desc
+        <if test="page!=null and limit != null">
+            limit #{page,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="countByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="java.lang.Integer">
+        select
+        count(1)
+        from zly_home a
+        where 1=1
+        <if test="homeName !=null and homeName != '' ">
+            and home_name like concat('%',#{homeName,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+    <select id="findById" parameterType="java.lang.String" resultType="cn.lac.wechat.domain.Home">
+        select
+          home_id,
+          home_name,
+        home_local,
+        (case home_type when 'CY' then '餐饮'
+        when 'WY' then '物业'
+        when 'XX' then '休闲'
+        when 'SH' then '生活'
+        when 'YL' then '医疗'
+        when 'JR' then '金融'
+        when 'JY' then '教育'
+        when 'ZW' then '政务'
+        else '' end
+        ) home_type,
+        home_tel,
+        home_detail,
+        home_text,
+        home_path,
+        home_time,
+        home_state,
+        home_lat,
+        home_lng,
+        create_time,
+        update_time
+        from zly_home
+        where home_id = #{homeId,jdbcType=VARCHAR}
+    </select>
+</mapper>

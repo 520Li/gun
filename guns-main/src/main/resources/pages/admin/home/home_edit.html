@@ -1,6 +1,6 @@
-@layout("/common/_form.html",{js:["/js/admin/office/office_edit.js"]}){
+@layout("/common/_form.html",{js:["/js/admin/home/home_edit.js"]}){
 <div style="width: 58%;float: left">
-    <form class="layui-form" id="officeForm" lay-filter="officeForm">
+    <form class="layui-form" id="indexForm" lay-filter="indexForm">
         <div class="layui-fluid" style="padding-bottom: 75px;">
             <div class="layui-card" style="height: 750px;">
                 <div class="layui-card-header">基本信息</div>
@@ -19,12 +19,10 @@
                             <label class="layui-form-label">文章板块<span style="color: red;">*</span></label>
                             <div class="layui-input-block">
                                 <select id="arType" name="arType" type="text" class="layui-input"
-                                        lay-verify="required" required autocomplete="off">
-                                    <option value="YLYX">一老一小</option>
-                                    <option value="LNR">老年人</option>
-                                    <option value="JS">计生</option>
-                                    <option value="JZZ">居住证</option>
-                                    <option value="CJR">残疾人</option>
+                                        lay-verify="required" required autocomplete="off" >
+                                    <option value="TZTG">通知通告</option>
+                                    <option value="SQJS">社区介绍</option>
+                                    <option value="SQFC">社区风采</option>
                                 </select>
                             </div>
                         </div>
