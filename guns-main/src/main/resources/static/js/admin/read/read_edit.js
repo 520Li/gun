@@ -39,7 +39,8 @@ layui.use(['layer', 'form', 'admin', 'ax', 'upload'], function () {
 
     // 表单提交事件
     form.on('submit(btnSubmitR)', function (data) {
-        if( $('input:radio:checked').val()==='01' && $("#arText").val().trim()===''){
+        var text = $("#arText").val().trim();
+        if ($('input:radio:checked').val() === '01' && (text === '<p><br></p>' || text === '')) {
             layer.msg("文本内容不能为空");
             return false;
         }

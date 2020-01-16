@@ -130,8 +130,6 @@ public class ArticleServiceImpl implements ArticleService {
         article.setArType("DZYL");
         if (article.getPdfType().equals("01")) {
             createPdf(article);
-        } else {
-            article.setArText("");
         }
         articleMapper.insert(article);
     }
@@ -142,8 +140,6 @@ public class ArticleServiceImpl implements ArticleService {
         article.setArText(article.getArText().trim());
         if (article.getPdfType().equals("01")) {
             createPdf(article);
-        } else {
-            article.setArText("");
         }
         articleMapper.updateById(article);
     }

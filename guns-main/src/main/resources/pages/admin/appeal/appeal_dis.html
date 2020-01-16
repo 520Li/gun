@@ -1,4 +1,4 @@
-@layout("/common/_form.html",{js:["/js/admin/appoint/appoint_dis.js"]}){
+@layout("/common/_form.html",{js:["/js/admin/appeal/appeal_dis.js"]}){
 
 <form class="layui-form" id="roleForm" lay-filter="roleForm">
     <div class="layui-fluid" style="padding-bottom: 75px;">
@@ -10,33 +10,34 @@
                     <div class="layui-inline layui-col-md12">
                         <label class="layui-form-label">举报人</label>
                         <div class="layui-input-block">
-                            <input  type="text" class="layui-input" disabled value="${appeal.appealUser!}"/>
+                            <input type="text" class="layui-input" disabled value="${appeal.appealUser!}"/>
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md12">
                         <label class="layui-form-label">事件类型</label>
                         <div class="layui-input-block">
-                            <input  type="text" class="layui-input" disabled value="${appeal.appealType!}"/>
+                            <input type="text" class="layui-input" disabled value="${appeal.appealType!}"/>
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md12">
                         <label class="layui-form-label">事件地址</label>
                         <div class="layui-input-block">
-                            <input  type="text" class="layui-input" disabled value="${appeal.appealLocal!}"/>
+                            <input type="text" class="layui-input" disabled value="${appeal.appealLocal!}"/>
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md12">
                         <label class="layui-form-label">举报时间</label>
                         <div class="layui-input-block">
-                            <input  type="text" class="layui-input" disabled value="${appeal.createTime!,dateFormat='yyyy年MM月dd HH:mm'}"/>
+                            <input type="text" class="layui-input" disabled
+                                   value="${appeal.createTime!,dateFormat='yyyy年MM月dd HH:mm'}"/>
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md12">
-                        <div class="layui-carousel" id="image">
+                        <div class="layui-carousel" id="image" style="margin-left: 150px;">
                             <div carousel-item="">
-                                @ var images[] = appeal.appealPath.split(",");
+                                @ var images = strutil.split(appeal.appealPath,",");
                                 @ for(var img in images){
-                                <div><img src="${img}"></div>
+                                <div><img src="${img}" width="300px" height="180px"></div>
                                 @}
                             </div>
                         </div>
@@ -44,7 +45,7 @@
                     <div class="layui-inline layui-col-md12">
                         <label class="layui-form-label">事件描述</label>
                         <div class="layui-input-block">
-                            <textarea  type="text" class="layui-textarea" disabled >
+                            <textarea type="text" class="layui-textarea" disabled>
                                 ${appeal.appealText!}
                             </textarea>
                         </div>
@@ -53,19 +54,22 @@
                     <div class="layui-inline layui-col-md12">
                         <label class="layui-form-label">处理人<span style="color: red;">*</span></label>
                         <div class="layui-input-block">
-                            <input id="applyUser" name="applyUser"   type="text" class="layui-input" lay-verify="required" required value="${appoint.applyUser!}"/>
+                            <input id="applyUser" name="applyUser" type="text" class="layui-input" lay-verify="required"
+                                   required value="${appoint.applyUser!}"/>
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md12">
                         <label class="layui-form-label">联系方式<span style="color: red;">*</span></label>
                         <div class="layui-input-block">
-                            <input id="applyIphone" name="applyIphone"  type="tel" class="layui-input" lay-verify="required" required value="${appoint.applyIphone!}"/>
+                            <input id="applyIphone" name="applyIphone" type="tel" class="layui-input"
+                                   lay-verify="required" required value="${appoint.applyIphone!}"/>
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md12">
                         <label class="layui-form-label">处理原因<span style="color: red;">*</span></label>
                         <div class="layui-input-block">
-                            <textarea id="applyText"  name="applyText" type="text" class="layui-textarea" lay-verify="required" required >${appoint.applyText!}</textarea>
+                            <textarea id="applyText" name="applyText" type="text" class="layui-textarea"
+                                      lay-verify="required" required>${appoint.applyText!}</textarea>
                         </div>
                     </div>
                 </div>
@@ -74,15 +78,16 @@
     </div>
 
 
-
 </form>
 <style>
     .layui-input {
         text-align: center;
     }
+
     .layui-input-block {
         margin-left: 150px;
     }
+
     .layui-form-label {
         width: 100px;
     }

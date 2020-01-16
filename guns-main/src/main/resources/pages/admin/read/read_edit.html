@@ -1,5 +1,5 @@
 @layout("/common/_form.html",{js:["/js/admin/read/read_edit.js"]}){
-<div >
+<div>
     <form class="layui-form" id="roleForm" lay-filter="roleForm">
         <div class="layui-fluid" style="padding-bottom: 75px;">
             <div class="layui-card">
@@ -10,8 +10,8 @@
                         <div class="layui-inline layui-col-md12">
                             <label class="layui-form-label">书名<span style="color: red;">*</span></label>
                             <div class="layui-input-block">
-                                <input id="arTitle"  name="arTitle" placeholder="请输入书名" type="text" class="layui-input"
-                                       lay-verify="required" required  value="${article.arTitle}"/>
+                                <input id="arTitle" name="arTitle" placeholder="请输入书名" type="text" class="layui-input"
+                                       lay-verify="required" required value="${article.arTitle!}"/>
                             </div>
                         </div>
                         <div class="layui-inline layui-col-md12">
@@ -70,14 +70,14 @@
 <script type="text/javascript" src="/js/wangEditor.min.js"></script>
 <script type="text/javascript">
     $("#arMajorType").val('${article.arMajorType!}');
-    $("input[name=pdfType][value='${article.pdfType!}']").attr("checked",true);
-    @if(article.pdfType == '01'){
+    $("input[name=pdfType][value='${article.pdfType!}']").attr("checked", true);
+    @if (article.pdfType == '01') {
         $("#editor").show();
         $("#upload").hide();
-    @}else if(article.pdfType == '02'){
+    @} else if (article.pdfType == '02') {
         $("#editor").hide();
         $("#upload").show();
-        $('#uploadDemoView').removeClass('layui-hide').find('img').attr('src','${article.arPath!}');
+        $('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', '${article.arPath!}');
         $('#arPath').val('${article.arPath!}');
         $('#up').hide();
     @}
@@ -88,12 +88,10 @@
         $("#arText").val(html);
     };
     editor.create();
-    @if(article.arText != null && article.arText != ''){
-        editor.txt.html('${article.arText!}');
-        $("#arText").val(editor.txt.html());
-    @}
+    editor.txt.html('${article.arText!}');
+    $("#arText").val(editor.txt.html());
 
-    $(".w-e-text-container").css('height','400');
+    $(".w-e-text-container").css('height', '400');
 
 
 </script>

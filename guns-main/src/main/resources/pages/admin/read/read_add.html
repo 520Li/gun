@@ -71,13 +71,9 @@
     var E = window.wangEditor;
     var editor = new E('#editor');
     editor.customConfig.onchange = function (html) {
-        /*var json = editor.txt.getJSON();
-        var jsonStr = JSON.stringify(json);*/
         $("#arText").val(html);
-      /*  $("#arTextJson").val(jsonStr);*/
     };
     editor.create();
-    /*$("#arText").val(editor.txt.html());*/
     $(".w-e-text-container").css('height','400');
 
 

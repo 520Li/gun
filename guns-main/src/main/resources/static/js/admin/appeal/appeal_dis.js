@@ -3,12 +3,12 @@ layui.use(['carousel', 'form'], function(){
 
 
     //图片轮播
-    carousel.render({
+   /* carousel.render({
         elem: '#image'
-        ,width: '778px'
-        ,height: '440px'
+        ,width: '300px'
+        ,height: '200px'
         ,interval: 5000
-    });
+    });*/
 
 
 
