@@ -58,17 +58,29 @@
                         </div>
                         <div class="layui-inline layui-col-md12">
                             <label class="layui-form-label">资源图片<span style="color: red;">*</span></label>
-                            <div class="layui-input-block">
-                                <input id="homePath" name="homePath" type="text" class="layui-input"
-                                       lay-verify="required" required/>
+                            <div class="layui-upload-drag" id="upload" style="margin-left: 30px;">
+                                <div id="up">
+                                    <i class="layui-icon"></i>
+                                    <p>
+                                        点击上传，或将文件拖拽到此处<br/>
+                                        文件大小限制 1MB<br/>
+                                        文件类型限制 pdf、jpg、png、jepg
+                                    </p>
+                                </div>
+                                <div class="layui-hide" id="uploadDemoView">
+                                    <hr>
+                                    <img src="" alt="" style="max-width: 196px">
+                                </div>
+                                <input type="text" style="display: none" id="homePath" name="homePath"/>
                             </div>
                         </div>
+
                         <div id="editor" style="margin-left: 30px;margin-top:60px">
                             <p>请输入资源详细介绍</p>
                         </div>
                         <textarea id="homeText" name="homeText" style="display: none;"></textarea>
-                        <input type="text" name="homeLng" style="display: none;" >
-                        <input type="text" name="homeLat" style="display: none;" >
+                        <input type="text" id="homeLng" name="homeLng" style="display: none;" >
+                        <input type="text" id="homeLat" name="homeLat" style="display: none;" >
                     </div>
                 </div>
             </div>

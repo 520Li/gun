@@ -59,7 +59,7 @@ layui.define(['jquery', 'layer', 'admin', 'table', 'ax', 'form'], function (expo
             //宽度计算
             var width = '1100px';
             if (param.width) {
-                width = param.width +'px';
+                width = param.width + 'px';
             }
 
             //计算高度
@@ -81,6 +81,14 @@ layui.define(['jquery', 'layer', 'admin', 'table', 'ax', 'form'], function (expo
             admin.putTempData('formOk', false);
             param.end = function () {
                 layer.closeAll('tips');
+
+                //地图页面传值
+                if (param.mapId) {
+                    $("#homeLocal").val(admin.getTempData('addr'));
+                    $("#homeLng").val(admin.getTempData('lng'));
+                    $("#homeLat").val(admin.getTempData('lat'));
+                }
+
                 if (param.tableId) {
                     admin.getTempData('formOk') && table.reload(param.tableId);
                 }
@@ -88,6 +96,8 @@ layui.define(['jquery', 'layer', 'admin', 'table', 'ax', 'form'], function (expo
                 if (param.endCallback) {
                     admin.getTempData('formOk') && param.endCallback();
                 }
+
+
             };
 
             if (!param.fixed) {

@@ -72,14 +72,10 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
 
 
     $("#onlog").click(function () {
-        /*parent.data = {
-            addr: $("#address").val(),
-            lng: $("#lng").val(),
-            lat: $("#lat").val()
-        };*/
-        parent.$("input[name=homeLocal]").val($("#address").val());//资源地址
-        parent.$("input[name=homeLng]").val($("#lng").val());//经度
-        parent.$("input[name=homeLat]").val($("#lat").val());//纬度
+        //传给上个页面
+        admin.putTempData('addr', $("#address").val());
+        admin.putTempData('lng', $("#lng").val());
+        admin.putTempData('lat', $("#lat").val());
         //关掉对话框
         admin.closeThisDialog();
     });

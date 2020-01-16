@@ -1,19 +1,16 @@
 /**
- * 发布文章对话框
+ * 发布资源对话框
  */
-var data = {
-    addr: "",
-    lng: "",
-    lat: ""
-}
 
-
-layui.use(['layer', 'form', 'admin', 'ax'], function () {
+layui.use(['layer', 'form', 'admin', 'ax', 'func', 'upload'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
     var layer = layui.layer;
+    var func = layui.func;
+    var upload = layui.upload;
+
 
     var E = window.wangEditor;
     var editor = new E('#editor');
@@ -23,27 +20,33 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
     editor.create();
 
     $("#showMap").click(function () {
-        /*$("#searchplace").val($("#homeLocal").val().trim());
-        $("#s_p_search_btn").click();*/
-        parent.layer.open({
-            type: 2,
+        func.open({
+            height: 600,
             title: '选择地址',
-            area: ['1100px', '600px'], //宽高
-            fix: false,
-            maxmin: true,
             content: Feng.ctxPath + '/admin/home/map?local=' + $("#homeLocal").val().trim(),
-            end: function () {
-                /*$("input[name=homeLocal]").val(data.attr);//资源地址
-                $("input[name=homeLng]").val(data.lng);//经度
-                $("input[name=homeLat]").val(data.lat);//纬度*/
-            }
+            mapId: 'home'
         });
+    });
+
+    //拖拽上传
+    upload.render({
+        elem: '#upload'
+        , url: Feng.ctxPath + '/admin/file/file.do?path=home'
+        , accept: 'file' //普通文件
+        , exts: 'pdf|jpg|jepg|png'
+        , size: 1000 * 1 //限制文件大小，单位 KB
+        , done: function (res) {
+            Feng.success("上传成功！");
+            $('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.data);
+            $('#up').hide();
+            $('#homePath').val(res.data);
+        }
     });
 
 
     // 表单提交事件
     form.on('submit(btnSubmit)', function (data) {
-        var ajax = new $ax(Feng.ctxPath + "/admin/index/add", function (data) {
+        var ajax = new $ax(Feng.ctxPath + "/admin/home/add", function (data) {
             Feng.success("添加成功！");
 
             //传给上个页面，刷新table用

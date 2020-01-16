@@ -40,9 +40,9 @@ public class FileController {
         try {
             String oldName = file.getOriginalFilename();
             String suffix = oldName.substring(oldName.lastIndexOf("."));
-            if (!suffix.equalsIgnoreCase(".pdf")) {
+            /*if (!suffix.equalsIgnoreCase(".pdf")) {
                 return new Result(false, "只能上传 pdf 格式");
-            }
+            }*/
             //后缀名
             String newName = UUID.randomUUID().toString().replace("-", "").toLowerCase() + suffix;
             outChannel = FileChannel.open(Paths.get(this.getClass().getClassLoader().getResource("").toString().replace("file:/", "") + "/static/images/" + path + "/" + newName),

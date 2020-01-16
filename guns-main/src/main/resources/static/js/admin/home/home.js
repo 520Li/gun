@@ -8,7 +8,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     var func = layui.func;
 
     /**
-     * 系统管理--角色管理
+     * 系统管理--
      */
     var Index = {
         tableId: "homeTable"  //表格id
@@ -41,7 +41,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     };
 
     /**
-     * 弹出添加角色
+     * 弹出添加资源
      */
     Index.openAddHome = function () {
         func.open({
@@ -53,7 +53,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     };
 
     /**
-     * 点击编辑角色
+     * 点击编辑资源
      *
      * @param data 点击按钮时候的行数据
      */
@@ -79,7 +79,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     };*/
 
     /**
-     * 点击删除角色
+     * 点击删除资源
      *
      * @param data 点击按钮时候的行数据
      */
