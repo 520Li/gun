@@ -2,7 +2,7 @@
 <div>
     <form class="layui-form" id="homeForm" lay-filter="homeForm">
         <div class="layui-fluid" style="padding-bottom: 75px;">
-            <div class="layui-card" style="height: 850px;">
+            <div class="layui-card" style="height: 1000px;">
                 <div class="layui-card-header">基本信息</div>
                 <div class="layui-card-body">
                     <div class="layui-form-item layui-row">
@@ -19,7 +19,7 @@
                             <label class="layui-form-label">资源类别<span style="color: red;">*</span></label>
                             <div class="layui-input-block">
                                 <select id="homeType" name="homeType" type="text" class="layui-input"
-                                        lay-verify="required" required autocomplete="off">
+                                        lay-verify="required" required autocomplete="off" selectVal="${home.homeType}">
                                     <option value="CY">餐饮</option>
                                     <option value="WY">物业</option>
                                     <option value="XX">休闲</option>
@@ -71,7 +71,7 @@
                                     <hr>
                                     <img src="${home.homePath!}" alt="" style="max-width: 196px">
                                 </div>
-                                <input type="text" style="display: none" id="homePath" name="homePath" value="${home.homePath}"/>
+                                <input type="text" style="display: none" id="homePath" name="homePath" value="${home.homePath!}"/>
                             </div>
                         </div>
 
@@ -92,13 +92,6 @@
         </div>
     </form>
 </div>
-<script>
-    $("#homeType").val('${home.homeType!}');
-    @if(home.homePath != null){
-        $("#up").hide();
-        $('#uploadDemoView').removeClass('layui-hide');
-    @}
-</script>
 
 
 <style>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lac.wechat.dao.BenefitMapper">
+
+    <select id="findByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="cn.lac.wechat.domain.Benefit">
+        select
+        bt_id,
+           b.user_name,
+        bt_name,
+        bt_time,
+           bt_path,
+           bt_state
+     from zly_benefit a
+        left join zly_user b on a.bt_user = b.user_id
+     where 1=1
+     <if test="btUser != null and btUser !='' ">
+         and b.user_name like concat('%',#{btUser,jdbcType=VARCHAR},'%')
+     </if>
+     <if test="btType != null and btType !='' ">
+         and  bt_name like concat('%',#{btType,jdbcType=VARCHAR},'%')
+     </if>
+        ORDER BY bt_time desc
+        <if test="page!=null and limit != null">
+            limit #{page,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="countByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="java.lang.Integer">
+        select
+       count(1)
+        from zly_benefit a
+        left join zly_user b on a.bt_user = b.user_id
+        where 1=1
+        <if test="btUser != null and btUser !='' ">
+           and b.user_name like concat('%',#{btUser,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="btType != null and btType !='' ">
+            and bt_name like concat('%',#{btType,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+</mapper>

@@ -32,4 +32,36 @@
             and b.user_name like concat('%',#{vo.person,jdbcType=VARCHAR},'%')
         </if>
     </select>
+
+
+
+
+    <select id="selectByVolunteer" resultType="cn.lac.wechat.domain.User">
+        SELECT
+            b.`user_name` userName,
+            b.`user_iphone` userIphone,
+            a.`create_time` createTime
+         FROM zly_volunteer_user a
+        LEFT JOIN zly_user b ON a.`user_id` = b.`user_id`
+        WHERE
+        a.`volunteer_id` = #{voId,jdbcType=VARCHAR}
+        <if test="vo.voer != null and vo.voer !='' ">
+           and b.user_name like concat('%',#{vo.voer,jdbcType=VARCHAR},'%')
+        </if>
+        order by a.`create_time` desc
+        <if test="vo.page != null and vo.limit != null">
+            limit #{vo.page,jdbcType=INTEGER},#{vo.limit,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="countByVolunteer" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM zly_volunteer_user a
+        LEFT JOIN zly_user b ON a.`user_id` = b.`user_id`
+        WHERE
+        a.`volunteer_id` = #{voId,jdbcType=VARCHAR}
+        <if test="vo.voer != null and vo.voer !='' ">
+            and b.user_name like concat('%',#{vo.voer,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
 </mapper>

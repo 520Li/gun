@@ -56,6 +56,79 @@ public class QueryVo {
     private String homeName; //资源名称
 
 
+    /**
+     * volunteer
+     */
+    private String voName;//志愿者活动名称
+    private String voer; //志愿者姓名
+
+
+    /**
+     * benefit
+     */
+    private String btUser; //公益人
+    private String btType;//公益名字
+    private String logGift; //兑换记录 - 兑换品名字
+    private String logName; // 兑换记录  - 兑换人名字
+    private String giftName; //兑换名
+
+
+    public String getBtUser() {
+        return btUser;
+    }
+
+    public void setBtUser(String btUser) {
+        this.btUser = btUser;
+    }
+
+    public String getBtType() {
+        return btType;
+    }
+
+    public void setBtType(String btType) {
+        this.btType = btType;
+    }
+
+    public String getLogGift() {
+        return logGift;
+    }
+
+    public void setLogGift(String logGift) {
+        this.logGift = logGift;
+    }
+
+    public String getLogName() {
+        return logName;
+    }
+
+    public void setLogName(String logName) {
+        this.logName = logName;
+    }
+
+    public String getGiftName() {
+        return giftName;
+    }
+
+    public void setGiftName(String giftName) {
+        this.giftName = giftName;
+    }
+
+    public String getVoer() {
+        return voer;
+    }
+
+    public void setVoer(String voer) {
+        this.voer = voer;
+    }
+
+    public String getVoName() {
+        return voName;
+    }
+
+    public void setVoName(String voName) {
+        this.voName = voName;
+    }
+
     public String getHomeName() {
         return homeName;
     }

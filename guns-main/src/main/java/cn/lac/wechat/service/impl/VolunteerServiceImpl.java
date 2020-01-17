@@ -3,11 +3,15 @@ package cn.lac.wechat.service.impl;
 import cn.lac.wechat.dao.WxUserMapper;
 import cn.lac.wechat.dao.VolunteerMapper;
 import cn.lac.wechat.dao.VolunteerUserMapper;
+import cn.lac.wechat.domain.Article;
 import cn.lac.wechat.domain.User;
 import cn.lac.wechat.domain.Volunteer;
 import cn.lac.wechat.domain.VolunteerUser;
 import cn.lac.wechat.service.VolunteerService;
+import cn.lac.wechat.vo.LayerVo;
+import cn.lac.wechat.vo.QueryVo;
 import cn.lac.wechat.wx.Result;
+import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +32,7 @@ public class VolunteerServiceImpl implements VolunteerService {
     @Autowired
     private VolunteerUserMapper volunteerUserMapper;
     @Autowired
-    private WxUserMapper userMapper;
+    private WxUserMapper wxUserMapper;
     @Autowired
     private HttpSession session;
 
@@ -59,5 +63,50 @@ public class VolunteerServiceImpl implements VolunteerService {
         user.setUserVolunteer("01");
         session.setAttribute("login_user", user);
         return new Result(true, "报名成功！");
+    }
+
+
+    @Override
+    public LayerVo getList(QueryVo vo) {
+        if (!ToolUtil.isAllEmpty(vo.getPage(), vo.getLimit())) {
+            vo.setPage((vo.getPage() - 1) * vo.getLimit());
+        }
+        List<Volunteer> list = volunteerMapper.selectByVo(vo);
+        int count = volunteerMapper.countByVo(vo);
+        return new LayerVo(count, list);
+    }
+
+    @Override
+    public Volunteer getById(String voId) {
+
+        return volunteerMapper.selectById(voId);
+    }
+
+    @Override
+    public void insert(Volunteer volunteer) {
+        volunteer.setCreateTime(new Date());
+        volunteerMapper.insert(volunteer);
+    }
+
+    @Override
+    public void edit(Volunteer volunteer) {
+        volunteer.setUpdateTime(new Date());
+        volunteerMapper.updateById(volunteer);
+    }
+
+    @Override
+    public void deleteById(String voId) {
+        volunteerMapper.deleteById(voId);
+    }
+
+    @Override
+    public LayerVo userList(QueryVo vo, String voId) {
+        if (!ToolUtil.isAllEmpty(vo.getPage(), vo.getLimit())) {
+            vo.setPage((vo.getPage() - 1) * vo.getLimit());
+        }
+        List<User> list = wxUserMapper.selectByVolunteer(voId, vo);
+        int count = wxUserMapper.countByVolunteer(voId, vo);
+
+        return new LayerVo(count, list);
     }
 }

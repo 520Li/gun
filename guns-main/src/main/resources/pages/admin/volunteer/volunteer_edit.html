@@ -1,0 +1,94 @@
+@layout("/common/_form.html",{js:["/js/admin/volunteer/volunteer_edit.js"]}){
+
+<form class="layui-form" id="volunteerForm" lay-filter="volunteerForm">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <div class="layui-card">
+            <div class="layui-card-header">基本信息</div>
+            <div class="layui-card-body">
+                <div class="layui-form-item layui-row">
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">活动名称<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input  type="text" class="layui-input" id="voName" name="voName"
+                                    placeholder="请输入活动名称" lay-verify="required" required  value="${volunteer.voName!}"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">咨询电话<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input  type="text" class="layui-input" id="voTel" name="voTel"
+                                    placeholder="请输入咨询电话" lay-verify="required" required value="${volunteer.voTel!}"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">活动时间<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input  type="text" class="layui-input" id="voTime" name="voTime"
+                                    placeholder="请输入活动时间范围" lay-verify="required" required value="${volunteer.voTime!}"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">活动地点<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input  type="text" class="layui-input" id="voLocal" name="voLocal"
+                                    placeholder="请输入活动地点" lay-verify="required" required value="${volunteer.voLocal!}"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">持续时间<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input  type="text" id="voDuration" name="voDuration" class="layui-input"
+                                    placeholder="请输入持续时间" lay-verify="required" required value="${volunteer.voDuration!}"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">活动图片<span style="color: red;">*</span></label>
+                        <div class="layui-upload-drag" id="upload" style="margin-left: 30px;">
+                            <div id="up">
+                                <i class="layui-icon"></i>
+                                <p>
+                                    点击上传，或将文件拖拽到此处<br/>
+                                    文件大小限制 1MB<br/>
+                                    文件类型限制 pdf、jpg、png、jepg
+                                </p>
+                            </div>
+                            <div class="layui-hide" id="uploadDemoView">
+                                <hr>
+                                <img src="${volunteer.voPath!}" alt="" style="max-width: 196px">
+                            </div>
+                            <input type="text" style="display: none" id="voPath" name="voPath" value="${volunteer.voPath!}"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label">详细说明<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <textarea  type="text" name="voText" id="voText"
+                                       placeholder="请输入活动详细说明" lay-verify="required" required  class="layui-textarea" >${volunteer.voText!}</textarea>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group-bottom text-center" style="z-index: 10100">
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+    </div>
+
+</form>
+<style>
+    .layui-input {
+        text-align: center;
+    }
+    .layui-input-block {
+        margin-left: 150px;
+    }
+    .layui-form-label {
+        width: 100px;
+    }
+</style>
+
+
+@}

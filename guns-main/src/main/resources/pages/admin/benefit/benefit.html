@@ -1,10 +1,125 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+@layout("/common/_container.html",{js:["/js/admin/benefit/benefit.js"]}){
 
-</body>
-</html>
+<div class="layui-body-header">
+    <span class="layui-body-header-title">公益积分</span>
+</div>
+<div class="layui-tab layui-tab-brief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">公益审核</li>
+        <li>兑换记录</li>
+        <li>兑换品管理</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input id="btUser" class="layui-input" type="text" placeholder="公益人"/>
+                            </div>
+                            <div class="layui-inline">
+                                <input id="btType" class="layui-input" type="text" placeholder="公益活动"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch1" class="layui-btn icon-btn"><i
+                                        class="layui-icon">&#xe615;</i>搜索
+                                </button>
+                                <!-- <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出
+                                 </button>-->
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table" id="btTable" lay-filter="btTable"></table>
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-tab-item">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input id="logGift" class="layui-input" type="text" placeholder="兑换品"/>
+                            </div>
+                            <div class="layui-inline">
+                                <input id="logName" class="layui-input" type="text" placeholder="兑换人"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch2" class="layui-btn icon-btn"><i
+                                        class="layui-icon">&#xe615;</i>搜索
+                                </button>
+                                <!-- <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出
+                                 </button>-->
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table" id="logTable" lay-filter="logTable"></table>
+                </div>
+            </div>
+        </div>
+        <div class="layui-tab-item">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input id="giftName" class="layui-input" type="text" placeholder="兑换品"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch3" class="layui-btn icon-btn"><i
+                                        class="layui-icon">&#xe615;</i>搜索
+                                </button>
+                                @if(shiro.hasPermission("/benefit/add")){
+                                <button id="btnAdd3" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加
+                                </button>
+                                @}
+                                <!-- <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出
+                                 </button>-->
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table" id="giftTable" lay-filter="giftTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/html" id="tableBarBt">
+    @if(shiro.hasPermission("/benefit/dis")){
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="dis">查看</a>
+    @}
+    @if(shiro.hasPermission("/benefit/pass")){
+    <a class="layui-btn  layui-btn-xs" lay-event="pass">通过</a>
+    @}
+    @if(shiro.hasPermission("/benefit/back")){
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="back">驳回</a>
+    @}
+</script>
+<script type="text/html" id="tableBarLog">
+    @if(shiro.hasPermission("/benefit/on")){
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="on">查看</a>
+    @}
+    @if(shiro.hasPermission("/benefit/accept")){
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="accept">受理</a>
+    @}
+    @if(shiro.hasPermission("/benefit/off")){
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="off">关闭</a>
+    @}
+</script>
+<script type="text/html" id="tableBarGift">
+    @if(shiro.hasPermission("/benefit/edit")){
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">编辑</a>
+    @}
+    @if(shiro.hasPermission("/benefit/delete")){
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+    @}
+</script>
+
+
+@}
+
+

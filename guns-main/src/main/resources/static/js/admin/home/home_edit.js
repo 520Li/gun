@@ -10,6 +10,15 @@ layui.use(['layer', 'form', 'admin', 'ax', 'func', 'upload'], function () {
     var layer = layui.layer;
     var func = layui.func;
     var upload = layui.upload;
+
+    $("#homeType").val($("#homeType").attr("selectVal"));
+    var path = $("#homePath").val();
+    if (path !== '') {
+        $("#up").hide();
+        $('#uploadDemoView').removeClass('layui-hide');
+    }
+
+
     form.render();
 
 
@@ -22,10 +31,15 @@ layui.use(['layer', 'form', 'admin', 'ax', 'func', 'upload'], function () {
     editor.txt.html($("#homeText").val());
 
     $("#showMap").click(function () {
+        var local = $("#homeLocal").val().trim();
+        var lng = $("#homeLng").val();
+        var lat = $("#homeLat").val();
+
+
         func.open({
             height: 600,
             title: '选择地址',
-            content: Feng.ctxPath + '/admin/home/map?local=' + $("#homeLocal").val().trim(),
+            content: Feng.ctxPath + '/admin/home/map?local=' + local + "&lng=" + lng + "&lat=" + lat,
             mapId: 'home'
         });
     });
@@ -44,10 +58,6 @@ layui.use(['layer', 'form', 'admin', 'ax', 'func', 'upload'], function () {
             $('#homePath').val(res.data);
         }
     });
-
-
-
-
 
 
     // 表单提交事件

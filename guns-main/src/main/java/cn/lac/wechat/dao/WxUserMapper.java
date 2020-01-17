@@ -18,4 +18,8 @@ public interface WxUserMapper extends BaseMapper<User> {
     List<User> selectByEvent(@Param("eventId") String eventId, @Param("vo") QueryVo vo);
 
     int countByEvent(@Param("eventId") String eventId, @Param("vo") QueryVo vo);
+
+    List<User> selectByVolunteer(@Param("voId") String voId, @Param("vo") QueryVo vo);
+
+    int countByVolunteer(@Param("voId") String voId, @Param("vo") QueryVo vo);
 }

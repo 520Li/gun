@@ -93,8 +93,10 @@ public class HomeController {
      * 地图页面
      */
     @GetMapping("/map")
-    public String toMap(String local, ModelMap map) {
+    public String toMap(String local, String lng, String lat, ModelMap map) {
         map.put("local", local);
+        map.put("lng", lng);
+        map.put("lat", lat);
         return "/common/map.html";
     }
 

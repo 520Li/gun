@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lac.wechat.dao.GiftLogMapper">
+
+    <select id="findByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="cn.lac.wechat.domain.GiftLog">
+        select
+                 zgl_id,
+               zgl_batch_id,
+               zgl_gift_id,
+               zgl_user_id,
+               zgl_num,
+               zgl_core,
+               a.create_time,
+               a.update_time,
+               zgl_state
+         from zly_gift_log a
+        left join zly_gift b on a.zgl_gift_id = b.gift_id
+        left join zly_user c on a.zgl_user_id = c.user_id
+         where 1=1
+        <if test="logGift != null and logGift !='' ">
+            and b.gift_name like concat('%',#{logGift,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="logName != null and logName !='' ">
+            and  c.user_name like concat('%',#{logName,jdbcType=VARCHAR},'%')
+        </if>
+        ORDER BY a.create_time desc
+        <if test="page!=null and limit != null">
+            limit #{page,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="countByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="java.lang.Integer">
+        select
+        count(1)
+        from zly_gift_log a
+        left join zly_gift b on a.zgl_gift_id = b.gift_id
+        left join zly_user c on a.zgl_user_id = c.user_id
+        where 1=1
+        <if test="logGift != null and logGift !='' ">
+            and b.gift_name like concat('%',#{logGift,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="logName != null and logName !='' ">
+            and  c.user_name like concat('%',#{logName,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+</mapper>

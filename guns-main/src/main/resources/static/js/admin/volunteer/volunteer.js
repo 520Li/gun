@@ -8,10 +8,10 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     var func = layui.func;
 
     /**
-     * 系统管理--
+     * 系统管理--角色管理
      */
     var Index = {
-        tableId: "homeTable"  //表格id
+        tableId: "volunteerTable",   //表格id
     };
 
     /**
@@ -20,12 +20,12 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     Index.initColumn = function () {
         return [[
             {type: 'checkbox'},
-            {field: 'homeName', sort: true, title: '资源名称'},
-            {field: 'homeType', align: "center", sort: true, title: '资源类别'},
-            {field: 'homeLocal', align: "center", sort: true, title: '资源地址'},
-            {field: 'homeDetail', align: "center", sort: true, title: '主营'},
-            {field: 'homeTel', align: "center", sort: true, title: '电话'},
-            {align: 'center', toolbar: '#tableBarHome', title: '操作', minWidth: 200}
+            {field: 'voName', sort: true, title: '活动名称'},
+            {field: 'voTel', align: "center", sort: true, title: '咨询电话'},
+            {field: 'voTime', align: "center", sort: true, title: '活动时间'},
+            {field: 'voLocal', align: "center", sort: true, title: '活动地点'},
+            {field: 'voDuration', align: "center", sort: true, title: '持续时间'},
+            {align: 'center', toolbar: '#tableBarVo', title: '操作', minWidth: 200}
         ]];
     };
 
@@ -34,34 +34,34 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      */
     Index.search = function () {
         var queryData = {};
-        queryData['homeName'] = $("#homeName").val().trim();
+        queryData['voName'] = $("#voName").val().trim();
         table.reload(Index.tableId, {
             where: queryData, page: {curr: 1}
         });
     };
 
     /**
-     * 弹出添加资源
+     * 弹出添加角色
      */
-    Index.openAddHome = function () {
+    Index.openAddVolunteer = function () {
         func.open({
             height: 600,
-            title: '新增资源',
-            content: Feng.ctxPath + '/admin/home/home_add',
+            title: '发布志愿活动',
+            content: Feng.ctxPath + '/admin/volunteer/volunteer_add',
             tableId: Index.tableId
         });
     };
 
     /**
-     * 点击编辑资源
+     * 点击编辑角色
      *
      * @param data 点击按钮时候的行数据
      */
-    Index.onEditHome = function (data) {
+    Index.onEditVolunteer = function (data) {
         func.open({
             height: 600,
-            title: '编辑资源',
-            content: Feng.ctxPath + "/admin/home/home_edit?homeId=" + data.homeId,
+            title: '编辑志愿活动',
+            content: Feng.ctxPath + "/admin/volunteer/volunteer_edit?voId=" + data.voId,
             tableId: Index.tableId
         });
     };
@@ -79,29 +79,43 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     };*/
 
     /**
-     * 点击删除资源
+     * 点击删除角色
      *
      * @param data 点击按钮时候的行数据
      */
-    Index.onDeleteHome = function (data) {
+    Index.onDeleteVolunteer = function (data) {
         var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/admin/home/delete", function () {
+            var ajax = new $ax(Feng.ctxPath + "/admin/volunteer/delete", function () {
                 Feng.success("删除成功!");
                 table.reload(Index.tableId);
             }, function (data) {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
-            ajax.set("homeId", data.homeId);
+            ajax.set("voId", data.voId);
             ajax.start();
         };
-        Feng.confirm("是否删除资源 " + data.homeName + "?", operation);
+        Feng.confirm("是否删除文章 " + data.voName + "?", operation);
     };
+
+
+    /**
+     * 查看报名人
+     * @param data
+     */
+    Index.onOpenUser = function (data) {
+        func.open({
+            height: 600,
+            title: '志愿者名单',
+            content: Feng.ctxPath + "/admin/volunteer/volunteer_user?voId=" + data.voId,
+            tableId: Index.tableId
+        });
+    }
 
 
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + Index.tableId,
-        url: Feng.ctxPath + '/admin/home/list',
+        url: Feng.ctxPath + '/admin/volunteer/list',
         page: true,
         height: "full-98",
         cellMinWidth: 100,
@@ -115,7 +129,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
 
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
-        Index.openAddHome();
+        Index.openAddVolunteer();
     });
 
 
@@ -125,9 +139,11 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
         var layEvent = obj.event;
 
         if (layEvent === 'edit') {
-            Index.onEditHome(data);
+            Index.onEditVolunteer(data);
         } else if (layEvent === 'delete') {
-            Index.onDeleteHome(data);
+            Index.onDeleteVolunteer(data);
+        } else if (layEvent === 'user') {
+            Index.onOpenUser(data);
         }
         /* else if (layEvent === 'roleAssign') {
                     Index.roleAssign(data);

@@ -24,6 +24,7 @@ public class Volunteer {
     private String voState;
     private String voDuration;
     private String voPath;
+    private String voText;
     private Date createTime;
     private Date updateTime;
 

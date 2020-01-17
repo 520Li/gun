@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lac.wechat.dao.GiftMapper">
+
+    <select id="findByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="cn.lac.wechat.domain.Gift">
+        select
+        gift_id,
+        gift_name,
+        gift_core,
+        gift_text,
+        gift_path,
+        gift_num,
+        gift_state,
+        create_time,
+        update_time
+        from zly_gift
+         where 1=1
+        <if test="giftName != null and giftName !='' ">
+            and gift_name like concat('%',#{giftName,jdbcType=VARCHAR},'%')
+        </if>
+        ORDER BY create_time desc
+        <if test="page!=null and limit != null">
+            limit #{page,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="countByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="java.lang.Integer">
+        select
+        count(1)
+        from zly_gift
+        where 1=1
+        <if test="giftName != null and giftName !='' ">
+            and gift_name like concat('%',#{giftName,jdbcType=VARCHAR},'%')
+        </if>
+        ORDER BY create_time desc
+        <if test="page!=null and limit != null">
+            limit #{page,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+    </select>
+</mapper>

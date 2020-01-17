@@ -41,7 +41,7 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public Home findById(String homeId) {
-        return homeMapper.findById(homeId);
+        return homeMapper.selectById(homeId);
     }
 
     @Override
