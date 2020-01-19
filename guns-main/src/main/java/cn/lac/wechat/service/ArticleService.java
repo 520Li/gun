@@ -52,4 +52,8 @@ public interface ArticleService {
     void editPdf(Article article);
 
 
+    /**
+     * wechat 获取文章列表
+     */
+    List<Article> findList(String type);
 }

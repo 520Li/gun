@@ -26,4 +26,9 @@ public interface BenefitService {
     void updateGiftLogState(GiftLog giftLog);
 
     List<GiftLog> findBenefitByBatchId(String zglBatchId);
+
+    void insertGift(Gift gift);
+
+    void editGift(Gift gift);
+
 }

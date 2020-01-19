@@ -10,7 +10,9 @@
         gift_text,
         gift_path,
         gift_num,
-        gift_state,
+        (case gift_state when '01' then '启用'
+        when '02' then '停用'
+        else '' end) gift_state,
         create_time,
         update_time
         from zly_gift

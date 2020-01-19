@@ -15,6 +15,7 @@ import cn.stylefeng.guns.sys.modular.system.entity.Dept;
 import cn.stylefeng.guns.sys.modular.system.mapper.DeptMapper;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.alibaba.fastjson.JSONArray;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -142,6 +143,26 @@ public class ArticleServiceImpl implements ArticleService {
             createPdf(article);
         }
         articleMapper.updateById(article);
+    }
+
+    @Override
+    public List<Article> findList(String type) {
+
+/*
+        and ar_type in ('TZTG','SQJS','SQFC')
+                </if>
+                and ar_type in ('YLYX','LNR','JS','JZZ','CJR')
+                and ar_type in ('DZYL')
+*/
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        if (type.equals("menu_01")) {
+            wrapper.lambda().in(Article::getArType, Arrays.asList("TZTG", "SQJS", "SQFC"));
+        } else if (type.equals("menu_02")) {
+            wrapper.lambda().in(Article::getArType, Arrays.asList("YLYX", "LNR", "JS", "JZZ", "CJR"));
+        } else if (type.equals("menu_03")) {
+            wrapper.lambda().in(Article::getArType, Arrays.asList("DZYL"));
+        }
+        return articleMapper.selectList(wrapper);
     }
 
     /**

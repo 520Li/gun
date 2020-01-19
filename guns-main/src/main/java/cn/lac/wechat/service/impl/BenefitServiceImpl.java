@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -35,6 +36,7 @@ public class BenefitServiceImpl implements BenefitService {
 
     /**
      * 公益审核列表
+     *
      * @param vo
      * @return
      */
@@ -50,6 +52,7 @@ public class BenefitServiceImpl implements BenefitService {
 
     /**
      * 兑换记录列表
+     *
      * @param vo
      * @return
      */
@@ -65,6 +68,7 @@ public class BenefitServiceImpl implements BenefitService {
 
     /**
      * 兑换品列表
+     *
      * @param vo
      * @return
      */
@@ -80,6 +84,7 @@ public class BenefitServiceImpl implements BenefitService {
 
     /**
      * 查询单个兑换品
+     *
      * @param giftId
      * @return
      */
@@ -90,6 +95,7 @@ public class BenefitServiceImpl implements BenefitService {
 
     /**
      * 删除兑换品
+     *
      * @param giftId
      */
     @Override
@@ -99,6 +105,7 @@ public class BenefitServiceImpl implements BenefitService {
 
     /**
      * 公益详情
+     *
      * @param btId
      * @return
      */
@@ -109,6 +116,7 @@ public class BenefitServiceImpl implements BenefitService {
 
     /**
      * 更改公益审核状态
+     *
      * @param benefit
      */
     @Override
@@ -118,6 +126,7 @@ public class BenefitServiceImpl implements BenefitService {
 
     /**
      * 更改兑换记录审核状态
+     *
      * @param giftLog
      */
     @Override
@@ -128,6 +137,7 @@ public class BenefitServiceImpl implements BenefitService {
 
     /**
      * 兑换批次编号查询兑换记录
+     *
      * @param zglBatchId
      * @return
      */
@@ -137,4 +147,23 @@ public class BenefitServiceImpl implements BenefitService {
         wrapper.lambda().eq(GiftLog::getZglBatchId, zglBatchId);
         return giftLogMapper.selectList(wrapper);
     }
+
+    /**
+     * 新增兑换品
+     */
+    @Override
+    public void insertGift(Gift gift) {
+        gift.setCreateTime(new Date());
+        giftMapper.insert(gift);
+    }
+
+    /**
+     * 编辑兑换品
+     */
+    @Override
+    public void editGift(Gift gift) {
+        gift.setUpdateTime(new Date());
+        giftMapper.updateById(gift);
+    }
+
 }

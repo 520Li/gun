@@ -2,12 +2,10 @@ package cn.lac.wechat.controller;
 
 import cn.lac.wechat.domain.Appeal;
 import cn.lac.wechat.domain.Appoint;
-import cn.lac.wechat.domain.Article;
 import cn.lac.wechat.domain.User;
 import cn.lac.wechat.service.*;
 import cn.lac.wechat.utils.SendMessageUtil;
 import cn.lac.wechat.vo.LayerVo;
-import cn.lac.wechat.vo.PageResult;
 import cn.lac.wechat.vo.QueryVo;
 import cn.lac.wechat.wx.Message;
 import cn.lac.wechat.wx.Result;
@@ -246,8 +244,8 @@ public class WechatController {
      */
     @PostMapping("/first/article.do")
     @ResponseBody
-    public LayerVo article(QueryVo vo) {
-        return articleService.getList(vo);
+    public Result article(String type) {
+        return new Result(true, "查询成功！", articleService.findList(type));
     }
 
 

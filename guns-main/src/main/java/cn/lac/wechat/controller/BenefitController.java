@@ -1,6 +1,7 @@
 package cn.lac.wechat.controller;
 
 import cn.lac.wechat.domain.Benefit;
+import cn.lac.wechat.domain.Gift;
 import cn.lac.wechat.domain.GiftLog;
 import cn.lac.wechat.service.BenefitService;
 import cn.lac.wechat.vo.LayerVo;
@@ -76,7 +77,18 @@ public class BenefitController {
      */
     @GetMapping("/gift_add")
     public String giftAdd() {
-        return "/admin/benefit/gift_add.html";
+        return "/admin/benefit/benefit_gift_add.html";
+    }
+
+    /**
+     * 新增兑换品
+     *
+     * @return
+     */
+    @PostMapping("/add_gift")
+    public Result add_gift(Gift gift) {
+        benefitService.insertGift(gift);
+        return new Result(true, "新增成功！");
     }
 
     /**
@@ -87,7 +99,18 @@ public class BenefitController {
     @GetMapping("/gift_edit")
     public String giftEdit(String giftId, ModelMap map) {
         map.put("gift", benefitService.findGiftById(giftId));
-        return "/admin/benefit/gift_edit.html";
+        return "/admin/benefit/benefit_gift_edit.html";
+    }
+
+    /**
+     * 编辑兑换品
+     *
+     * @return
+     */
+    @PostMapping("/edit_gift")
+    public Result edit_gift(Gift gift) {
+        benefitService.editGift(gift);
+        return new Result(true, "编辑成功！");
     }
 
     /**
@@ -132,7 +155,7 @@ public class BenefitController {
     @GetMapping("/log_dis")
     public String log_dis(String zglBatchId, ModelMap map) {
         map.put("giftLog", benefitService.findBenefitByBatchId(zglBatchId));
-        return "/admin/benefit/log_dis.html";
+        return "/admin/benefit/benefit_log_on.html";
     }
 
     /**

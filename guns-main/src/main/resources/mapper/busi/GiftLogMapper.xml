@@ -4,15 +4,18 @@
 
     <select id="findByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="cn.lac.wechat.domain.GiftLog">
         select
-                 zgl_id,
-               zgl_batch_id,
-               zgl_gift_id,
-               zgl_user_id,
-               zgl_num,
-               zgl_core,
-               a.create_time,
-               a.update_time,
-               zgl_state
+           zgl_id,
+           zgl_batch_id,
+            b.gift_name zgl_gift_id,
+           c.user_name zgl_user_id,
+           zgl_num,
+           zgl_core,
+           a.create_time,
+           a.update_time,
+        (case zgl_state when '01' then '未处理'
+        when '02' then '已处理'
+        when '03' then '已关闭'
+        else '' end) zgl_state
          from zly_gift_log a
         left join zly_gift b on a.zgl_gift_id = b.gift_id
         left join zly_user c on a.zgl_user_id = c.user_id

@@ -8,8 +8,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
     username: root
-    password: root
-#    password: 123
+#    password: root
+    password: 123
     filters: wall,mergeStat
 
     #文件上传
@@ -84,7 +84,7 @@ getMenu: ${prefix}menu/create?access_token=%s
 ## 删除菜单
 delMenu: ${prefix}menu/delete?access_token=%s
 ## 域名
-url: http://47051de1.ngrok.io
+url: http://04cec76b.ngrok.io
 ## 静默授权，获取code
 getCode: https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appID}&redirect_uri=${url}/wechat/login&response_type=code&scope=snsapi_base&state=%s
 ## 网页授权 获取用户openid

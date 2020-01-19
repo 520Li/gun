@@ -4,12 +4,15 @@
 
     <select id="findByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="cn.lac.wechat.domain.Benefit">
         select
-        bt_id,
-           b.user_name,
-        bt_name,
-        bt_time,
-           bt_path,
-           bt_state
+        bt_id btId,
+           b.user_name btUser,
+        bt_name btName,
+        bt_time btTime,
+           bt_path btPath,
+        (case bt_state when '01' then '未审核'
+        when '02' then '已通过'
+        when '03' then '已驳回'
+        else '' end ) btState
      from zly_benefit a
         left join zly_user b on a.bt_user = b.user_id
      where 1=1
