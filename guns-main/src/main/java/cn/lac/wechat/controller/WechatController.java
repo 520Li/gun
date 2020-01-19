@@ -426,7 +426,7 @@ public class WechatController {
      */
     @GetMapping("/third/detail.do")
     public String detail(String voId, ModelMap map) {
-        map.put("wx", volunteerService.details(voId));
+        map.put("vo", volunteerService.details(voId));
         return "/menu_03/volunteer_detail.html";
     }
 
