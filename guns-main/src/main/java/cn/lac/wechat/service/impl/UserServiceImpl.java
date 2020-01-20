@@ -6,6 +6,8 @@ import cn.lac.wechat.service.UserService;
 import cn.lac.wechat.vo.LayerVo;
 import cn.lac.wechat.vo.QueryVo;
 import cn.lac.wechat.wx.Result;
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.auth.model.LoginUser;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -249,6 +251,10 @@ public class UserServiceImpl implements UserService {
     public LayerVo findAppoint(QueryVo vo) {
         if (!ToolUtil.isAllEmpty(vo.getPage(), vo.getLimit())) {
             vo.setPage((vo.getPage() - 1) * vo.getLimit());
+        }
+        LoginUser shiroUser = LoginContextHolder.getContext().getUser();
+        if (!shiroUser.getRoleList().contains(1L)) {
+            vo.setDeptId(shiroUser.getDeptId());
         }
         List<Appoint> list = appointMapper.selectByVo(vo);
         int count = appointMapper.countByVo(vo);

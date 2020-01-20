@@ -19,7 +19,7 @@
                             <label class="layui-form-label">文章板块<span style="color: red;">*</span></label>
                             <div class="layui-input-block">
                                 <select id="arType" name="arType" type="text" class="layui-input"
-                                        lay-verify="required" required autocomplete="off" >
+                                        lay-verify="required" required autocomplete="off">
                                     <option value="TZTG">通知通告</option>
                                     <option value="SQJS">社区介绍</option>
                                     <option value="SQFC">社区风采</option>
@@ -77,6 +77,7 @@
 <script type="text/javascript" src="/js/wangEditor.min.js"></script>
 <script type="text/javascript">
     $("#arType").val('${article.arType!}');
+
     function ct(that) {
         var $this = $(that);
         var text = $this.val();
@@ -96,6 +97,13 @@
         $("#arText").val(html);
         $("#arTextJson").val(jsonStr);
     };
+    editor.customConfig.uploadImgServer = '/admin/file/file.do?path=article';
+    editor.customConfig.uploadFileName = 'file';
+    editor.customConfig.uploadImgHooks = {
+        customInsert: function (insertImg, result, editor) {
+            insertImg(result.data);
+        }
+    };
     editor.create();
     editor.txt.html('${article.arText!}');
     $(".w-e-text-container").css('height', '495px');
@@ -103,6 +111,13 @@
 
 </script>
 <style>
+    #editor img {
+        width: 100%;
+    }
+
+    .weui-form-preview__bd img {
+        width: 100%;
+    }
 
     .layui-input-block {
         z-index: 99999;

@@ -5,10 +5,10 @@
     <select id="findAppointByUser" parameterType="java.lang.String" resultType="cn.lac.wechat.domain.Appoint">
         select 
              appoint_id as appointId,
-             (case service_type when '1' then '民政服务'
-             when '2' then '残联服务'
-             when '3' then '计生服务'
-             when '4' then '社保服务'
+             (case service_type when 'MZ' then '民政服务'
+             when 'CL' then '残联服务'
+             when 'JS' then '计生服务'
+             when 'SB' then '社保服务'
              else '' end) serviceType,
              appoint_time as appointTime,
              appoint_iphone as appointIphone,
@@ -33,10 +33,10 @@
      <select id="selectByVo" parameterType="cn.lac.wechat.vo.QueryVo" resultType="cn.lac.wechat.domain.Appoint">
           select
           appoint_id as appointId,
-          (case service_type when '1' then '民政服务'
-          when '2' then '残联服务'
-          when '3' then '计生服务'
-          when '4' then '社保服务'
+          (case service_type when 'MZ' then '民政服务'
+          when 'CL' then '残联服务'
+          when 'JS' then '计生服务'
+          when 'SB' then '社保服务'
           else '' end) serviceType,
           appoint_time as appointTime,
           appoint_iphone as appointIphone,
@@ -54,6 +54,9 @@
           from zly_appoint a
           left join zly_user b on a.appoint_user = b.user_id
           where 1=1
+         <if test="deptId != null and deptId != '' " >
+             AND a.service_type IN (SELECT simple_name FROM sys_dept WHERE dept_id = #{deptId,jdbcType=INTEGER})
+         </if>
           <if test="appointUser !=null and appointUser != '' ">
             and b.user_name like concat('%',#{appointUser,jdbcType=VARCHAR},'%')
           </if>
@@ -71,6 +74,9 @@
           from zly_appoint a
           left join zly_user b on a.appoint_user = b.user_id
           where 1=1
+         <if test="deptId != null and deptId != '' " >
+             AND a.service_type IN (SELECT simple_name FROM sys_dept WHERE dept_id = #{deptId,jdbcType=INTEGER})
+         </if>
           <if test="appointUser !=null and appointUser != '' ">
             and b.user_name like concat('%',#{appointUser,jdbcType=VARCHAR},'%')
           </if>
@@ -84,10 +90,10 @@
     <select id="findById" parameterType="java.lang.String" resultType="cn.lac.wechat.domain.Appoint">
         select
         appoint_id as appointId,
-        (case service_type when '1' then '民政服务'
-        when '2' then '残联服务'
-        when '3' then '计生服务'
-        when '4' then '社保服务'
+        (case service_type when 'MZ' then '民政服务'
+        when 'CL' then '残联服务'
+        when 'JS' then '计生服务'
+        when 'SB' then '社保服务'
         else '' end) serviceType,
         appoint_time as appointTime,
         appoint_iphone as appointIphone,

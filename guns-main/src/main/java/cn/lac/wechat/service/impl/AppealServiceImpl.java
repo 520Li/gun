@@ -5,11 +5,14 @@ import cn.lac.wechat.domain.Appeal;
 import cn.lac.wechat.service.AppealService;
 import cn.lac.wechat.vo.LayerVo;
 import cn.lac.wechat.vo.QueryVo;
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.auth.model.LoginUser;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +45,9 @@ public class AppealServiceImpl implements AppealService {
 
     @Override
     public void updateStatus(Appeal appeal) {
+        LoginUser shiroUser = LoginContextHolder.getContext().getUser();
+        appeal.setUpdateTime(new Date());
+        appeal.setAcceptorUser(shiroUser.getId() + "");
         appealMapper.updateById(appeal);
     }
 }

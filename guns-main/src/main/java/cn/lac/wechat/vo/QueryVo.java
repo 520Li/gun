@@ -21,6 +21,7 @@ public class QueryVo {
     private Integer page = 1;
     private Integer limit = 10;
     private String clazz;
+    private Long deptId;
     private Map<String, Object> map = new HashMap<>();
 
 
@@ -72,6 +73,14 @@ public class QueryVo {
     private String logName; // 兑换记录  - 兑换人名字
     private String giftName; //兑换名
 
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
 
     public String getBtUser() {
         return btUser;

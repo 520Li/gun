@@ -79,6 +79,7 @@
 <script type="text/javascript" src="/js/wangEditor.min.js"></script>
 <script type="text/javascript">
     $("#arType").val('${article.arType!}');
+
     function ct(that) {
         var $this = $(that);
         var text = $this.val();
@@ -98,6 +99,13 @@
         $("#arText").val(html);
         $("#arTextJson").val(jsonStr);
     };
+    editor.customConfig.uploadImgServer = '/admin/file/file.do?path=article';
+    editor.customConfig.uploadFileName = 'file';
+    editor.customConfig.uploadImgHooks = {
+        customInsert: function (insertImg, result, editor) {
+            insertImg(result.data);
+        }
+    };
     editor.create();
     editor.txt.html('${article.arText!}');
     $(".w-e-text-container").css('height', '495px');
@@ -105,6 +113,13 @@
 
 </script>
 <style>
+    #editor img {
+        width: 100%;
+    }
+
+    .weui-form-preview__bd img {
+        width: 100%;
+    }
 
     .layui-input-block {
         z-index: 99999;

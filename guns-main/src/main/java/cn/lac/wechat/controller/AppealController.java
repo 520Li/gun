@@ -5,6 +5,8 @@ import cn.lac.wechat.service.AppealService;
 import cn.lac.wechat.vo.LayerVo;
 import cn.lac.wechat.vo.QueryVo;
 import cn.lac.wechat.wx.Result;
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.auth.model.LoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

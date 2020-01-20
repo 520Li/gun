@@ -19,6 +19,11 @@
         .weui-media-box__info__meta_extra {
             padding-left: 1em;
         }
+
+        .weui-cell__hd img {
+            display: inline;
+            margin-left: 0px;
+        }
     </style>
     <script>
         var paths = [];
@@ -89,10 +94,10 @@
 
         //提交举报信息
         function appeal() {
-            @if (session.login_user == null) {
+        @if (session.login_user == null) {
                 $.toast("请先登录！", "forbidden");
                 return;
-            @}
+                @}
 
             var flag = true;
             $("form").find("input,select,textarea").each(function () {
@@ -140,7 +145,7 @@
 
                             $.each(data.data, function (index, obj) {
                                 var acceptor = "无";
-                                if(obj.acceptorUser){
+                                if (obj.acceptorUser) {
                                     acceptor = obj.acceptorUser;
                                 }
                                 html += "<div class=\"weui-panel__bd\">\n" +
@@ -176,6 +181,20 @@
         function display(appealId) {
             $.alert("待开发。。");
         }
+
+
+        function show() {
+            $.alert({
+                title: '小区常见隐患',
+                text: '<p><strong>一、消防安全隐患：</strong></p><p>1.消防设施不能正常使用，包括消防管道无水、消防泵房不能正常启动、火灾自动报警系统故障。</p><p>2.楼道内堆放杂物，堵塞、占用消防通道。</p><p>3.可燃物存放：可燃物存放量过大，未及时清理。业主私自储存易燃易爆物品，燃放烟花爆竹。</p><p>4.报警系统：自动报警系统不好用，探测器未定期检查，保养。</p><p>5.烟头电气：烟头随意乱扔；电气柜未经常检查。</p><p>6.消防警示标志：未在一些部位张由消防警示标志。</p><p><strong>二、设备隐患：</strong></p><p>1.电梯：有些老旧电梯未能及时维护，容易发生事故。</p><p>2.电线：供电线和网线老化，排线混乱，易漏电。</p><p>3.照明：灯光过于昏暗或者坏了没有及时维修，晚上出行易摔跤。</p><p><strong>三、其它隐患：</strong></p><p>1.业主养宠物的，例如狗、猫之类没有打防疫针。</p><p>2.外卖、快递人员要特别注意。</p><p><br></p>',
+                onOK: function () {
+                    //点击确认
+                }
+            })
+
+        }
+
+
     </script>
 </head>
 <body>
@@ -203,15 +222,16 @@
                     </div>
                     <div class="weui-cell weui-cell_select weui-cell_select-after">
                         <div class="weui-cell__hd">
-                            <label for="" class="weui-label">事件大类：</label>
+                            <label onclick="show()" for="" class="weui-label">事件大类：<img  src="/images/问号.jpg" width="15px"/></label>
+
                         </div>
                         <div class="weui-cell__bd">
                             <select class="weui-select" cnName="事件大类" name="appealType">
-                                <option value="消防隐患">消防隐患</option>
-                                <option value="消防隐患">消防隐患</option>
-                                <option value="消防隐患">消防隐患</option>
-                                <option value="消防隐患">消防隐患</option>
+                                <option value="消防安全隐患">消防安全隐患</option>
+                                <option value="设备隐患">设备隐患</option>
+                                <option value="其他隐患">其他隐患</option>
                             </select>
+
                         </div>
                     </div>
                     <div class="weui-cell">

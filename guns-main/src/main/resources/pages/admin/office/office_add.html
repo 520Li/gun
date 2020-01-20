@@ -89,6 +89,13 @@
         $("#arText").val(html);
         $("#arTextJson").val(jsonStr);
     };
+    editor.customConfig.uploadImgServer = '/admin/file/file.do?path=article';
+    editor.customConfig.uploadFileName = 'file';
+    editor.customConfig.uploadImgHooks = {
+        customInsert: function (insertImg, result, editor) {
+            insertImg(result.data);
+        }
+    };
     editor.create();
     $(".w-e-text-container").css('height','495px');
     $('#text1').html(editor.txt.html());
@@ -96,7 +103,13 @@
 
 </script>
 <style>
+    #editor img {
+        width: 100%;
+    }
 
+    .weui-form-preview__bd img {
+        width: 100%;
+    }
     .layui-input-block {
         z-index: 99999;
     }

@@ -21,8 +21,8 @@ spring:
       max-file-size: 10MB
       max-request-size: 100MB
       resolve-lazily: false
-  profiles:
-    active: @spring.active@
+#  profiles:
+#    active: @spring.active@
   mvc:
     view:
       prefix: /pages
@@ -84,7 +84,7 @@ getMenu: ${prefix}menu/create?access_token=%s
 ## 删除菜单
 delMenu: ${prefix}menu/delete?access_token=%s
 ## 域名
-url: http://fd28049b.ngrok.io
+url: http://a4014945.ngrok.io
 ## 静默授权，获取code
 getCode: https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appID}&redirect_uri=${url}/wechat/login&response_type=code&scope=snsapi_base&state=%s
 ## 网页授权 获取用户openid
