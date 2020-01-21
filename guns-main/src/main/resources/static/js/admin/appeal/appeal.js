@@ -70,7 +70,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     };
 
     Index.updateStatus = function (data, status) {
-        var option = function () {
+        /*var option = function () {
             var ajax = new $ax(Feng.ctxPath + "/admin/appeal/updateStatus", function (data) {
                 Feng.success("操作成功!");
                 table.reload(Index.tableId);
@@ -85,7 +85,14 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
         if (status === '02') str = '<b style="color:red">受理</b>';
         else if (status === '03') str = '<b style="color:red">核实</b>';
         else if (status === '04') str = '<b style="color:red">结案</b>';
-        Feng.confirm("确认进行 " + str + " 操作?", option);
+        Feng.confirm("确认进行 " + str + " 操作?", option);*/
+        func.open({
+            height: 600,
+            width: 800,
+            title: '事件处理',
+            content: Feng.ctxPath + "/admin/appeal/toStatus?appealId=" + data.appealId + "&status=" + status,
+            tableId: Index.tableId
+        });
     }
 
     // 工具条点击事件

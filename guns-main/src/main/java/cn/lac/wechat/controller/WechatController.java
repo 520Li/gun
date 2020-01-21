@@ -50,6 +50,8 @@ public class WechatController {
     private HomeService homeService;
     @Autowired
     private VolunteerService volunteerService;
+    @Autowired
+    private AppealService appealService;
 
 
     /**
@@ -330,6 +332,20 @@ public class WechatController {
     @ResponseBody
     public Result appealList() {
         return new Result(true, "查询成功！", userService.getAppealByUser());
+    }
+
+    /**
+     * 跳转事件详情
+     *
+     * @param appealId
+     * @return
+     */
+    @GetMapping("/third/appealDis.do")
+    public String appealDis(String appealId, ModelMap map) {
+        map.put("appeal", userService.getAppealDis(appealId));
+        map.put("appeal2", userService.findAppealById(appealId));
+        return "/menu_03/appeal_dis.html";
+
     }
 
 

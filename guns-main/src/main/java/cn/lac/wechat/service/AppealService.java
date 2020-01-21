@@ -1,6 +1,7 @@
 package cn.lac.wechat.service;
 
 import cn.lac.wechat.domain.Appeal;
+import cn.lac.wechat.domain.AppealLog;
 import cn.lac.wechat.vo.LayerVo;
 import cn.lac.wechat.vo.QueryVo;
 
@@ -17,4 +18,7 @@ public interface AppealService {
     Appeal findAppealById(String appealId);
 
     void updateStatus(Appeal appeal);
+
+    void insertLog(AppealLog appealLog);
+
 }

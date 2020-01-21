@@ -179,7 +179,7 @@
 
         //查看举报受理情况
         function display(appealId) {
-            $.alert("待开发。。");
+            window.location.href = '/wechat/third/appealDis.do?appealId=' + appealId;
         }
 
 
@@ -216,13 +216,14 @@
                         <div class="weui-cell__hd"><label class="weui-label">举报人：</label></div>
                         <div class="weui-cell__bd">
                             <input class="weui-input" cnName="举报人" type="text"
-                                   value="${session.login_user.userName!'张建国'}"
+                                   value="${session.login_user.userName!}"
                                    disabled="disabled">
                         </div>
                     </div>
                     <div class="weui-cell weui-cell_select weui-cell_select-after">
                         <div class="weui-cell__hd">
-                            <label onclick="show()" for="" class="weui-label">事件大类：<img  src="/images/问号.jpg" width="15px"/></label>
+                            <label onclick="show()" for="" class="weui-label">事件大类：<img src="/images/问号.jpg"
+                                                                                        width="15px"/></label>
 
                         </div>
                         <div class="weui-cell__bd">
@@ -254,9 +255,8 @@
                         <div class="weui-cell__bd">
                             <select class="weui-select" cnName="紧急程度" name="appealDegree">
                                 <option value="非常紧急">非常紧急</option>
-                                <option value="非常紧急">非常紧急</option>
-                                <option value="非常紧急">非常紧急</option>
-                                <option value="非常紧急">非常紧急</option>
+                                <option value="紧急">紧急</option>
+                                <option value="一般">一般</option>
                             </select>
                         </div>
                     </div>

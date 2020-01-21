@@ -20,7 +20,7 @@
         when '03' then '待结案'
         when '04' then '已结案'
         else '' end) appealStatus,
-        a.acceptor_user acceptorUser
+        (select acceptor_user from zly_appeal_log c where c.appeal_id = a.appeal_id and c.acceptor_status = a.appeal_status) acceptorUser
         from zly_appeal a
         left join zly_user b on a.appeal_user = b.user_id
         where 1=1
@@ -71,10 +71,43 @@
         when '02' then '待核实'
         when '03' then '待结案'
         when '04' then '已结案'
+        when '05' then '已反馈'
         else '' end) appealStatus,
-        a.acceptor_user acceptorUser
+        a.acceptor_user acceptorUser,
+        a.acceptor_tel acceptorTel
         from zly_appeal a
         left join zly_user b on a.appeal_user = b.user_id
         where a.appeal_id = #{appealId,jdbcType=VARCHAR}
+    </select>
+
+
+
+    <select id="getAppealByUser" parameterType="java.lang.String"  resultType="cn.lac.wechat.domain.Appeal">
+        select
+        a.appeal_id appealId,
+        a.appeal_type appealType,
+        b.user_name appealUser,
+        a.appeal_tel appealTel,
+        a.appeal_local appealLocal,
+        a.appeal_degree appealDegree,
+        a.appeal_text appealText,
+        a.appeal_path appealPath,
+        a.create_time createTime,
+        a.update_time updateTime,
+        (case a.appeal_status
+        when '01' then '未受理'
+        when '02' then '待核实'
+        when '03' then '待结案'
+        when '04' then '已结案'
+        when '05' then '已反馈'
+        else '' end) appealStatus,
+        (select acceptor_user from zly_appeal_log c where c.appeal_id = a.appeal_id and c.acceptor_status = a.appeal_status) acceptorUser
+        from zly_appeal a
+        left join zly_user b on a.appeal_user = b.user_id
+        where 1=1
+        <if test="userId !=null and userId != '' ">
+            and a.appeal_user = #{userId,jdbcType=VARCHAR}
+        </if>
+        order by a.create_time desc
     </select>
 </mapper>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>事件详细</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+    <!--    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.css">-->
+    <link rel="stylesheet" href="/assets/common/libs/layui/css/layui.css"/>
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="/assets/common/libs/layui/layui.js"></script>
+    <script type="text/javascript" src="/js/lib.js"></script>
+    <style type="text/css">
+        .vertical li > a {
+            padding: 45px 15px;
+        }
+
+        .step li {
+            display: table-cell;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!--<h3>张江国</h3>
+    <hr/>-->
+    <ul class="nav nav-pills nav-justified step step-round" data-step="${appeal2.appealStatus!}">
+        <li>
+            <a>举报隐患</a>
+        </li>
+        <li>
+            <a>&nbsp;受理&nbsp;</a>
+        </li>
+        <li>
+            <a>&nbsp;核实&nbsp;</a>
+        </li>
+        <li>
+            <a>&nbsp;整改&nbsp;</a>
+        </li>
+        <li>
+            <a onclick="fun()">&nbsp;反馈&nbsp;</a>
+        </li>
+    </ul>
+
+    <hr/>
+    <div class="row">
+        <ul class="layui-timeline">
+            <li class="layui-timeline-item">
+                <i class="layui-icon layui-timeline-axis"></i>
+                <div class="layui-timeline-content layui-text">
+                    <div class="layui-timeline-title">现在</div>
+                </div>
+            </li>
+            @for(app in appeal){
+            <li class="layui-timeline-item">
+                <i class="layui-icon layui-timeline-axis"></i>
+                <div class="layui-timeline-content layui-text">
+                    <h3 class="layui-timeline-title">${app.createTime!,dateFormat='yyyy年MM月dd HH:mm'}</h3>
+                    <ul>
+                        <li>处理人: ${app.acceptorUser!}</li>
+                        <li>联系方式: ${app.acceptorTel!}</li>
+                        <li>处理状态: ${app.acceptorStatus!}</li>
+                        <li>简要说明: ${app.acceptorText!}</li>
+                    </ul>
+                </div>
+            </li>
+            @}
+            <li class="layui-timeline-item">
+                <i class="layui-icon layui-timeline-axis"></i>
+                <div class="layui-timeline-content layui-text">
+                    <div class="layui-timeline-title">过去</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div id="core" style="display: none">
+        <div id="test1"></div>
+        <div id="test2"></div>
+        <div id="test3"></div>
+    </div>
+
+    <hr/>
+</div>
+<script>
+    $(function () {
+        bsStep();
+        //bsStep(i) i 为number 可定位到第几步 如bsStep(2)/bsStep(3)
+    })
+
+    function fun() {
+        $(".row").hide();
+        $("#core").show();
+    }
+
+    layui.use(['rate'], function () {
+        var rate = layui.rate;
+        rate.render({
+            elem: '#test1'
+            , value: 0 //初始值
+            , text: true //开启文本
+        });
+        rate.render({
+            elem: '#test2'
+            , value: 0
+            , text: true
+        });
+        rate.render({
+            elem: '#test3'
+            , value: 0
+            , text: true
+        });
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lac.wechat.dao.AppealLogMapper">
+
+    <select id="selectLog" parameterType="java.lang.String"  resultType="cn.lac.wechat.domain.AppealLog">
+      SELECT
+        zal_id,
+        appeal_id,
+        acceptor_user,
+        acceptor_tel,
+        acceptor_text,
+        (case acceptor_status when '01' then '未受理'
+        when '02' then '受理'
+        when '03' then '核实'
+        when '04' then '结案'
+        when '05' then '已反馈'
+        else '' end) acceptor_status,
+        create_time
+        FROM
+        zly_appeal_log
+      where 1 = 1
+        <if test="appealId != null and appealId != '' ">
+          and appeal_id = #{appealId,jdbcType=VARCHAR}
+        </if>
+        ORDER  BY create_time desc
+
+    </select>
+
+</mapper>

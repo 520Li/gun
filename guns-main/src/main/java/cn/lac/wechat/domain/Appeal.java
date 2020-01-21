@@ -29,4 +29,5 @@ public class Appeal {
     private Date updateTime;
     private String appealStatus;
     private String acceptorUser;
+    private String acceptorTel;
 }

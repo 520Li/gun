@@ -1,7 +1,9 @@
 package cn.lac.wechat.service.impl;
 
+import cn.lac.wechat.dao.AppealLogMapper;
 import cn.lac.wechat.dao.AppealMapper;
 import cn.lac.wechat.domain.Appeal;
+import cn.lac.wechat.domain.AppealLog;
 import cn.lac.wechat.service.AppealService;
 import cn.lac.wechat.vo.LayerVo;
 import cn.lac.wechat.vo.QueryVo;
@@ -11,6 +13,7 @@ import cn.stylefeng.roses.core.util.ToolUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -24,9 +27,12 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class AppealServiceImpl implements AppealService {
     @Autowired
     private AppealMapper appealMapper;
+    @Autowired
+    private AppealLogMapper appealLogMapper;
 
     @Override
     public LayerVo findAppealByVo(QueryVo vo) {
@@ -45,9 +51,18 @@ public class AppealServiceImpl implements AppealService {
 
     @Override
     public void updateStatus(Appeal appeal) {
-        LoginUser shiroUser = LoginContextHolder.getContext().getUser();
         appeal.setUpdateTime(new Date());
-        appeal.setAcceptorUser(shiroUser.getId() + "");
+        appealMapper.updateById(appeal);
+    }
+
+
+    @Override
+    public void insertLog(AppealLog appealLog) {
+        appealLog.setCreateTime(new Date());
+        appealLogMapper.insert(appealLog);
+        Appeal appeal = appealMapper.selectById(appealLog.getAppealId());
+        appeal.setAppealStatus(appealLog.getAcceptorStatus());
+        appeal.setUpdateTime(new Date());
         appealMapper.updateById(appeal);
     }
 }

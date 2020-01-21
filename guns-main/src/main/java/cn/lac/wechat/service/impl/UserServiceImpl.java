@@ -9,6 +9,7 @@ import cn.lac.wechat.wx.Result;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.model.LoginUser;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +47,8 @@ public class UserServiceImpl implements UserService {
     private AppealMapper appealMapper;
     @Autowired
     private VolunteerUserMapper volunteerUserMapper;
+    @Autowired
+    private AppealLogMapper appealLogMapper;
 
     /**
      * 根据id查询用户
@@ -207,9 +210,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Appeal> getAppealByUser() {
         User user = (User) session.getAttribute("login_user");
-        QueryWrapper<Appeal> wrapper = new QueryWrapper<>();
+       /* QueryWrapper<Appeal> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(Appeal::getAppealUser, user.getUserId()).orderByDesc(Appeal::getCreateTime);
-        List<Appeal> appeals = appealMapper.selectList(wrapper);
+        List<Appeal> appeals = appealMapper.selectList(wrapper);*/
+        List<Appeal> appeals = appealMapper.getAppealByUser(user.getUserId());
+       // List<Appeal> appeals = appealMapper.getAppealByUser("omRjy1OC0-3_iFigWCNsKwsxAcAg");
+
         return appeals;
     }
 
@@ -270,6 +276,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public Appoint selectAppoint(String appointId) {
         return appointMapper.findById(appointId);
+    }
+
+
+    /**
+     * 查看事件举报记录
+     */
+    @Override
+    public List<AppealLog> getAppealDis(String appealId) {
+        List<AppealLog> appealLogs = appealLogMapper.selectLog(appealId);
+        return appealLogs;
+    }
+
+    /**
+     * 查询事件状态（appealStatus不转中文）
+     * @param appealId
+     * @return
+     */
+    @Override
+    public Appeal findAppealById(String appealId) {
+        return appealMapper.selectById(appealId);
     }
 
 

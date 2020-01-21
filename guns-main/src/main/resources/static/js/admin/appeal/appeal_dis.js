@@ -1,9 +1,9 @@
 layui.use(['carousel', 'form'], function(){
-    var carousel = layui.carousel;
+   /* var carousel = layui.carousel;
 
 
     //图片轮播
-   /* carousel.render({
+    carousel.render({
         elem: '#image'
         ,width: '300px'
         ,height: '200px'

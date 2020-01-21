@@ -1,6 +1,7 @@
 package cn.lac.wechat.controller;
 
 import cn.lac.wechat.domain.Appeal;
+import cn.lac.wechat.domain.AppealLog;
 import cn.lac.wechat.service.AppealService;
 import cn.lac.wechat.vo.LayerVo;
 import cn.lac.wechat.vo.QueryVo;
@@ -52,10 +53,30 @@ public class AppealController {
         return appealService.findAppealByVo(vo);
     }
 
+
+    /**
+     * 跳转事件处理
+     *
+     * @return
+     */
+    @GetMapping("/toStatus")
+    public String toStatus(String appealId, String status, ModelMap map) {
+        map.put("appealId", appealId);
+        map.put("status", status);
+        return "/admin/appeal/appeal_status.html";
+    }
+
+
+    /**
+     * 修改事件状态
+     *
+     * @param
+     * @return
+     */
     @PostMapping("/updateStatus")
     @ResponseBody
-    public Result updateStatus(Appeal appeal) {
-        appealService.updateStatus(appeal);
+    public Result updateStatus(AppealLog appealLog) {
+        appealService.insertLog(appealLog);
         return new Result(true, "操作成功！");
     }
 

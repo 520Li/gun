@@ -1,9 +1,6 @@
 package cn.lac.wechat.service;
 
-import cn.lac.wechat.domain.Appeal;
-import cn.lac.wechat.domain.Appoint;
-import cn.lac.wechat.domain.Event;
-import cn.lac.wechat.domain.User;
+import cn.lac.wechat.domain.*;
 import cn.lac.wechat.vo.LayerVo;
 import cn.lac.wechat.vo.QueryVo;
 import cn.lac.wechat.wx.Result;
@@ -97,4 +94,11 @@ public interface UserService {
      * 查看详细
      */
     Appoint selectAppoint(String appointId);
+
+    /**
+     * 查询举报记录
+     */
+    List<AppealLog> getAppealDis(String appealId);
+
+    Appeal findAppealById(String appealId);
 }

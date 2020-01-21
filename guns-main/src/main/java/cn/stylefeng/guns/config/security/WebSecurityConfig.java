@@ -82,6 +82,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //公众号接口过滤
                 .antMatchers("/wechat/**").permitAll()
                 .antMatchers("/images/**").permitAll()
+                .antMatchers("/js/**").permitAll()
+                .antMatchers("/css/**").permitAll()
                 // session登录失效之后的跳转
                 .antMatchers("/global/sessionError").permitAll()
 
