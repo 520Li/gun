@@ -19,8 +19,10 @@
         when '02' then '待核实'
         when '03' then '待结案'
         when '04' then '已结案'
+        when '05' then '已反馈'
         else '' end) appealStatus,
-        (select acceptor_user from zly_appeal_log c where c.appeal_id = a.appeal_id and c.acceptor_status = a.appeal_status) acceptorUser
+        (select acceptor_user from zly_appeal_log c where c.appeal_id = a.appeal_id and c.acceptor_status = '02') acceptorUser,
+        a.appeal_core appealCore
         from zly_appeal a
         left join zly_user b on a.appeal_user = b.user_id
         where 1=1
@@ -74,7 +76,8 @@
         when '05' then '已反馈'
         else '' end) appealStatus,
         a.acceptor_user acceptorUser,
-        a.acceptor_tel acceptorTel
+        a.acceptor_tel acceptorTel,
+         a.appeal_core appealCore
         from zly_appeal a
         left join zly_user b on a.appeal_user = b.user_id
         where a.appeal_id = #{appealId,jdbcType=VARCHAR}
@@ -101,7 +104,8 @@
         when '04' then '已结案'
         when '05' then '已反馈'
         else '' end) appealStatus,
-        (select acceptor_user from zly_appeal_log c where c.appeal_id = a.appeal_id and c.acceptor_status = a.appeal_status) acceptorUser
+        (select acceptor_user from zly_appeal_log c where c.appeal_id = a.appeal_id and c.acceptor_status = '02') acceptorUser,
+        a.appeal_core appealCore
         from zly_appeal a
         left join zly_user b on a.appeal_user = b.user_id
         where 1=1

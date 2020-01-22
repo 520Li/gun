@@ -84,7 +84,7 @@ getMenu: ${prefix}menu/create?access_token=%s
 ## 删除菜单
 delMenu: ${prefix}menu/delete?access_token=%s
 ## 域名
-url: http://f149ade8.ngrok.io
+url: http://91d79230.ngrok.io
 ## 静默授权，获取code
 getCode: https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appID}&redirect_uri=${url}/wechat/login&response_type=code&scope=snsapi_base&state=%s
 ## 网页授权 获取用户openid

@@ -28,9 +28,11 @@
         .weui-media-box__info__meta {
             font-weight: bolder;
         }
+
         .demos-header {
             padding: 35px 0;
         }
+
         .demos-title {
             text-align: center;
             font-size: 34px;
@@ -53,7 +55,7 @@
                     if (data.flag) {
                         var tab1 = "";
                         $.each(data.data, function (index, obj) {
-                            var  template = getTemplate(obj);
+                            var template = getTemplate(obj);
                             if (obj.arType === 'DZYL') {
                                 tab1 += template;
                             }
@@ -67,16 +69,16 @@
         }
 
         function getTemplate(obj) {
-            return " <a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+            return " <a href=\"/wechat/third/pdf2html.do?arId=" + obj.arId + "&arPath=" + obj.arPath + "\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
                 "            <div class=\"weui-media-box__hd\">\n" +
-                "                <img class=\"weui-media-box__thumb\" src=\""+ obj.arFirstpath +"\">\n" +
+                "                <img class=\"weui-media-box__thumb\" src=\"" + obj.arFirstpath + "\">\n" +
                 "            </div>\n" +
                 "            <div class=\"weui-media-box__bd\">\n" +
                 "                <h4 class=\"weui-media-box__title\">" + obj.arTitle + "</h4>\n" +
-                "                <p class=\"weui-media-box__desc\">"+ obj.arText +"</p>\n" +
+                /*"                <p class=\"weui-media-box__desc\">"+ obj.arText +"</p>\n" +*/
                 "                <ul class=\"weui-media-box__info\">\n" +
-                "                    <li class=\"weui-media-box__info__meta\" style=\"color: #E2705D;\">"+ obj.arMajorType +"</li>\n" +
-                "                    <li class=\"weui-media-box__info__meta weui-media-box__info__meta_extra\">"+ obj.createTime +"</li>\n" +
+                "                    <li class=\"weui-media-box__info__meta\" style=\"color: #E2705D;\">" + obj.arMajorType + "</li>\n" +
+                "                    <li class=\"weui-media-box__info__meta weui-media-box__info__meta_extra\">" + obj.createTime + "</li>\n" +
                 "                </ul>\n" +
                 "            </div>\n" +
                 "        </a>";
@@ -95,12 +97,15 @@
 </head>
 <body>
 <header class="demos-header" style="background-image: url(/images/book.png)">
-    <h1 class="demos-title" >电子图书</h1>
+    <h1 class="demos-title">电子图书</h1>
 </header>
 <div class="weui-panel weui-panel_access">
     <div id="tab1" class="weui-panel__bd">
     </div>
 </div>
+<script>
+
+</script>
 
 </body>
 </html>

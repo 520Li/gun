@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -36,7 +37,7 @@ public class FileController {
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile file = multipartRequest.getFile("file");
-        FileChannel outChannel = null;
+        /*FileChannel outChannel = null;*/
         try {
             String oldName = file.getOriginalFilename();
             String suffix = oldName.substring(oldName.lastIndexOf("."));
@@ -45,13 +46,16 @@ public class FileController {
             }*/
             //后缀名
             String newName = UUID.randomUUID().toString().replace("-", "").toLowerCase() + suffix;
-            outChannel = FileChannel.open(Paths.get(this.getClass().getClassLoader().getResource("").toString().replace("file:/", "") + "/static/images/" + path + "/" + newName),
-                    StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+          /*  outChannel = FileChannel.open(Paths.get(this.getClass().getClassLoader().getResource("").toString().replace("file:/", "") + "/static/images/" + path + "/" + newName),
+                    StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
             ByteBuffer buf = ByteBuffer.allocate((int) file.getSize());
             buf.put(file.getBytes());
             buf.flip();
             outChannel.write(buf);
-            buf.clear();
+            buf.clear();*/
+            File f = new File(this.getClass().getClassLoader().getResource("").toString().replace("file:/", "") + "/static/images/" + path + "/" + newName);
+            //file.transferTo(Paths.get(this.getClass().getClassLoader().getResource("").toString().replace("file:/", "") + "/static/images/" + path + "/" + newName));
+            file.transferTo(f);
 
             // 数据库需要保存：相对路径
             String relativePath = "/images/" + path + "/" + newName;
@@ -60,13 +64,13 @@ public class FileController {
             log.error(e.getMessage(), e);
             return new Result(false, "上传图片失败");
         } finally {
-            try {
+           /* try {
                 if (outChannel != null) {
                     outChannel.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
     }

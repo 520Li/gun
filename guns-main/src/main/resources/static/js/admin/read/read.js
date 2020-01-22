@@ -56,13 +56,22 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      *
      * @param data 点击按钮时候的行数据
      */
-    Index.onEditRead  = function (data) {
+    Index.onEditRead = function (data) {
         func.open({
             height: 600,
             title: '编辑电子书',
             content: Feng.ctxPath + "/admin/read/read_edit?arId=" + data.arId,
             tableId: Index.tableId
         });
+    };
+
+
+    /**
+     * pdf预览
+     * @param data
+     */
+    Index.onOpenRead = function (data) {
+        window.open(data.arPath);
     };
 
     /**
@@ -82,7 +91,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      *
      * @param data 点击按钮时候的行数据
      */
-    Index.onDeleteRead  = function (data) {
+    Index.onDeleteRead = function (data) {
         var operation = function () {
             var ajax = new $ax(Feng.ctxPath + "/admin/read/delete", function () {
                 Feng.success("删除成功!");
@@ -127,9 +136,9 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
             Index.onEditRead(data);
         } else if (layEvent === 'delete') {
             Index.onDeleteRead(data);
+        } else if (layEvent === 'read') {
+            Index.onOpenRead(data);
         }
-        /* else if (layEvent === 'roleAssign') {
-                    Index.roleAssign(data);
-                }*/
+
     });
 });

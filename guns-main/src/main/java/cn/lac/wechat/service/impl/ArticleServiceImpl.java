@@ -5,6 +5,7 @@ import cn.lac.wechat.domain.Article;
 import cn.lac.wechat.enums.ArticleType;
 import cn.lac.wechat.service.ArticleService;
 import cn.lac.wechat.template.WangEditor;
+import cn.lac.wechat.utils.PdfUtil;
 import cn.lac.wechat.utils.Util;
 import cn.lac.wechat.vo.LayerVo;
 import cn.lac.wechat.vo.PageResult;
@@ -130,18 +131,46 @@ public class ArticleServiceImpl implements ArticleService {
         article.setArUser(user.getId() + "");
         article.setArType("DZYL");
         if (article.getPdfType().equals("01")) {
-            createPdf(article);
+            //生成pdf 插入pdf路径
+            PdfUtil.html2Pdf(article);
+            //新增电子书
+            articleMapper.insert(article);
+
+            //根据电子书生成预览html
+            String pdf = this.getClass().getClassLoader().getResource("").toString().replace("file:/", "") + "/static" + article.getArPath();
+            PdfUtil.pdf2Html(pdf, article.getArId());
         }
-        articleMapper.insert(article);
     }
 
+    /**
+     * 编辑电子书
+     *
+     * @param article
+     */
     @Override
     public void editPdf(Article article) {
         article.setUpdateTime(new Date());
         article.setArText(article.getArText().trim());
+
+        Article old = articleMapper.selectById(article.getArId());
+        String rePath = this.getClass().getClassLoader().getResource("").toString().replace("file:/", "") + "/static";
+        // 01：自制  02：上传
         if (article.getPdfType().equals("01")) {
-            createPdf(article);
+            //内容有变动才生成新的pdf
+            if (!old.getArText().equals(article.getArText())) {
+                PdfUtil.html2Pdf(article);
+                //新生成的pdf -》 html
+                String pdf = rePath + article.getArPath();
+                PdfUtil.pdf2Html(pdf, article.getArId());
+            }
+        } else if (article.getPdfType().equals("02")) {
+            if (!old.getArPath().equals(article.getArPath())) {
+                //新生成的pdf -》 html
+                String pdf = rePath + article.getArPath();
+                PdfUtil.pdf2Html(pdf, article.getArId());
+            }
         }
+
         articleMapper.updateById(article);
     }
 
@@ -165,55 +194,6 @@ public class ArticleServiceImpl implements ArticleService {
         return articleMapper.selectList(wrapper);
     }
 
-    /**
-     * html 生成 pdf
-     */
-    public void createPdf(Article article) {
-        String arText = article.getArText();
-        arText = arText.replaceAll("<br>", "").replaceAll("(<img((?!>).)*>)", "$1</img>");
-        //pdf路径
-
-        String arPath = article.getArPath();
-
-        if (StringUtils.isBlank(arPath)) {
-            arPath = "/images/pdf/" + UUID.randomUUID().toString().replace("-", "").toLowerCase() + ".pdf";
-        }
-
-        String filePath = this.getClass().getClassLoader().getResource("").toString().replace("file:/", "") + "/static" + arPath;
-
-
-        Document document = new Document();
-
-        try {
-
-
-            File file = new File(filePath);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-
-            PdfWriter writer = PdfWriter.getInstance(document, new BufferedOutputStream(new FileOutputStream(file)));
-            document.open();
-            String content = "<html><body style=\"font-family: 宋体, SimHei;\">" + arText + "</body></html>";
-            byte b[] = content.getBytes("utf-8");
-            ByteArrayInputStream bais = new ByteArrayInputStream(b);
-
-
-            XMLWorkerHelper.getInstance().parseXHtml(writer, document, bais, Charset.forName("UTF-8"));
-            bais.close();
-
-
-            article.setArPath(arPath);
-
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        } finally {
-            if (document.isOpen()) {
-                document.close();
-            }
-        }
-    }
 
     /**
      * 判断文章是否是图文 & 获取第一张图片路径

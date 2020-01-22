@@ -214,7 +214,7 @@ public class UserServiceImpl implements UserService {
         wrapper.lambda().eq(Appeal::getAppealUser, user.getUserId()).orderByDesc(Appeal::getCreateTime);
         List<Appeal> appeals = appealMapper.selectList(wrapper);*/
         List<Appeal> appeals = appealMapper.getAppealByUser(user.getUserId());
-       // List<Appeal> appeals = appealMapper.getAppealByUser("omRjy1OC0-3_iFigWCNsKwsxAcAg");
+       //List<Appeal> appeals = appealMapper.getAppealByUser("omRjy1OC0-3_iFigWCNsKwsxAcAg");
 
         return appeals;
     }

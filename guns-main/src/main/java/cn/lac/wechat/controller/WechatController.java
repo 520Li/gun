@@ -4,6 +4,7 @@ import cn.lac.wechat.domain.Appeal;
 import cn.lac.wechat.domain.Appoint;
 import cn.lac.wechat.domain.User;
 import cn.lac.wechat.service.*;
+import cn.lac.wechat.utils.PdfUtil;
 import cn.lac.wechat.utils.SendMessageUtil;
 import cn.lac.wechat.vo.LayerVo;
 import cn.lac.wechat.vo.QueryVo;
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -348,6 +350,19 @@ public class WechatController {
 
     }
 
+    /**
+     * 用户评分
+     *
+     * @param appeal
+     * @return
+     */
+    @PostMapping("/third/appealCore.do")
+    @ResponseBody
+    public Result appealCore(Appeal appeal) {
+        appealService.updateStatus(appeal);
+        return new Result(true, "评价成功！");
+    }
+
 
     /**
      * 公益积分
@@ -393,6 +408,24 @@ public class WechatController {
     public String read() {
         return "/menu_03/read.html";
     }
+
+
+    /**
+     * 预览电子书
+     */
+    @GetMapping("/third/pdf2html.do")
+    public String pdf2html(String arId, String arPath) throws InterruptedException {
+        String rePath = this.getClass().getClassLoader().getResource("").toString().replace("file:/", "");
+        String html = rePath + "/pages/pdf2html/" + arId + ".html";
+        String pdf = rePath + "/static" + arPath;
+        File file = new File(html);
+        if (!file.exists()) {
+            PdfUtil.pdf2Html(pdf, arId);
+        }
+        Thread.sleep(1000);
+        return "/pdf2html/" + arId + ".html";
+    }
+
 
     /**
      * 志愿者招募

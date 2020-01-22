@@ -28,19 +28,19 @@
     <hr/>-->
     <ul class="nav nav-pills nav-justified step step-round" data-step="${appeal2.appealStatus!}">
         <li>
-            <a>举报隐患</a>
+            <a onclick="fun(false)">举报隐患</a>
         </li>
         <li>
-            <a>&nbsp;受理&nbsp;</a>
+            <a onclick="fun(false)">&nbsp;受理&nbsp;</a>
         </li>
         <li>
-            <a>&nbsp;核实&nbsp;</a>
+            <a onclick="fun(false)">&nbsp;核实&nbsp;</a>
         </li>
         <li>
-            <a>&nbsp;整改&nbsp;</a>
+            <a onclick="fun(false)">&nbsp;整改&nbsp;</a>
         </li>
         <li>
-            <a onclick="fun()">&nbsp;反馈&nbsp;</a>
+            <a onclick="fun(true)">&nbsp;反馈&nbsp;</a>
         </li>
     </ul>
 
@@ -75,10 +75,22 @@
             </li>
         </ul>
     </div>
-    <div id="core" style="display: none">
+    <div id="core" style="display: none;text-align: center">
+        @if(appeal2.appealStatus != '05'){
+        <p>请对我们的工作质量进行评价</p>
+        @}
         <div id="test1"></div>
-        <div id="test2"></div>
-        <div id="test3"></div>
+        @if(appeal2.appealStatus != '05'){
+        <div class="button_sp_area" style="margin-top: 10px">
+            <form id="form">
+                <input type="text" id="appealId" name="appealId" style="display: none" value="${appeal2.appealId!}"/>
+                <input type="text" id="appealCore" name="appealCore" style="display: none" value="${appeal2.appealCore!}"/>
+                <input type="text" id="appealStatus" name="appealStatus" style="display: none" value="05"/>
+                <button type="button" onclick="sub()" class="layui-btn layui-btn-xs layui-btn-normal">提交</button>
+            </form>
+        </div>
+        @}
+
     </div>
 
     <hr/>
@@ -87,30 +99,65 @@
     $(function () {
         bsStep();
         //bsStep(i) i 为number 可定位到第几步 如bsStep(2)/bsStep(3)
+        fun(true);
     })
 
-    function fun() {
-        $(".row").hide();
-        $("#core").show();
+    function fun(flag) {
+        var status = '${appeal2.appealStatus!}';
+        if (flag && (status === '04' || status === '05')) {
+            $(".row").hide();
+            $("#core").show();
+        } else {
+            $(".row").show();
+            $("#core").hide();
+        }
+    }
+
+    function sub() {
+        var core = $("#appealCore").val();
+        if (core === '' || core === '0') {
+            return;
+        }
+        $.ajax({
+            url: "/wechat/third/appealCore.do",
+            type: "post",
+            dataType: "json",
+            data: $("#form").serialize(),
+            success: function (data) {
+                if (data.flag) {
+                    alert(data.msg);
+                    window.location.reload();
+                } else {
+                    alert(data.msg);
+                }
+            }
+        })
     }
 
     layui.use(['rate'], function () {
         var rate = layui.rate;
+        var flag = false;
+         @if (appeal2.appealStatus == '05') {
+            flag = true;
+         @}
         rate.render({
             elem: '#test1'
-            , value: 0 //初始值
-            , text: true //开启文本
-        });
-        rate.render({
-            elem: '#test2'
-            , value: 0
+            , value: ${appeal2.appealCore!0}
+            , readonly: flag
             , text: true
-        });
-        rate.render({
-            elem: '#test3'
-            , value: 0
-            , text: true
-        });
+            , setText: function (value) { //自定义文本的回调
+                var arrs = {
+                    '1': '很差'
+                    , '2': '一般'
+                    , '3': '满意'
+                    , '4': '非常满意'
+                    , '5': '无可挑剔'
+                };
+                $("#appealCore").val(value);
+                this.span.text(arrs[value] || '评分');
+            }
+        })
+
     })
 </script>
 </body>

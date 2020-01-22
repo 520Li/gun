@@ -30,4 +30,5 @@ public class Appeal {
     private String appealStatus;
     private String acceptorUser;
     private String acceptorTel;
+    private String appealCore;
 }
